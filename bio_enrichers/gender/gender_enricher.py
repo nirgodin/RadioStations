@@ -6,6 +6,7 @@ from bio_enrichers.gender import gender_enricher_utils
 from bio_enrichers.gender.genders import Genders
 from bio_enrichers.tools.wikipedia_manager import WikipediaManager
 
+MALE_HEBREW_WORDS_TXT_FILE_PATH = 'bio_enrichers/gender/resources/male_hebrew_words.txt'
 FEMALE_HEBREW_WORDS_TXT_FILE_PATH = 'bio_enrichers/gender/resources/female_hebrew_words.txt'
 BAND_HEBREW_WORDS_TXT_FILE_PATH = 'bio_enrichers/gender/resources/band_hebrew_words.txt'
 
@@ -13,6 +14,7 @@ BAND_HEBREW_WORDS_TXT_FILE_PATH = 'bio_enrichers/gender/resources/band_hebrew_wo
 class GenderEnricher:
     def __init__(self):
         self._wikipedia_manager = WikipediaManager()
+        self._male_hebrew_words = gender_enricher_utils.get_words(MALE_HEBREW_WORDS_TXT_FILE_PATH)
         self._female_hebrew_words = gender_enricher_utils.get_words(FEMALE_HEBREW_WORDS_TXT_FILE_PATH)
         self._band_hebrew_words = gender_enricher_utils.get_words(BAND_HEBREW_WORDS_TXT_FILE_PATH)
 
@@ -31,13 +33,16 @@ class GenderEnricher:
         if page_summary == '':
             return ''
 
-        if gender_enricher_utils.contains_any_relevant_word(page_summary, self._band_hebrew_words):
-            return Genders.BAND.value
-
         if gender_enricher_utils.contains_any_relevant_word(page_summary, self._female_hebrew_words):
             return Genders.FEMALE.value
 
-        return Genders.MALE.value
+        if gender_enricher_utils.contains_any_relevant_word(page_summary, self._male_hebrew_words):
+            return Genders.MALE.value
+
+        if gender_enricher_utils.contains_any_relevant_word(page_summary, self._band_hebrew_words):
+            return Genders.BAND.value
+
+        return Genders.UNKNOWN.value
 
 
 if __name__ == '__main__':
