@@ -4,7 +4,7 @@ from typing import Generator
 import pandas as pd
 from pandas import DataFrame
 
-SPOTIFY_DIR = 'data/spotify'
+SPOTIFY_DIR = '../data/spotify'
 NAME = 'name'
 ADDED_AT = 'added_at'
 STATION = 'station'

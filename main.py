@@ -3,7 +3,7 @@ from datetime import datetime
 
 import pandas as pd
 
-from station import Station
+from data_collection.station import Station
 
 STATIONS = {
     'glglz': '18cUFeM5Q75ViwevsMQM1j',
