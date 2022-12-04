@@ -2,8 +2,8 @@ from typing import Any, Dict, List
 
 import pandas as pd
 
-from spotify import get_spotipy
-from track import Track
+from data_collection.spotify import get_spotipy
+from data_collection.track import Track
 from dacite import from_dict
 
 FOLLOWERS = "followers"

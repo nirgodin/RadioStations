@@ -2,7 +2,7 @@ from dataclasses import dataclass, asdict
 
 import pandas as pd
 
-from artist import Artist
+from data_collection.artist import Artist
 
 NAME = 'name'
 ID = 'id'

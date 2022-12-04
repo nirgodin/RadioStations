@@ -1,11 +1,10 @@
 from collections import Counter
-from dataclasses import dataclass, asdict
+from dataclasses import dataclass
 from typing import List, Dict, Any
 
-from spotipy import Spotify
 from dacite import from_dict
 
-from spotify import get_spotipy
+from data_collection.spotify import get_spotipy
 
 MAIN_GENRES = [
     'rock',
