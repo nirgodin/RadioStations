@@ -4,13 +4,12 @@ from typing import Generator
 import pandas as pd
 from pandas import DataFrame
 
+from consts.data_consts import NAME, ADDED_AT, STATION
+
 SPOTIFY_DIR = '../data/spotify'
-NAME = 'name'
-ADDED_AT = 'added_at'
-STATION = 'station'
 
 
-class PreProcessor:
+class PreProcessor:  # TODO: Consider remove
     def concatenate_data(self):
         dataframes = list(self._generate_raw_dataframes())
         concatenated_data = pd.concat(dataframes)
