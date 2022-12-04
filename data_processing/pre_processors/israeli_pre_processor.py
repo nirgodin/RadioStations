@@ -5,7 +5,7 @@ from typing import List, Dict
 from pandas import DataFrame, Series
 from tqdm import tqdm
 
-from consts.data_consts import KAN_GIMEL_ANALYZER_OUTPUT_PATH
+from consts.path_consts import KAN_GIMEL_ANALYZER_OUTPUT_PATH
 from data_processing.pre_processors.pre_processor_interface import IPreProcessor
 
 ISRAELI = 'israeli'
