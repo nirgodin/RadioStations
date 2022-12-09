@@ -47,5 +47,5 @@ class GenreAnalyzer:
 
 if __name__ == '__main__':
     path = r'/data/merged_data.csv'
-    output_path = r'/data/genres_count.csv'
+    output_path = r'/data/genres_mapping.csv'
     GenreAnalyzer().analyze(path, output_path)
