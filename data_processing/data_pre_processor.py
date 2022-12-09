@@ -4,6 +4,7 @@ import pandas as pd
 from pandas import DataFrame
 
 from data_processing.data_merger import DataMerger
+from data_processing.pre_processors.gender_per_processor import GenderPreProcessor
 from data_processing.pre_processors.genre_pre_processor import GenrePreProcessor
 from data_processing.pre_processors.israeli_pre_processor import IsraeliPreProcessor
 from data_processing.pre_processors.pre_processor_interface import IPreProcessor
@@ -34,5 +35,6 @@ class DataPreProcessor:
     def _sorted_pre_processors(self) -> List[IPreProcessor]:
         return [
             GenrePreProcessor(),
-            IsraeliPreProcessor()
+            IsraeliPreProcessor(),
+            GenderPreProcessor()
         ]
