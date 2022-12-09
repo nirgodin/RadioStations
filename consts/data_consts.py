@@ -1,3 +1,7 @@
 NAME = 'name'
 ADDED_AT = 'added_at'
+SCRAPED_AT = 'scraped_at'
 STATION = 'station'
+MAIN_GENRE = 'main_genre'
+GENRE = 'genre'
+GENRES = 'genres'

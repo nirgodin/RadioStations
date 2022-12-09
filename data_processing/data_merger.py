@@ -1,20 +1,20 @@
 import os
-from functools import reduce
 from typing import Generator, Optional
 
 import pandas as pd
 from pandas import DataFrame
 from tqdm import tqdm
 
-BASE_DIR = r'data/spotify'
+from consts.data_consts import NAME, ADDED_AT, STATION, SCRAPED_AT
+from consts.path_consts import SPOTIFY_DATA_BASE_DIR
 
 
 class DataMerger:
     @staticmethod
-    def merge(dir_path: str = BASE_DIR, output_path: Optional[str] = None) -> DataFrame:
+    def merge(dir_path: str = SPOTIFY_DATA_BASE_DIR, output_path: Optional[str] = None) -> DataFrame:
         files_data = DataMerger._generate_files_data(dir_path)
-        merged_data: DataFrame = pd.concat(files_data)  # reduce(lambda df1, df2: pd.concat([df1, df2]), files_data)
-        non_duplicated_data = merged_data.drop_duplicates(subset=['name', 'added_at'])
+        merged_data: DataFrame = pd.concat(files_data)
+        non_duplicated_data = merged_data.drop_duplicates(subset=[NAME, ADDED_AT, STATION])
 
         if output_path is not None:
             non_duplicated_data.to_csv(output_path, index=False)
@@ -35,6 +35,6 @@ class DataMerger:
     def _generate_single_file_data(dir_path: str, file_name: str) -> DataFrame:
         file_path = os.path.join(dir_path, file_name)
         file_data = pd.read_csv(file_path)
-        file_data['scraped_at'] = file_name
+        file_data[SCRAPED_AT] = file_name
 
         return file_data
