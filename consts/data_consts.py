@@ -1,4 +1,5 @@
 NAME = 'name'
+ARTIST_NAME = 'artist_name'
 ADDED_AT = 'added_at'
 SCRAPED_AT = 'scraped_at'
 STATION = 'station'
