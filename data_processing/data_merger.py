@@ -6,12 +6,11 @@ from pandas import DataFrame
 from tqdm import tqdm
 
 from consts.data_consts import NAME, ADDED_AT, STATION, SCRAPED_AT
-from consts.path_consts import SPOTIFY_DATA_BASE_DIR
 
 
 class DataMerger:
     @staticmethod
-    def merge(dir_path: str = SPOTIFY_DATA_BASE_DIR, output_path: Optional[str] = None) -> DataFrame:
+    def merge(dir_path: str, output_path: Optional[str] = None) -> DataFrame:
         files_data = DataMerger._generate_files_data(dir_path)
         merged_data: DataFrame = pd.concat(files_data)
         non_duplicated_data = merged_data.drop_duplicates(subset=[NAME, ADDED_AT, STATION])
