@@ -1,7 +1,4 @@
 import asyncio
-import os
-import re
-from datetime import datetime
 from functools import partial
 from typing import Union, Dict, Tuple, List
 
@@ -18,7 +15,7 @@ from consts.data_consts import NAME, ARTIST_NAME
 from data_collection.spotify import get_spotipy, TRACKS, ITEMS, URI
 from data_collection.utils import get_current_datetime
 
-AIO_POOL_SIZE = 100
+AIO_POOL_SIZE = 5
 
 
 class AudioFeaturesCollector:
@@ -32,15 +29,16 @@ class AudioFeaturesCollector:
         chunks = np.array_split(unique_tracks_data, chunks_number)
 
         for i, chunk in enumerate(chunks):
-            print(f'Starting to process chunk {i} out of {chunks_number}')
+            print(f'Starting to process chunk {i+1} out of {chunks_number}')
             await self._collect_single_chunk(chunk)
 
     async def _collect_single_chunk(self, chunk: DataFrame) -> None:
         tracks_features = await self._get_tracks_features(chunk)
         valid_features = [feature for feature in tracks_features if isinstance(feature, dict)]
+        print(f'Failed to collect audio features for {len(tracks_features) - len(valid_features)} out of {len(tracks_features)} tracks')
         tracks_features_data = pd.DataFrame.from_records(valid_features)
         now = get_current_datetime()
-        tracks_features_data.to_csv(fr'data/audio_features/{now}.csv', index=False)
+        tracks_features_data.to_csv(fr'data/audio_features/{now}.csv', encoding='utf-8-sig', index=False)
 
     async def _get_tracks_features(self, data: DataFrame) -> List[dict]:
         pool = AioPool(AIO_POOL_SIZE)
