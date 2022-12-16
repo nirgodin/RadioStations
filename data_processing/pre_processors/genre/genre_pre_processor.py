@@ -1,19 +1,18 @@
 from collections import Counter
-from functools import lru_cache
 from typing import Dict, List
 
-import pandas as pd
 from pandas import DataFrame
 from tqdm import tqdm
 
-from consts.data_consts import MAIN_GENRE, GENRE, GENRES
+from consts.data_consts import MAIN_GENRE, GENRES
+from data_processing.pre_processors.genre.main_genre_mapper import MainGenreMapper, OTHER
 from data_processing.pre_processors.pre_processor_interface import IPreProcessor
-
-GENRES_MAPPING_PATH = r'data/resources/genres_mapping.csv'
-OTHER = 'other'
 
 
 class GenrePreProcessor(IPreProcessor):
+    def __init__(self):
+        self._main_genre_mapper = MainGenreMapper()
+
     def pre_process(self, data: DataFrame) -> DataFrame:
         tracks_raw_genres = data[GENRES].unique().tolist()
         main_genres_mapping = self._get_main_genres_mapping(tracks_raw_genres)
@@ -24,10 +23,11 @@ class GenrePreProcessor(IPreProcessor):
     def _get_main_genres_mapping(self, raw_genres: List[str]) -> Dict[str, str]:
         main_genres = {}
 
-        with tqdm(total=len(raw_genres)):
+        with tqdm(total=len(raw_genres)) as progress_bar:
             for track_genres in raw_genres:
                 main_genre = self._get_single_track_main_genre(track_genres)
                 main_genres[track_genres] = main_genre
+                progress_bar.update(1)
 
         return main_genres
 
@@ -45,7 +45,7 @@ class GenrePreProcessor(IPreProcessor):
         mapped_genres = []
 
         for genre in genres:
-            mapped_genre = self._genres_mapping.get(genre, OTHER)
+            mapped_genre = self._main_genre_mapper.map(genre)
             mapped_genres.append(mapped_genre)
 
         return mapped_genres
@@ -65,14 +65,3 @@ class GenrePreProcessor(IPreProcessor):
     @property
     def name(self) -> str:
         return 'genre pre processor'
-
-    @property
-    def _genres_mapping(self) -> Dict[str, str]:
-        genres_data = pd.read_csv(GENRES_MAPPING_PATH).fillna('')
-        genres_mapping = {}
-
-        for genre, main_genre in zip(genres_data[GENRE], genres_data[MAIN_GENRE]):
-            if main_genre != '':
-                genres_mapping[genre] = main_genre
-
-        return genres_mapping

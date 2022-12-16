@@ -1,20 +1,19 @@
 from typing import List, Optional
 
-import pandas as pd
 from pandas import DataFrame
 
+from consts.path_consts import MERGED_DATA_PATH
 from data_processing.data_merger import DataMerger
 from data_processing.pre_processors.gender_per_processor import GenderPreProcessor
-from data_processing.pre_processors.genre_pre_processor import GenrePreProcessor
+from data_processing.pre_processors.genre.genre_pre_processor import GenrePreProcessor
 from data_processing.pre_processors.israeli_pre_processor import IsraeliPreProcessor
 from data_processing.pre_processors.pre_processor_interface import IPreProcessor
-
-DATA_OUTPUT_PATH = r'data/merged_data.csv'
 
 
 class DataPreProcessor:
     def pre_process(self, output_path: Optional[str] = None):
-        data = pd.read_csv(DATA_OUTPUT_PATH)  # DataMerger.merge(output_path=DATA_OUTPUT_PATH)
+        print(f'Starting to merge data to single data frame')
+        data = DataMerger.merge(output_path=MERGED_DATA_PATH)  # pd.read_csv(MERGED_DATA_PATH)
         pre_processed_data = self._pre_process_data(data)
 
         if output_path is not None:
