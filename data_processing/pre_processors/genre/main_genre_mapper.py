@@ -1,7 +1,6 @@
 from typing import Dict, List, Optional
 
 import pandas as pd
-import spacy
 from nltk import MWETokenizer
 
 from consts.data_consts import GENRE, MAIN_GENRE
