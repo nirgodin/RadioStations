@@ -2,12 +2,8 @@ from dataclasses import dataclass, asdict
 
 import pandas as pd
 
+from consts.data_consts import ALBUM, MAIN_ALBUM, ARTISTS, RELEASE_DATE, NAME, ID, TOTAL_TRACKS, ALBUM_TRACKS_NUMBER
 from data_collection.artist import Artist
-
-NAME = 'name'
-ID = 'id'
-RELEASE_DATE = 'release_date'
-TOTAL_TRACKS = 'total_tracks'
 
 
 @dataclass
@@ -42,14 +38,14 @@ class Track:
 
     def to_dict(self):
         d = asdict(self)
-        d.pop('album')
-        d.pop('artists')
+        d.pop(ALBUM)
+        d.pop(ARTISTS)
         d.update(self.main_artist.to_dict())
         d.update(
             {
-                'main_album': self.main_album,
-                'release_date': self.release_date,
-                'album_tracks_number': self.album_tracks_number
+                MAIN_ALBUM: self.main_album,
+                RELEASE_DATE: self.release_date,
+                ALBUM_TRACKS_NUMBER: self.album_tracks_number
             }
         )
 
