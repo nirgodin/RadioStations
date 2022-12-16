@@ -2,15 +2,10 @@ from typing import Any, Dict, List
 
 import pandas as pd
 
+from consts.data_consts import ADDED_AT, FOLLOWERS, TOTAL, SNAPSHOT_ID, TRACKS, ITEMS, STATION, TRACK
 from data_collection.spotify import get_spotipy
 from data_collection.track import Track
 from dacite import from_dict
-
-FOLLOWERS = "followers"
-TOTAL = 'total'
-SNAPSHOT_ID = 'snapshot_id'
-TRACKS = 'tracks'
-ITEMS = 'items'
 
 
 class Station:
@@ -37,8 +32,8 @@ class Station:
         tracks = []
 
         for raw_track in raw_tracks:
-            track = from_dict(data_class=Track, data=raw_track['track'])
-            track.added_at = raw_track['added_at']
+            track = from_dict(data_class=Track, data=raw_track[TRACK])
+            track.added_at = raw_track[ADDED_AT]
             tracks.append(track)
 
         return tracks
@@ -47,18 +42,18 @@ class Station:
         d = self.__dict__
         d.update(
             {
-                'followers': self.followers,
-                'snapshot_id': self.snapshot_id,
-                'tracks': [track.to_dict() for track in self.tracks]
+                FOLLOWERS: self.followers,
+                SNAPSHOT_ID: self.snapshot_id,
+                TRACKS: [track.to_dict() for track in self.tracks]
             }
         )
         return d
 
     def to_dataframe(self):
         tracks_data = self._get_tracks_df()
-        tracks_data['station'] = self.name
-        tracks_data['followers'] = self.followers
-        tracks_data['snapshot_id'] = self.snapshot_id
+        tracks_data[STATION] = self.name
+        tracks_data[FOLLOWERS] = self.followers
+        tracks_data[SNAPSHOT_ID] = self.snapshot_id
 
         return tracks_data
 

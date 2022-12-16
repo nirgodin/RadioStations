@@ -4,6 +4,7 @@ from typing import List, Dict, Any
 
 from dacite import from_dict
 
+from consts.data_consts import ARTIST_NAME, MAIN_GENRE, GENRES, ARTIST_POPULARITY, ARTIST_FOLLOWERS
 from data_collection.spotify import get_spotipy
 
 MAIN_GENRES = [
@@ -44,18 +45,18 @@ class Artist:
     _sp = get_spotipy()
 
     @classmethod
-    def create_from_id(cls, id: int):
+    def create_from_id(cls, id: str):
         spotify = get_spotipy()
         artist_page = spotify.artist(artist_id=id)
         return from_dict(data_class=Artist, data=artist_page)
 
     def to_dict(self):
         return {
-            'artist_name': self.name,
-            'artist_followers': self.artist_followers,
-            'artist_popularity': self.popularity,
-            'genres': self.genres,
-            'main_genre': self.main_genre
+            ARTIST_NAME: self.name,
+            ARTIST_FOLLOWERS: self.artist_followers,
+            ARTIST_POPULARITY: self.popularity,
+            GENRES: self.genres,
+            MAIN_GENRE: self.main_genre
         }
 
     @property
