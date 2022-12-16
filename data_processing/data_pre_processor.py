@@ -2,8 +2,9 @@ from typing import List, Optional
 
 from pandas import DataFrame
 
-from consts.path_consts import MERGED_DATA_PATH
+from consts.path_consts import MERGED_DATA_PATH, SPOTIFY_DATA_BASE_DIR
 from data_processing.data_merger import DataMerger
+from data_processing.pre_processors.audio_features_pre_processor import AudioFeaturesPreProcessor
 from data_processing.pre_processors.gender_per_processor import GenderPreProcessor
 from data_processing.pre_processors.genre.genre_pre_processor import GenrePreProcessor
 from data_processing.pre_processors.israeli_pre_processor import IsraeliPreProcessor
@@ -13,7 +14,7 @@ from data_processing.pre_processors.pre_processor_interface import IPreProcessor
 class DataPreProcessor:
     def pre_process(self, output_path: Optional[str] = None):
         print(f'Starting to merge data to single data frame')
-        data = DataMerger.merge(output_path=MERGED_DATA_PATH)  # pd.read_csv(MERGED_DATA_PATH)
+        data = DataMerger.merge(dir_path=SPOTIFY_DATA_BASE_DIR, output_path=MERGED_DATA_PATH)  # pd.read_csv(MERGED_DATA_PATH)
         pre_processed_data = self._pre_process_data(data)
 
         if output_path is not None:
@@ -35,5 +36,6 @@ class DataPreProcessor:
         return [
             GenrePreProcessor(),
             IsraeliPreProcessor(),
-            GenderPreProcessor()
+            GenderPreProcessor(),
+            AudioFeaturesPreProcessor()
         ]
