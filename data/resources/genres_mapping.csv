@@ -15,7 +15,7 @@ alternative rock,rock,1714
 dance pop,pop,1665
 israeli singer-songwriter,singer-songwriter,1588
 psychedelic rock,rock,1451
-blues rock,rock,1439
+blues rock,blues,1439
 new wave pop,pop,1358
 singer-songwriter,singer-songwriter,1348
 folk,folk,1255
@@ -98,90 +98,90 @@ indie r&b,indie,284
 heartland rock,rock,283
 sophisti-pop,pop,282
 experimental,other,277
-baroque pop,,276
-nu metal,,273
-lounge,,267
-rockabilly,,264
-funk rock,,254
-afropop,,249
-alternative country,,247
-gangster rap,,241
-canadian pop,,238
-big beat,,238
-festigal,,234
-protopunk,,231
-electro house,,228
-uk post-punk,,228
-jazz funk,,226
-east coast hip hop,,225
-indie jazz,,221
-conscious hip hop,,219
-madchester,,218
-new americana,,215
-downtempo,,214
-alternative hip hop,,213
-uk pop,,212
-pub rock,,212
-israeli trap,,208
-yacht rock,,205
-escape room,,205
-baroque,,204
-acid rock,,203
-alternative r&b,,202
-eurodance,,201
-trance,,200
-float house,,200
-early music,,197
-jam band,,196
-house,,194
-metropopolis,,194
-tech house,,193
-neo mellow,,191
-hip pop,,190
-british blues,,187
-british folk,,187
-deep house,,186
-german baroque,,182
-indietronica,,180
-progressive trance,,179
-microhouse,,176
-jewish pop,,175
-disco house,,175
-anti-folk,,174
-zolo,,173
-traditional blues,,171
-bossa nova,,170
-garage rock,,170
-modern blues rock,,168
-canadian singer-songwriter,,168
-southern hip hop,,168
-hip house,,167
-funk metal,,161
-rap rock,,159
-power pop,,158
-hardcore hip hop,,158
-british soul,,157
-nu jazz,,156
-cosmic american,,154
-latin,,153
-minimal techno,,153
-vocal house,,150
-shoegaze,,149
-afrobeat,,148
-punk blues,,148
-memphis soul,,147
-trap,,146
-underground hip hop,,146
-uplifting trance,,146
-experimental pop,,146
-chillwave,,144
-soul jazz,,144
-torch song,,144
-modern blues,,143
-psychedelic soul,,142
-sefardi,,140
-southern rock,,140
-arab alternative,,139
+baroque pop,pop,276
+nu metal,metal,273
+lounge,other,267
+rockabilly,rock,264
+funk rock,rock,254
+afropop,world,249
+alternative country,other,247
+gangster rap,hip hop,241
+canadian pop,pop,238
+big beat,electronic,238
+festigal,other,234
+protopunk,rock,231
+electro house,electronic,228
+uk post-punk,rock,228
+jazz funk,jazz,226
+east coast hip hop,hip hop,225
+indie jazz,indie,221
+conscious hip hop,hip hop,219
+madchester,rock,218
+new americana,other,215
+downtempo,other,214
+alternative hip hop,hip hop,213
+uk pop,pop,212
+pub rock,rock,212
+israeli trap,israeli hip hop,208
+yacht rock,rock,205
+escape room,other,205
+baroque,classical,204
+acid rock,rock,203
+alternative r&b,r&b,202
+eurodance,electronic,201
+trance,electronic,200
+float house,electronic,200
+early music,classical,197
+jam band,other,196
+house,electronic,194
+metropopolis,indie,194
+tech house,electronic,193
+neo mellow,rock,191
+hip pop,hip hop,190
+british blues,blues,187
+british folk,other,187
+deep house,electronic,186
+german baroque,classical,182
+indietronica,indie,180
+progressive trance,electronic,179
+microhouse,electronic,176
+jewish pop,israeli pop,175
+disco house,electronic,175
+anti-folk,other,174
+zolo,rock,173
+traditional blues,blues,171
+bossa nova,world,170
+garage rock,rock,170
+modern blues rock,blues,168
+canadian singer-songwriter,singer-songwriter,168
+southern hip hop,hip hop,168
+hip house,pop,167
+funk metal,metal,161
+rap rock,rock,159
+power pop,rock,158
+hardcore hip hop,hip hop,158
+british soul,soul,157
+nu jazz,jazz,156
+cosmic american,other,154
+latin,world,153
+minimal techno,electronic,153
+vocal house,electronic,150
+shoegaze,indie,149
+afrobeat,world,148
+punk blues,blues,148
+memphis soul,soul,147
+trap,hip hop,146
+underground hip hop,hip hop,146
+uplifting trance,electronic,146
+experimental pop,indie,146
+chillwave,electronic,144
+soul jazz,jazz,144
+torch song,jazz,144
+modern blues,blues,143
+psychedelic soul,soul,142
+sefardi,mizrahi,140
+southern rock,rock,140
+arab alternative,world,139
 soul blues,,139
 experimental rock,,136
 solo wave,,132
