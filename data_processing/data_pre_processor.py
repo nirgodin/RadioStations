@@ -18,7 +18,7 @@ class DataPreProcessor:
         pre_processed_data = self._pre_process_data(data)
 
         if output_path is not None:
-            pre_processed_data.to_csv(output_path, index=False)
+            pre_processed_data.to_csv(output_path, encoding='utf-8-sig', index=False)
 
         return pre_processed_data
 
