@@ -5,6 +5,7 @@ from typing import List, Dict
 from pandas import DataFrame, Series
 from tqdm import tqdm
 
+from consts.data_consts import IS_ISRAELI, ARTIST_NAME, NAME, MAIN_ALBUM, GENRES, ARTISTS
 from consts.path_consts import KAN_GIMEL_ANALYZER_OUTPUT_PATH
 from data_processing.pre_processors.pre_processor_interface import IPreProcessor
 
@@ -13,7 +14,7 @@ ISRAELI = 'israeli'
 
 class IsraeliPreProcessor(IPreProcessor):
     def pre_process(self, data: DataFrame) -> DataFrame:
-        data['is_israeli'] = self._is_israeli(data)
+        data[IS_ISRAELI] = self._is_israeli(data)
         return data
 
     def _is_israeli(self, data: DataFrame) -> List[bool]:
@@ -28,18 +29,18 @@ class IsraeliPreProcessor(IPreProcessor):
         return is_israeli
 
     def _is_track_israeli(self, row: Series) -> bool:
-        if self._is_included_in_kan_gimel_data(row['artist_name']):
+        if self._is_included_in_kan_gimel_data(row[ARTIST_NAME]):
             return True
 
-        elif self._contains_any_hebrew_character(row['name'], row['artist_name'], row['main_album']):
+        elif self._contains_any_hebrew_character(row[NAME], row[ARTIST_NAME], row[MAIN_ALBUM]):
             return True
 
         else:
-            return self._has_any_israeli_genre(row['genres'])
+            return self._has_any_israeli_genre(row[GENRES])
 
     @lru_cache(maxsize=5000)
     def _is_included_in_kan_gimel_data(self, artist_name: str) -> bool:
-        return artist_name in self._kan_gimel_data['artists']
+        return artist_name in self._kan_gimel_data[ARTISTS]
 
     @staticmethod
     def _contains_any_hebrew_character(*track_metadata: str) -> bool:
