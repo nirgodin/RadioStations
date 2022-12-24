@@ -15,10 +15,10 @@ alternative rock,rock,1714
 dance pop,pop,1665
 israeli singer-songwriter,singer-songwriter,1588
 psychedelic rock,rock,1451
-blues rock,blues,1439
+blues rock,other,1439
 new wave pop,pop,1358
 singer-songwriter,singer-songwriter,1348
-folk,folk,1255
+folk,other,1255
 country rock,rock,1246
 soul,soul,1239
 new wave,rock,1188
@@ -29,7 +29,7 @@ indie rock,indie,1077
 art pop,pop,1012
 pop rock,rock,976
 israeli mediterranean,mizrahi,969
-funk,funk,916
+funk,other,916
 modern rock,rock,911
 adult standards,other,903
 hip hop,hip hop,858
@@ -50,18 +50,18 @@ europop,pop,543
 pop rap,pop,541
 indie folk,indie,533
 israeli indie,indie,527
-quiet storm,r&b,513
+quiet storm,soul,513
 beatlesque,rock,499
 edm,electronic,480
 classic soul,soul,463
-electric blues,blues,457
-alternative metal,metal,450
-classical,classical,449
+electric blues,other,457
+alternative metal,rock,450
+classical,other,449
 post-punk,rock,448
 alternative dance,electronic,432
 electropop,electronic,428
 indie soul,indie,427
-motown,r&b,425
+motown,soul,425
 dance rock,rock,424
 urban contemporary,hip hop,415
 rock-and-roll,rock,414
@@ -69,21 +69,21 @@ classic uk pop,pop,406
 pop dance,electronic,394
 dream pop,rock,393
 stomp and holler,indie,383
-r&b,r&b,381
+r&b,soul,381
 jazz fusion,jazz,374
 britpop,rock,369
 chamber pop,indie,364
 vocal jazz,jazz,357
 neo-psychedelic,rock,355
-world,world,346
+world,other,346
 new rave,indie,342
 merseybeat,rock,342
 lilith,other,327
 neo soul,soul,325
-blues,blues,322
+blues,other,322
 piano rock,rock,321
 progressive house,electronic,319
-metal,metal,316
+metal,rock,316
 post-teen pop,pop,316
 chamber psych,other,314
 jazz,jazz,307
@@ -99,16 +99,16 @@ heartland rock,rock,283
 sophisti-pop,pop,282
 experimental,other,277
 baroque pop,pop,276
-nu metal,metal,273
+nu metal,rock,273
 lounge,other,267
 rockabilly,rock,264
 funk rock,rock,254
-afropop,world,249
+afropop,other,249
 alternative country,other,247
 gangster rap,hip hop,241
 canadian pop,pop,238
 big beat,electronic,238
-festigal,other,234
+festigal,israeli pop,234
 protopunk,rock,231
 electro house,electronic,228
 uk post-punk,rock,228
@@ -125,23 +125,23 @@ pub rock,rock,212
 israeli trap,israeli hip hop,208
 yacht rock,rock,205
 escape room,other,205
-baroque,classical,204
+baroque,other,204
 acid rock,rock,203
-alternative r&b,r&b,202
+alternative r&b,soul,202
 eurodance,electronic,201
 trance,electronic,200
 float house,electronic,200
-early music,classical,197
+early music,other,197
 jam band,other,196
 house,electronic,194
 metropopolis,indie,194
 tech house,electronic,193
 neo mellow,rock,191
 hip pop,hip hop,190
-british blues,blues,187
+british blues,other,187
 british folk,other,187
 deep house,electronic,186
-german baroque,classical,182
+german baroque,other,182
 indietronica,indie,180
 progressive trance,electronic,179
 microhouse,electronic,176
@@ -149,26 +149,26 @@ jewish pop,israeli pop,175
 disco house,electronic,175
 anti-folk,other,174
 zolo,rock,173
-traditional blues,blues,171
-bossa nova,world,170
+traditional blues,other,171
+bossa nova,other,170
 garage rock,rock,170
-modern blues rock,blues,168
+modern blues rock,other,168
 canadian singer-songwriter,singer-songwriter,168
 southern hip hop,hip hop,168
 hip house,pop,167
-funk metal,metal,161
+funk metal,rock,161
 rap rock,rock,159
 power pop,rock,158
 hardcore hip hop,hip hop,158
 british soul,soul,157
 nu jazz,jazz,156
 cosmic american,other,154
-latin,world,153
+latin,other,153
 minimal techno,electronic,153
 vocal house,electronic,150
 shoegaze,indie,149
-afrobeat,world,148
-punk blues,blues,148
+afrobeat,other,148
+punk blues,other,148
 memphis soul,soul,147
 trap,hip hop,146
 underground hip hop,hip hop,146
@@ -177,11 +177,11 @@ experimental pop,indie,146
 chillwave,electronic,144
 soul jazz,jazz,144
 torch song,jazz,144
-modern blues,blues,143
+modern blues,other,143
 psychedelic soul,soul,142
 sefardi,mizrahi,140
 southern rock,rock,140
-arab alternative,world,139
+arab alternative,other,139
 soul blues,,139
 experimental rock,,136
 solo wave,,132
@@ -227,7 +227,7 @@ progressive electro house,,94
 modern alternative rock,,94
 classical era,,94
 australian dance,,93
-muzika l'yeladim,,93
+muzika l'yeladim,israeli pop,93
 scottish indie,,92
 hard bop,,92
 compositional ambient,,91
