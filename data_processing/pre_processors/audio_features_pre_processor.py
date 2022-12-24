@@ -8,7 +8,11 @@ from data_processing.pre_processors.pre_processor_interface import IPreProcessor
 
 class AudioFeaturesPreProcessor(IPreProcessor):
     def pre_process(self, data: DataFrame) -> DataFrame:
-        audio_features = DataMerger.merge(dir_path=AUDIO_FEATURES_BASE_DIR, output_path=AUDIO_FEATURES_DATA_PATH)
+        audio_features = DataMerger.merge(
+            dir_path=AUDIO_FEATURES_BASE_DIR,
+            drop_duplicates_on=[NAME, ARTIST_NAME],
+            output_path=AUDIO_FEATURES_DATA_PATH
+        )
         return data.merge(
             right=audio_features,
             how='left',
