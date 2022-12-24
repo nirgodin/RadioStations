@@ -11,9 +11,9 @@ from tqdm import tqdm
 
 from api.access_token_generator import AccessTokenGenerator
 from consts.api_consts import AUDIO_FEATURES_URL_FORMAT
-from consts.data_consts import NAME, ARTIST_NAME
-from data_collection.spotify import get_spotipy, TRACKS, ITEMS, URI
-from data_collection.utils import get_current_datetime
+from consts.data_consts import NAME, ARTIST_NAME, TRACKS, ITEMS, URI
+from consts.path_consts import MERGED_DATA_PATH
+from data_collection.utils import get_current_datetime, get_spotipy
 
 AIO_POOL_SIZE = 5
 
@@ -99,6 +99,6 @@ class AudioFeaturesCollector:
 
 
 if __name__ == '__main__':
-    data = pd.read_csv(r'C:\Users\nirgo\Documents\GitHub\RadioStations\data\merged_data.csv')
+    data = pd.read_csv(MERGED_DATA_PATH)
     loop = asyncio.get_event_loop()
     loop.run_until_complete(AudioFeaturesCollector().collect(data))
