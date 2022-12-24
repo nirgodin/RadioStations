@@ -16,7 +16,7 @@ CORRELATION_COLUMNS_SUBSET = AUDIO_FEATURES + [
 ]
 
 
-class AudioFeaturesAnalyzer:
+class AudioFeaturesCorrelationsAnalyzer:
     def __init__(self):
         self._tracks_data = pd.read_csv(MERGED_DATA_PATH)
 
@@ -56,4 +56,4 @@ class AudioFeaturesAnalyzer:
 
 
 if __name__ == '__main__':
-    AudioFeaturesAnalyzer().analyze()
+    AudioFeaturesCorrelationsAnalyzer().analyze()
