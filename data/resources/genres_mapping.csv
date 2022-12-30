@@ -1,8 +1,8 @@
 genre,main_genre,count
 rock,rock,5330
-classic israeli pop,israeli pop,4825
+classic israeli pop,pop,4825
 classic rock,rock,3525
-israeli rock,israeli rock,2928
+israeli rock,rock,2928
 mellow gold,rock,2462
 art rock,rock,2290
 folk rock,rock,2230
@@ -10,7 +10,7 @@ album rock,rock,2131
 permanent wave,rock,2025
 soft rock,rock,2011
 pop,pop,1959
-israeli pop,israeli pop,1876
+israeli pop,pop,1876
 alternative rock,rock,1714
 dance pop,pop,1665
 israeli singer-songwriter,singer-songwriter,1588
@@ -39,7 +39,7 @@ electronica,electronic,786
 symphonic rock,rock,745
 melancholia,other,669
 brill building pop,pop,657
-israeli hip hop,israeli hip hop,654
+israeli hip hop,hip hop,654
 synthpop,electronic,630
 progressive rock,rock,592
 indie pop,indie,569
@@ -108,7 +108,7 @@ alternative country,other,247
 gangster rap,hip hop,241
 canadian pop,pop,238
 big beat,electronic,238
-festigal,israeli pop,234
+festigal,pop,234
 protopunk,rock,231
 electro house,electronic,228
 uk post-punk,rock,228
@@ -122,7 +122,7 @@ downtempo,other,214
 alternative hip hop,hip hop,213
 uk pop,pop,212
 pub rock,rock,212
-israeli trap,israeli hip hop,208
+israeli trap,hip hop,208
 yacht rock,rock,205
 escape room,other,205
 baroque,other,204
@@ -145,7 +145,7 @@ german baroque,other,182
 indietronica,indie,180
 progressive trance,electronic,179
 microhouse,electronic,176
-jewish pop,israeli pop,175
+jewish pop,pop,175
 disco house,electronic,175
 anti-folk,other,174
 zolo,rock,173
@@ -227,7 +227,7 @@ progressive electro house,,94
 modern alternative rock,,94
 classical era,,94
 australian dance,,93
-muzika l'yeladim,israeli pop,93
+muzika l'yeladim,pop,93
 scottish indie,,92
 hard bop,,92
 compositional ambient,,91

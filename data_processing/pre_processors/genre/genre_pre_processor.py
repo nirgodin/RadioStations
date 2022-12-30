@@ -33,6 +33,10 @@ class GenrePreProcessor(IPreProcessor):
 
     def _get_single_track_main_genre(self, raw_genres: str) -> str:
         main_genres = self._map_raw_genres_to_main_genres(raw_genres)
+
+        if not main_genres:
+            return NA
+
         non_other_main_genres = [genre for genre in main_genres if genre != OTHER]
 
         if not non_other_main_genres:
