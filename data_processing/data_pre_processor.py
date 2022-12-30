@@ -1,5 +1,6 @@
 from typing import List, Optional
 
+import pandas as pd
 from pandas import DataFrame
 
 from consts.path_consts import MERGED_DATA_PATH, SPOTIFY_DATA_BASE_DIR
@@ -14,7 +15,7 @@ from data_processing.pre_processors.pre_processor_interface import IPreProcessor
 class DataPreProcessor:
     def pre_process(self, output_path: Optional[str] = None):
         print(f'Starting to merge data to single data frame')
-        data = DataMerger.merge(dir_path=SPOTIFY_DATA_BASE_DIR, output_path=MERGED_DATA_PATH)  # pd.read_csv(MERGED_DATA_PATH)
+        data = DataMerger.merge(dir_path=SPOTIFY_DATA_BASE_DIR, output_path=MERGED_DATA_PATH)
         pre_processed_data = self._pre_process_data(data)
 
         if output_path is not None:
@@ -34,8 +35,8 @@ class DataPreProcessor:
     @property
     def _sorted_pre_processors(self) -> List[IPreProcessor]:
         return [
-            GenrePreProcessor(),
             IsraeliPreProcessor(),
+            GenrePreProcessor(),
             GenderPreProcessor(),
             AudioFeaturesPreProcessor()
         ]
