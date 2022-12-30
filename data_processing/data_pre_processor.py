@@ -6,6 +6,7 @@ from pandas import DataFrame
 from consts.path_consts import MERGED_DATA_PATH, SPOTIFY_DATA_BASE_DIR
 from data_processing.data_merger import DataMerger
 from data_processing.pre_processors.audio_features_pre_processor import AudioFeaturesPreProcessor
+from data_processing.pre_processors.formatter_pre_processor import FormatterPreProcessor
 from data_processing.pre_processors.gender_per_processor import GenderPreProcessor
 from data_processing.pre_processors.genre.genre_pre_processor import GenrePreProcessor
 from data_processing.pre_processors.israeli_pre_processor import IsraeliPreProcessor
@@ -38,5 +39,6 @@ class DataPreProcessor:
             IsraeliPreProcessor(),
             GenrePreProcessor(),
             GenderPreProcessor(),
-            AudioFeaturesPreProcessor()
+            AudioFeaturesPreProcessor(),
+            FormatterPreProcessor()
         ]
