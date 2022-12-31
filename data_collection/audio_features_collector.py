@@ -99,6 +99,6 @@ class AudioFeaturesCollector:
 
 
 if __name__ == '__main__':
-    data = pd.read_csv(MERGED_DATA_PATH)
+    data = pd.read_csv(r'C:\Users\nirgo\Documents\spotify_merged_data_29_12_22.csv')
     loop = asyncio.get_event_loop()
     loop.run_until_complete(AudioFeaturesCollector().collect(data))

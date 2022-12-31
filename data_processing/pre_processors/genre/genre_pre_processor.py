@@ -8,6 +8,8 @@ from consts.data_consts import MAIN_GENRE, GENRES
 from data_processing.pre_processors.genre.main_genre_mapper import MainGenreMapper, OTHER
 from data_processing.pre_processors.pre_processor_interface import IPreProcessor
 
+NA = 'N/A'
+
 
 class GenrePreProcessor(IPreProcessor):
     def __init__(self):

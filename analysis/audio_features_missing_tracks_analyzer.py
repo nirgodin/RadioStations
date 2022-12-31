@@ -31,4 +31,4 @@ class AudioFeaturesMissingTracksAnalyzer:
 
 
 if __name__ == '__main__':
-    AudioFeaturesMissingTracksAnalyzer().analyze(r'C:\Users\nirgo\Documents\spotify_merged_data_16_12_22.csv')
+    AudioFeaturesMissingTracksAnalyzer().analyze(r'C:\Users\nirgo\Documents\spotify_merged_data_29_12_22.csv')

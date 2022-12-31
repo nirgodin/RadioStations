@@ -7,7 +7,6 @@ from consts.data_consts import GENRE, MAIN_GENRE
 
 GENRES_MAPPING_PATH = r'data/resources/genres_mapping.csv'
 OTHER = 'other'
-NA = 'N/A'
 TOKENIZER_SEPARATOR = ' '
 SIMILARITY_RATIO_THRESHOLD = 0.7
 
