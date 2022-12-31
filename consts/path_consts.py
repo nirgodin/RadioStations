@@ -3,3 +3,4 @@ KAN_GIMEL_ANALYZER_OUTPUT_PATH = r'data/resources/kan_gimel_tracks_artists_and_a
 SPOTIFY_DATA_BASE_DIR = r'data/spotify'
 AUDIO_FEATURES_BASE_DIR = r'data/audio_features'
 AUDIO_FEATURES_DATA_PATH = r'data/audio_features_merged_data.csv'
+CORRELATIONS_DATA_PATH = r'data/popularity_play_count_correlations_data.csv'
