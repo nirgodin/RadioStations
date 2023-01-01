@@ -3,8 +3,8 @@ from typing import Generator
 import pandas as pd
 from pandas import DataFrame
 
-from consts.data_consts import STATION
-from consts.path_consts import MERGED_DATA_PATH
+from consts.data_consts import STATION, ARTIST_NAME, SONG
+from consts.path_consts import MERGED_DATA_PATH, UNIQUE_ANALYZER_OUTPUT_PATH_FORMAT
 
 
 class UniqueAnalyzer:
@@ -25,14 +25,16 @@ class UniqueAnalyzer:
             unique_values_share = len(unique_column_values) / len(station_data)
 
             yield {
-                'station': station,
+                STATION: station,
                 f'unique_{column}_share': unique_values_share
             }
 
 
 if __name__ == '__main__':
     unique_analyzer = UniqueAnalyzer()
-    unique_analyzer.analyze(
-        column='name',
-        output_path=r'C:\Users\nirgo\Documents\GitHub\RadioStations\data\unique_songs_share.csv'
-    )
+
+    for column in [SONG, ARTIST_NAME]:
+        unique_analyzer.analyze(
+            column=column,
+            output_path=UNIQUE_ANALYZER_OUTPUT_PATH_FORMAT.format(column)
+        )

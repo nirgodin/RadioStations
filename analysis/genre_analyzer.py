@@ -6,6 +6,8 @@ import pandas as pd
 from pandas import DataFrame
 from tqdm import tqdm
 
+from consts.path_consts import MERGED_DATA_PATH, GENRES_MAPPING_PATH
+
 
 class GenreAnalyzer:
     def analyze(self, data_path: str, output_path: Optional[str] = None) -> DataFrame:
@@ -46,6 +48,8 @@ class GenreAnalyzer:
 
 
 if __name__ == '__main__':
-    path = r'/data/merged_data.csv'
-    output_path = r'/data/genres_mapping.csv'
-    GenreAnalyzer().analyze(path, output_path)
+    analyzer = GenreAnalyzer()
+    analyzer.analyze(
+        data_path=MERGED_DATA_PATH,
+        output_path=GENRES_MAPPING_PATH
+    )

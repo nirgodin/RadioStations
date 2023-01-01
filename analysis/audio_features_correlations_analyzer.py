@@ -1,11 +1,12 @@
 import re
+from typing import Union
 
 import numpy as np
 import pandas as pd
 from pandas import DataFrame
 
 from consts.audio_features_consts import AUDIO_FEATURES, KEY
-from consts.data_consts import ARTIST_NAME, NAME, POPULARITY, DURATION_MS, EXPLICIT, IS_ISRAELI, ID, \
+from consts.data_consts import POPULARITY, DURATION_MS, EXPLICIT, IS_ISRAELI, ID, \
     TRACK_NUMBER, RELEASE_DATE, MAIN_GENRE
 from consts.path_consts import MERGED_DATA_PATH, CORRELATIONS_DATA_PATH
 
@@ -18,7 +19,6 @@ DUMMY_COLUMNS = [
 PLAYS_COUNT = 'play_count'
 CORRELATION_COLUMNS_SUBSET = AUDIO_FEATURES + [
     POPULARITY,
-    # PLAYS_COUNT,
     EXPLICIT,
     DURATION_MS,
     IS_ISRAELI,
@@ -41,6 +41,7 @@ class AudioFeaturesCorrelationsAnalyzer:
         audio_features_and_popularity = data[CORRELATION_COLUMNS_SUBSET]
         enriched_data = self._build_features(audio_features_and_popularity)
         correlations = self._get_correlations(enriched_data)
+        correlations = correlations.applymap(lambda x: self._format(x))
 
         correlations.to_csv(CORRELATIONS_DATA_PATH, index=False)
 
@@ -95,6 +96,16 @@ class AudioFeaturesCorrelationsAnalyzer:
         column_correlations[Y] = column
 
         return column_correlations.sort_values(by=CORRELATION, ascending=False)
+
+    @staticmethod
+    def _format(value: Union[float, str]):
+        if not isinstance(value, str):
+            return value
+
+        tokenized_value = value.split('_')
+        titlized_value = [token.title() for token in tokenized_value]
+
+        return ' '.join(titlized_value)
 
 
 if __name__ == '__main__':

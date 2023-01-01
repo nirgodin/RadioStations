@@ -4,11 +4,10 @@ import pandas as pd
 from nltk import MWETokenizer
 
 from consts.data_consts import GENRE, MAIN_GENRE
+from consts.path_consts import GENRES_MAPPING_PATH
 
-GENRES_MAPPING_PATH = r'data/resources/genres_mapping.csv'
 OTHER = 'other'
 TOKENIZER_SEPARATOR = ' '
-SIMILARITY_RATIO_THRESHOLD = 0.7
 
 
 class MainGenreMapper:
