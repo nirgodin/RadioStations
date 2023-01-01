@@ -1,17 +1,14 @@
-import re
 from typing import Union
 
-import numpy as np
 import pandas as pd
 from pandas import DataFrame
 
 from consts.audio_features_consts import AUDIO_FEATURES, KEY
 from consts.data_consts import POPULARITY, DURATION_MS, EXPLICIT, IS_ISRAELI, ID, \
-    TRACK_NUMBER, RELEASE_DATE, MAIN_GENRE
+    TRACK_NUMBER, RELEASE_DATE, MAIN_GENRE, RELEASE_YEAR
 from consts.path_consts import MERGED_DATA_PATH, CORRELATIONS_DATA_PATH
 from utils import extract_year
 
-RELEASE_YEAR = 'release_year'
 DUMMY_COLUMNS = [
     KEY,
     MAIN_GENRE
