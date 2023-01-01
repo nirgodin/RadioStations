@@ -4,8 +4,11 @@ from functools import lru_cache
 from typing import Dict, Any
 import json
 
+import numpy as np
 import spotipy
 from spotipy import SpotifyClientCredentials
+
+YEAR_REGEX = re.compile(r'.*([1-3][0-9]{3})')
 
 
 def to_json(d: Dict[str, Any], path: str) -> None:
@@ -21,3 +24,12 @@ def get_current_datetime() -> str:
 @lru_cache(maxsize=1)
 def get_spotipy():
     return spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials())
+
+
+def extract_year(date: str) -> int:
+    match = YEAR_REGEX.match(date)
+
+    if match is not None:
+        return int(match.group(1))
+
+    return np.nan

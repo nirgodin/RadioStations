@@ -9,6 +9,7 @@ from consts.audio_features_consts import AUDIO_FEATURES, KEY
 from consts.data_consts import POPULARITY, DURATION_MS, EXPLICIT, IS_ISRAELI, ID, \
     TRACK_NUMBER, RELEASE_DATE, MAIN_GENRE
 from consts.path_consts import MERGED_DATA_PATH, CORRELATIONS_DATA_PATH
+from utils import extract_year
 
 RELEASE_YEAR = 'release_year'
 DUMMY_COLUMNS = [
@@ -33,9 +34,6 @@ Y = 'y'
 
 
 class AudioFeaturesCorrelationsAnalyzer:
-    def __init__(self):
-        self._year_regex = re.compile(r'.*([1-3][0-9]{3})')
-
     def analyze(self):
         data = self._get_clean_data()
         audio_features_and_popularity = data[CORRELATION_COLUMNS_SUBSET]
@@ -53,7 +51,7 @@ class AudioFeaturesCorrelationsAnalyzer:
         return merged_data
 
     def _build_features(self, data: DataFrame) -> DataFrame:
-        data[RELEASE_YEAR] = [self._extract_year(date) for date in data[RELEASE_DATE]]
+        data[RELEASE_YEAR] = [extract_year(date) for date in data[RELEASE_DATE]]
         data_with_play_count = data.merge(
             right=self._get_tracks_play_count(data),
             how='left',
@@ -61,14 +59,6 @@ class AudioFeaturesCorrelationsAnalyzer:
         )
 
         return pd.get_dummies(data_with_play_count, columns=DUMMY_COLUMNS)
-
-    def _extract_year(self, date: str) -> int:
-        match = self._year_regex.match(date)
-
-        if match is not None:
-            return int(match.group(1))
-
-        return np.nan
 
     @staticmethod
     def _get_tracks_play_count(data: DataFrame) -> DataFrame:
