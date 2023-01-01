@@ -11,6 +11,7 @@ from data_processing.pre_processors.gender_per_processor import GenderPreProcess
 from data_processing.pre_processors.genre.genre_pre_processor import GenrePreProcessor
 from data_processing.pre_processors.israeli_pre_processor import IsraeliPreProcessor
 from data_processing.pre_processors.pre_processor_interface import IPreProcessor
+from data_processing.pre_processors.year_pre_processor import YearPreProcessor
 
 
 class DataPreProcessor:
@@ -36,6 +37,7 @@ class DataPreProcessor:
     @property
     def _sorted_pre_processors(self) -> List[IPreProcessor]:
         return [
+            YearPreProcessor(),
             IsraeliPreProcessor(),
             GenrePreProcessor(),
             GenderPreProcessor(),
