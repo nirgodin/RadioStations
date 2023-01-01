@@ -13,7 +13,7 @@ from api.access_token_generator import AccessTokenGenerator
 from consts.api_consts import AUDIO_FEATURES_URL_FORMAT
 from consts.data_consts import NAME, ARTIST_NAME, TRACKS, ITEMS, URI
 from consts.path_consts import MERGED_DATA_PATH
-from data_collection.utils import get_current_datetime, get_spotipy
+from utils import get_current_datetime, get_spotipy
 
 AIO_POOL_SIZE = 5
 

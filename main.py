@@ -2,7 +2,7 @@ import pandas as pd
 
 from consts.playlists_consts import STATIONS
 from data_collection.station import Station
-from data_collection.utils import get_current_datetime
+from utils import get_current_datetime
 
 
 def run():
