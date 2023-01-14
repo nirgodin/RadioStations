@@ -10,12 +10,10 @@ from pandas import DataFrame
 from tqdm import tqdm
 
 from api.access_token_generator import AccessTokenGenerator
-from consts.api_consts import AUDIO_FEATURES_URL_FORMAT
+from consts.api_consts import AUDIO_FEATURES_URL_FORMAT, AIO_POOL_SIZE
 from consts.data_consts import NAME, ARTIST_NAME, TRACKS, ITEMS, URI
 from consts.path_consts import MERGED_DATA_PATH
 from utils import get_current_datetime, get_spotipy
-
-AIO_POOL_SIZE = 5
 
 
 class AudioFeaturesCollector:
