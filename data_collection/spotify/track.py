@@ -3,7 +3,7 @@ from dataclasses import dataclass, asdict
 import pandas as pd
 
 from consts.data_consts import ALBUM, MAIN_ALBUM, ARTISTS, RELEASE_DATE, NAME, ID, TOTAL_TRACKS, ALBUM_TRACKS_NUMBER
-from data_collection.artist import Artist
+from data_collection.spotify.artist import Artist
 
 
 @dataclass

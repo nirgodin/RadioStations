@@ -6,7 +6,7 @@ CHARTS_LIST = 'charts/list'
 CHARTS_TRACK = 'charts/track'
 
 BASE_RAPIDAPI_URL = "https://shazam.p.rapidapi.com"
-SHAZAM_CREDS_PATH = '../shazam_creds.json'
+SHAZAM_CREDS_PATH = '../../shazam_creds.json'
 
 
 class Shazammer:

@@ -8,7 +8,6 @@ from aiohttp import ClientSession
 from asyncio_pool import AioPool
 from tqdm import tqdm
 
-from api.musixmatch.track_serach_response_reader import TrackSearchResponseReader
 from consts.api_consts import AIO_POOL_SIZE
 from consts.musixmatch_consts import MUSIXMATCH_API_KEY, DAILY_REQUESTS_LIMIT, \
     MUSIXMATCH_HEADERS, MUSIXMATCH_LYRICS_URL_FORMAT, TRACK_ID, LYRICS, BODY, MESSAGE

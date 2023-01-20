@@ -10,7 +10,7 @@ from asyncio_pool import AioPool
 from pandas import DataFrame
 from tqdm import tqdm
 
-from api.musixmatch.track_serach_response_reader import TrackSearchResponseReader
+from data_collection.musixmatch.track_serach_response_reader import TrackSearchResponseReader
 from consts.api_consts import AIO_POOL_SIZE
 from consts.data_consts import ARTIST_NAME, NAME, ID
 from consts.musixmatch_consts import MUSIXMATCH_TRACK_SEARCH_URL_FORMAT, MUSIXMATCH_API_KEY, DAILY_REQUESTS_LIMIT, \

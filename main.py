@@ -1,7 +1,7 @@
 import pandas as pd
 
 from consts.playlists_consts import STATIONS
-from data_collection.station import Station
+from data_collection.spotify.station import Station
 from utils import get_current_datetime
 
 
