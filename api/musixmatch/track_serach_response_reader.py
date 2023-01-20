@@ -1,10 +1,7 @@
 from typing import Optional
 
 from consts.data_consts import TRACK
-
-MESSAGE = 'message'
-BODY = 'body'
-TRACK_LIST = 'track_list'
+from consts.musixmatch_consts import MESSAGE, BODY, TRACK_LIST
 
 
 class TrackSearchResponseReader:

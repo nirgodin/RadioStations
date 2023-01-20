@@ -2,10 +2,9 @@ import asyncio
 import json
 import os
 from functools import partial
-from typing import Tuple, List, Generator, Dict
+from typing import Tuple, List, Dict
 
 import pandas as pd
-import requests
 from aiohttp import ClientSession
 from asyncio_pool import AioPool
 from pandas import DataFrame
@@ -14,20 +13,15 @@ from tqdm import tqdm
 from api.musixmatch.track_serach_response_reader import TrackSearchResponseReader
 from consts.api_consts import AIO_POOL_SIZE
 from consts.data_consts import ARTIST_NAME, NAME, ID
+from consts.musixmatch_consts import MUSIXMATCH_TRACK_SEARCH_URL_FORMAT, MUSIXMATCH_API_KEY, DAILY_REQUESTS_LIMIT, \
+    MUSIXMATCH_HEADERS
 from consts.path_consts import MUSIXMATCH_TRACK_IDS_PATH, MERGED_DATA_PATH
 
-MUSIXMATCH_TRACK_SEARCH_URL_FORMAT = 'http://api.musixmatch.com/ws/1.1/track.search?q_artist={}&q_track={}&apikey={}'
-MUSIXMATCH_API_KEY = 'MUSIXMATCH_API_KEY'
-DAILY_REQUESTS_LIMIT = 2000
 MUSIXMATCH_RELEVANT_COLUMNS = [
     ARTIST_NAME,
     NAME,
     ID
 ]
-MUSIXMATCH_HEADERS = {
-    "Accept": "application/json",
-    "Content-Type": "application/json"
-}
 
 
 class MusixmatchSearchFetcher:
