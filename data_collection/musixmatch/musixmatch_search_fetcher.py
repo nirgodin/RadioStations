@@ -16,6 +16,7 @@ from consts.data_consts import ARTIST_NAME, NAME, ID
 from consts.musixmatch_consts import MUSIXMATCH_TRACK_SEARCH_URL_FORMAT, MUSIXMATCH_API_KEY, DAILY_REQUESTS_LIMIT, \
     MUSIXMATCH_HEADERS
 from consts.path_consts import MUSIXMATCH_TRACK_IDS_PATH, MERGED_DATA_PATH
+from utils import to_json
 
 MUSIXMATCH_RELEVANT_COLUMNS = [
     ARTIST_NAME,
@@ -39,8 +40,7 @@ class MusixmatchSearchFetcher:
         valid_responses = await self._fetch_tracks(daily_subset)
         valid_responses.update(self._existing_tracks)
 
-        with open(MUSIXMATCH_TRACK_IDS_PATH, 'w') as f:
-            json.dump(valid_responses, f, indent=4)
+        to_json(d=valid_responses, path=MUSIXMATCH_TRACK_IDS_PATH)
 
     async def _fetch_tracks(self, data: DataFrame) -> Dict[str, dict]:
         raw_responses = await self._fetch_raw_responses(data)

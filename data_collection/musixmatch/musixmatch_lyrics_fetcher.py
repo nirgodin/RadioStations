@@ -12,6 +12,7 @@ from consts.api_consts import AIO_POOL_SIZE
 from consts.musixmatch_consts import MUSIXMATCH_API_KEY, DAILY_REQUESTS_LIMIT, \
     MUSIXMATCH_HEADERS, MUSIXMATCH_LYRICS_URL_FORMAT, TRACK_ID, LYRICS, BODY, MESSAGE
 from consts.path_consts import MUSIXMATCH_TRACK_IDS_PATH, MUSIXMATCH_TRACKS_LYRICS_PATH
+from utils import to_json
 
 
 class MusixmatchLyricsFetcher:
@@ -27,8 +28,7 @@ class MusixmatchLyricsFetcher:
         valid_responses = await self._fetch_tracks_lyrics(daily_subset)
         valid_responses.update(self._tracks_lyrics)
 
-        with open(MUSIXMATCH_TRACKS_LYRICS_PATH, 'w') as f:
-            json.dump(valid_responses, f, indent=4)
+        to_json(d=valid_responses, path=MUSIXMATCH_TRACKS_LYRICS_PATH)
 
     async def _fetch_tracks_lyrics(self, spotify_track_ids: List[str]) -> Dict[str, dict]:
         musixmatch_track_ids = list(map(lambda track_id: self._track_ids[track_id][TRACK_ID], spotify_track_ids))
