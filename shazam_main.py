@@ -1,8 +1,5 @@
-import re
-from datetime import datetime
-
-from shazammer import Shazammer
-from utils import to_json
+from data_collection.shazam.shazammer import Shazammer
+from utils import to_json, get_current_datetime
 
 
 SHAZAM_CHARTS = {
@@ -17,6 +14,5 @@ if __name__ == '__main__':
     shazammer = Shazammer()
     shazam_tracks = shazammer.get_multiple_charts_tracks(charts_ids=list(SHAZAM_CHARTS.values()), number_of_tracks=80)
 
-    now = str(datetime.now()).replace('.', '-')
-    now = re.sub(r'[^\w\s]', '_', now)
+    now = get_current_datetime()
     to_json(shazam_tracks, path=rf'data/shazam/{now}.json')
