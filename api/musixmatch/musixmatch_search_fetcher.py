@@ -25,14 +25,17 @@ MUSIXMATCH_RELEVANT_COLUMNS = [
 
 
 class MusixmatchSearchFetcher:
-    def __init__(self, response_reader: TrackSearchResponseReader = TrackSearchResponseReader()):
+    def __init__(self,
+                 request_limit: int = DAILY_REQUESTS_LIMIT,
+                 response_reader: TrackSearchResponseReader = TrackSearchResponseReader()):
+        self._request_limit = request_limit
         self._api_key = os.environ[MUSIXMATCH_API_KEY]
         self._response_reader = response_reader
 
     async def fetch_tracks_ids(self, data: DataFrame) -> None:
         non_existing_tracks_data = data[~data[ID].isin(self._existing_tracks.keys())]
         relevant_data = non_existing_tracks_data[MUSIXMATCH_RELEVANT_COLUMNS]
-        daily_subset = relevant_data.head(DAILY_REQUESTS_LIMIT).reset_index(drop=True)
+        daily_subset = relevant_data.head(self._request_limit).reset_index(drop=True)
         valid_responses = await self._fetch_tracks(daily_subset)
         valid_responses.update(self._existing_tracks)
 
