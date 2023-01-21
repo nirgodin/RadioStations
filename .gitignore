@@ -131,6 +131,7 @@ dmypy.json
 # Data
 /scraping.bat
 /shazam_scraping.bat
+/musixmatch_scraping.bat
 /shazam_creds.json
 /.cache.txt
 /google_creds.json
