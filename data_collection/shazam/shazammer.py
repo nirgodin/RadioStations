@@ -1,12 +1,12 @@
-import json
+import os
 from typing import Any, Dict, Optional, Generator, List
+
 import requests
 
 CHARTS_LIST = 'charts/list'
 CHARTS_TRACK = 'charts/track'
 
 BASE_RAPIDAPI_URL = "https://shazam.p.rapidapi.com"
-SHAZAM_CREDS_PATH = 'shazam_creds.json'
 
 
 class Shazammer:
@@ -62,5 +62,7 @@ class Shazammer:
 
     @property
     def _headers(self):
-        with open(SHAZAM_CREDS_PATH) as f:
-            return json.load(f)
+        return {
+            "x-rapidapi-host": BASE_RAPIDAPI_URL,
+            "x-rapidapi-key": os.environ["RAPIDAPI_KEY"]
+        }
