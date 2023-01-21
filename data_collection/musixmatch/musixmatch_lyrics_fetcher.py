@@ -1,5 +1,4 @@
 import asyncio
-import json
 import os
 from functools import partial
 from typing import List, Dict, Optional, Tuple, Iterator
@@ -12,7 +11,7 @@ from consts.api_consts import AIO_POOL_SIZE
 from consts.musixmatch_consts import MUSIXMATCH_API_KEY, DAILY_REQUESTS_LIMIT, \
     MUSIXMATCH_HEADERS, MUSIXMATCH_LYRICS_URL_FORMAT, TRACK_ID, LYRICS, BODY, MESSAGE
 from consts.path_consts import MUSIXMATCH_TRACK_IDS_PATH, MUSIXMATCH_TRACKS_LYRICS_PATH
-from utils import to_json
+from utils import to_json, read_json
 
 
 class MusixmatchLyricsFetcher:
@@ -98,16 +97,14 @@ class MusixmatchLyricsFetcher:
         if not os.path.exists(MUSIXMATCH_TRACK_IDS_PATH):
             return {}
 
-        with open(MUSIXMATCH_TRACK_IDS_PATH, 'r') as f:
-            return json.load(f)
+        return read_json(path=MUSIXMATCH_TRACK_IDS_PATH)
 
     @property
     def _tracks_lyrics(self) -> Dict[str, dict]:
         if not os.path.exists(MUSIXMATCH_TRACKS_LYRICS_PATH):
             return {}
 
-        with open(MUSIXMATCH_TRACKS_LYRICS_PATH, 'r') as f:
-            return json.load(f)
+        return read_json(path=MUSIXMATCH_TRACKS_LYRICS_PATH)
 
 
 if __name__ == '__main__':

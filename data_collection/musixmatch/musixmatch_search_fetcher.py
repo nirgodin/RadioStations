@@ -1,5 +1,4 @@
 import asyncio
-import json
 import os
 from functools import partial
 from typing import Tuple, List, Dict
@@ -10,13 +9,13 @@ from asyncio_pool import AioPool
 from pandas import DataFrame
 from tqdm import tqdm
 
-from data_collection.musixmatch.track_serach_response_reader import TrackSearchResponseReader
 from consts.api_consts import AIO_POOL_SIZE
 from consts.data_consts import ARTIST_NAME, NAME, ID
 from consts.musixmatch_consts import MUSIXMATCH_TRACK_SEARCH_URL_FORMAT, MUSIXMATCH_API_KEY, DAILY_REQUESTS_LIMIT, \
     MUSIXMATCH_HEADERS
 from consts.path_consts import MUSIXMATCH_TRACK_IDS_PATH, MERGED_DATA_PATH
-from utils import to_json
+from data_collection.musixmatch.track_serach_response_reader import TrackSearchResponseReader
+from utils import to_json, read_json
 
 MUSIXMATCH_RELEVANT_COLUMNS = [
     ARTIST_NAME,
@@ -34,24 +33,32 @@ class MusixmatchSearchFetcher:
         self._response_reader = response_reader
 
     async def fetch_tracks_ids(self, data: DataFrame) -> None:
-        non_existing_tracks_data = data[~data[ID].isin(self._existing_tracks.keys())]
-        relevant_data = non_existing_tracks_data[MUSIXMATCH_RELEVANT_COLUMNS]
-        daily_subset = relevant_data.head(self._request_limit).reset_index(drop=True)
+        daily_subset = self._extract_daily_tracks_subset(data)
         valid_responses = await self._fetch_tracks(daily_subset)
         valid_responses.update(self._existing_tracks)
 
         to_json(d=valid_responses, path=MUSIXMATCH_TRACK_IDS_PATH)
+
+    def _extract_daily_tracks_subset(self, data: DataFrame) -> DataFrame:
+        non_existing_tracks_data = data[~data[ID].isin(self._existing_tracks.keys())]
+        relevant_data = non_existing_tracks_data[MUSIXMATCH_RELEVANT_COLUMNS]
+        relevant_data.dropna(subset=[ID], inplace=True)
+        daily_subset = relevant_data.head(self._request_limit).reset_index(drop=True)
+
+        return daily_subset
 
     async def _fetch_tracks(self, data: DataFrame) -> Dict[str, dict]:
         raw_responses = await self._fetch_raw_responses(data)
         valid_responses = {}
 
         for response, track_id in zip(raw_responses, data[ID]):
-            if isinstance(response, dict):
-                formatted_response = self._response_reader.read(response)
+            if not isinstance(response, dict):
+                continue
 
-                if formatted_response is not None:
-                    valid_responses[track_id] = formatted_response
+            formatted_response = self._response_reader.read(response)
+
+            if formatted_response is not None:
+                valid_responses[track_id] = formatted_response
 
         return valid_responses
 
@@ -86,8 +93,7 @@ class MusixmatchSearchFetcher:
         if not os.path.exists(MUSIXMATCH_TRACK_IDS_PATH):
             return {}
 
-        with open(MUSIXMATCH_TRACK_IDS_PATH, 'r') as f:
-            return json.load(f)
+        return read_json(path=MUSIXMATCH_TRACK_IDS_PATH)
 
 
 if __name__ == '__main__':

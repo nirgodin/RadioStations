@@ -9,11 +9,17 @@ import spotipy
 from spotipy import SpotifyClientCredentials
 
 YEAR_REGEX = re.compile(r'.*([1-3][0-9]{3})')
+JSON_ENCODING = 'utf-8'
 
 
 def to_json(d: Dict[str, Any], path: str) -> None:
-    with open(path, 'w', encoding='utf-8') as f:
+    with open(path, 'w', encoding=JSON_ENCODING) as f:
         json.dump(d, f, ensure_ascii=False, indent=4)
+
+
+def read_json(path: str) -> dict:
+    with open(path, 'r', encoding=JSON_ENCODING) as f:
+        return json.load(f)
 
 
 def get_current_datetime() -> str:
