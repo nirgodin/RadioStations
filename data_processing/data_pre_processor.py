@@ -3,6 +3,7 @@ from typing import List, Optional
 import pandas as pd
 from pandas import DataFrame
 
+from consts.miscellaneous_consts import UTF_8_ENCODING
 from consts.path_consts import MERGED_DATA_PATH, SPOTIFY_DATA_BASE_DIR
 from data_processing.data_merger import DataMerger
 from data_processing.pre_processors.audio_features_pre_processor import AudioFeaturesPreProcessor
@@ -21,7 +22,7 @@ class DataPreProcessor:
         pre_processed_data = self._pre_process_data(data)
 
         if output_path is not None:
-            pre_processed_data.to_csv(output_path, encoding='utf-8-sig', index=False)
+            pre_processed_data.to_csv(output_path, encoding=UTF_8_ENCODING, index=False)
 
         return pre_processed_data
 

@@ -2,6 +2,7 @@ import pandas as pd
 from pandas import DataFrame
 
 from consts.data_consts import NAME, ARTIST_NAME
+from consts.miscellaneous_consts import UTF_8_ENCODING
 from consts.path_consts import AUDIO_FEATURES_BASE_DIR, MERGED_DATA_PATH
 from data_processing.data_merger import DataMerger
 
@@ -15,7 +16,7 @@ class AudioFeaturesMissingTracksAnalyzer:
         full_tracks_data = pd.read_csv(MERGED_DATA_PATH)
         unique_tracks_data = full_tracks_data.drop_duplicates(subset=[NAME, ARTIST_NAME])
         missing_audio_features = self._extract_missing_audio_features_tracks(unique_tracks_data, audio_features_data)
-        missing_audio_features.to_csv(output_path, index=False, encoding='utf-8-sig')
+        missing_audio_features.to_csv(output_path, index=False, encoding=UTF_8_ENCODING)
 
     @staticmethod
     def _extract_missing_audio_features_tracks(tracks_data: DataFrame, audio_features_data: DataFrame) -> DataFrame:

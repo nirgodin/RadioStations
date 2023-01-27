@@ -12,6 +12,7 @@ from tqdm import tqdm
 from consts.api_consts import AIO_POOL_SIZE
 from consts.audio_features_consts import KEY
 from consts.data_consts import TOTAL
+from consts.miscellaneous_consts import UTF_8_ENCODING
 from consts.path_consts import SHAZAM_TRACKS_IDS_PATH, SHAZAM_LISTENING_COUNT_PATH
 
 
@@ -71,9 +72,9 @@ class ShazamListeningCountFetcher:
     @staticmethod
     def _to_csv(listening_count_data: DataFrame) -> None:
         if os.path.exists(SHAZAM_LISTENING_COUNT_PATH):
-            listening_count_data.to_csv(SHAZAM_LISTENING_COUNT_PATH, header=False, index=False, mode='a', encoding='utf-8-sig')
+            listening_count_data.to_csv(SHAZAM_LISTENING_COUNT_PATH, header=False, index=False, mode='a', encoding=UTF_8_ENCODING)
         else:
-            listening_count_data.to_csv(SHAZAM_LISTENING_COUNT_PATH, index=False, encoding='utf-8-sig')
+            listening_count_data.to_csv(SHAZAM_LISTENING_COUNT_PATH, index=False, encoding=UTF_8_ENCODING)
 
 
 if __name__ == '__main__':

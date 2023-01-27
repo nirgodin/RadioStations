@@ -11,6 +11,7 @@ from tqdm import tqdm
 
 from consts.api_consts import AIO_POOL_SIZE
 from consts.data_consts import ID, SONG, SPOTIFY_ID
+from consts.miscellaneous_consts import UTF_8_ENCODING
 from consts.path_consts import MERGED_DATA_PATH, SHAZAM_TRACKS_IDS_PATH
 from consts.shazam_consts import SHAZAM_TRACK_KEY, HITS, TRACKS, TITLE, HEADING, SUBTITLE, APPLE_MUSIC_ADAM_ID, ARTISTS
 
@@ -105,9 +106,9 @@ class ShazamSearchFetcher:
     @staticmethod
     def _to_csv(tracks_ids_data: DataFrame) -> None:
         if os.path.exists(SHAZAM_TRACKS_IDS_PATH):
-            tracks_ids_data.to_csv(SHAZAM_TRACKS_IDS_PATH, header=False, index=False, mode='a', encoding='utf-8-sig')
+            tracks_ids_data.to_csv(SHAZAM_TRACKS_IDS_PATH, header=False, index=False, mode='a', encoding=UTF_8_ENCODING)
         else:
-            tracks_ids_data.to_csv(SHAZAM_TRACKS_IDS_PATH, index=False, encoding='utf-8-sig')
+            tracks_ids_data.to_csv(SHAZAM_TRACKS_IDS_PATH, index=False, encoding=UTF_8_ENCODING)
 
 
 if __name__ == '__main__':
