@@ -1,18 +1,8 @@
-from data_collection.shazam.shazammer import Shazammer
-from utils import to_json, get_current_datetime
+import asyncio
 
-
-SHAZAM_CHARTS = {
-    'beersheba': 'ip-city-chart-295530',
-    'haifa': 'ip-city-chart-294801',
-    'jerusalem': 'ip-city-chart-281184',
-    'tel_aviv': 'ip-city-chart-293397'
-}
-
+from data_collection.shazam.shazam_city_fetcher import ShazamCitiesFetcher
 
 if __name__ == '__main__':
-    shazammer = Shazammer()
-    shazam_tracks = shazammer.get_multiple_charts_tracks(charts_ids=list(SHAZAM_CHARTS.values()), number_of_tracks=80)
-
-    now = get_current_datetime()
-    to_json(shazam_tracks, path=rf'data/shazam/{now}.json')
+    cities_fetcher = ShazamCitiesFetcher()
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(cities_fetcher.fetch_cities_top_tracks())

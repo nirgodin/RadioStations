@@ -20,7 +20,7 @@ class ShazamCitiesFetcher:
         self._shazam = shazam
         self._track_response_extractor = track_response_extractor
 
-    async def fetch_cities_top_tracks(self):
+    async def fetch_cities_top_tracks(self) -> None:
         israel_cities = self._get_israel_cities_ids()
         cities_top_tracks = await self._fetch_cities_tracks(israel_cities)
         data = self._extract_relevant_tracks_info(cities_top_tracks)
@@ -77,9 +77,3 @@ class ShazamCitiesFetcher:
     def _build_output_path() -> str:
         now = get_current_datetime()
         return SHAZAM_CITIES_PATH_FORMAT.format(now)
-
-
-if __name__ == '__main__':
-    cities_fetcher = ShazamCitiesFetcher()
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(cities_fetcher.fetch_cities_top_tracks())
