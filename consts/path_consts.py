@@ -13,3 +13,4 @@ SHAZAM_CHARTS_METADATA_PATH = r'data_collection/shazam/resources/charts_metadata
 SHAZAM_CITIES_PATH_FORMAT = r'data/shazam/cities/{}.csv'
 SHAZAM_ISRAEL_PATH_FORMAT = r'data/shazam/israel/{}.csv'
 SHAZAM_WORLD_PATH_FORMAT = r'data/shazam/world/{}.csv'
+SHAZAM_TRACKS_IDS_PATH = r'data/shazam/tracks_ids.csv'

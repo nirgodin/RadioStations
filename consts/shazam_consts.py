@@ -15,3 +15,5 @@ COUNTRIES = "countries"
 CITIES = "cities"
 ISRAEL = 'israel'
 WORLD = 'world'
+HITS = 'hits'
+HEADING = 'heading'
