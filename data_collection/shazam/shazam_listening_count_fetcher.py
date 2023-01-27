@@ -11,7 +11,7 @@ from tqdm import tqdm
 
 from consts.api_consts import AIO_POOL_SIZE
 from consts.audio_features_consts import KEY
-from consts.data_consts import ID, SPOTIFY_ID, SONG, TOTAL
+from consts.data_consts import TOTAL
 from consts.path_consts import SHAZAM_TRACKS_IDS_PATH, SHAZAM_LISTENING_COUNT_PATH
 
 
