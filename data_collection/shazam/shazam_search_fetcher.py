@@ -10,7 +10,7 @@ from shazamio import Shazam
 from tqdm import tqdm
 
 from consts.api_consts import AIO_POOL_SIZE
-from consts.data_consts import ID, SONG
+from consts.data_consts import ID, SONG, SPOTIFY_ID
 from consts.path_consts import MERGED_DATA_PATH, SHAZAM_TRACKS_IDS_PATH
 from consts.shazam_consts import SHAZAM_TRACK_KEY, HITS, TRACKS, TITLE, HEADING, SUBTITLE, APPLE_MUSIC_ADAM_ID, ARTISTS
 
@@ -24,8 +24,9 @@ class ShazamSearchFetcher:
         run_subset = relevant_data.head(max_tracks)
         tracks_ids_records = await self._search(run_subset)
         tracks_ids_data = pd.DataFrame.from_records(tracks_ids_records)
+        merged_spotify_ids_data = self._merge_tracks_and_spotify_ids_data(tracks_ids_data, run_subset)
 
-        self._to_csv(tracks_ids_data)
+        self._to_csv(merged_spotify_ids_data)
 
     @staticmethod
     def _extract_relevant_data(data: DataFrame):
@@ -89,6 +90,17 @@ class ShazamSearchFetcher:
         first_artist = artists[0]
 
         return first_artist.get(APPLE_MUSIC_ADAM_ID, '')
+
+    @staticmethod
+    def _merge_tracks_and_spotify_ids_data(tracks_ids_data: DataFrame, spotify_data: DataFrame):
+        spotify_relevant_columns = spotify_data[[ID, SONG]]
+        spotify_relevant_columns.rename(columns={ID: SPOTIFY_ID}, inplace=True)
+
+        return tracks_ids_data.merge(
+            right=spotify_relevant_columns,
+            how='left',
+            on=[SONG]
+        )
 
     @staticmethod
     def _to_csv(tracks_ids_data: DataFrame) -> None:
