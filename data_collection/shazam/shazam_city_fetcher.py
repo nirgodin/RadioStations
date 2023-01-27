@@ -1,31 +1,26 @@
-import asyncio
 from typing import Dict, List
 
 import pandas as pd
-from pandas import DataFrame
 from shazamio import Shazam
 from tqdm import tqdm
 
-from consts.data_consts import ID, NAME, TRACKS
+from consts.data_consts import ID, NAME
 from consts.path_consts import SHAZAM_CHARTS_METADATA_PATH, SHAZAM_CITIES_PATH_FORMAT
-from consts.shazam_consts import CITY, ISRAEL_COUNTRY_CODE, COUNTRIES, CITIES
-from data_collection.shazam.shazam_track_response_extractor import ShazamTrackResponseExtractor
-from utils import read_json, get_current_datetime
+from consts.shazam_consts import ISRAEL_COUNTRY_CODE, COUNTRIES, CITIES
+from data_collection.shazam.shazam_utils import extract_tracks_data, to_csv
+from utils import read_json
 
 
 class ShazamCitiesFetcher:
-    def __init__(self,
-                 shazam: Shazam = Shazam(),
-                 track_response_extractor: ShazamTrackResponseExtractor = ShazamTrackResponseExtractor()):
+    def __init__(self, shazam: Shazam = Shazam()):
         self._shazam = shazam
-        self._track_response_extractor = track_response_extractor
 
     async def fetch_cities_top_tracks(self) -> None:
         israel_cities = self._get_israel_cities_ids()
         cities_top_tracks = await self._fetch_cities_tracks(israel_cities)
         data = self._extract_relevant_tracks_info(cities_top_tracks)
 
-        data.to_csv(self._build_output_path(), index=False, encoding='utf-8-sig')
+        to_csv(data=data, output_path_format=SHAZAM_CITIES_PATH_FORMAT)
 
     def _get_israel_cities_ids(self) -> List[str]:
         charts_metadata = read_json(SHAZAM_CHARTS_METADATA_PATH)
@@ -57,23 +52,12 @@ class ShazamCitiesFetcher:
 
         return cities_top_tracks
 
-    def _extract_relevant_tracks_info(self, cities_top_tracks: Dict[str, dict]):
+    @staticmethod
+    def _extract_relevant_tracks_info(cities_top_tracks: Dict[str, dict]):
         cities_data = []
 
         for city_name, tracks_data in cities_top_tracks.items():
-            city_data = self._extract_single_city_data(city_name, tracks_data)
+            city_data = extract_tracks_data(tracks_data=tracks_data, location=city_name)
             cities_data.append(city_data)
 
         return pd.concat(cities_data).reset_index(drop=True)
-
-    def _extract_single_city_data(self, city_name: str, tracks_data: dict) -> DataFrame:
-        city_tracks: List[dict] = tracks_data[TRACKS]
-        city_data = self._track_response_extractor.extract_multiple_tracks_info(city_tracks)
-        city_data[CITY] = city_name
-
-        return city_data
-
-    @staticmethod
-    def _build_output_path() -> str:
-        now = get_current_datetime()
-        return SHAZAM_CITIES_PATH_FORMAT.format(now)
