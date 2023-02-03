@@ -6,7 +6,7 @@ MUSIXMATCH_HEADERS = {
     "Accept": "application/json",
     "Content-Type": "application/json"
 }
-TRACK_ID = 'track_id'
+MUSIXMATCH_TRACK_ID = 'track_id'
 MESSAGE = 'message'
 BODY = 'body'
 TRACK_LIST = 'track_list'

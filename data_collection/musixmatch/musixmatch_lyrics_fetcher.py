@@ -9,7 +9,7 @@ from tqdm import tqdm
 
 from consts.api_consts import AIO_POOL_SIZE
 from consts.musixmatch_consts import MUSIXMATCH_API_KEY, DAILY_REQUESTS_LIMIT, \
-    MUSIXMATCH_HEADERS, MUSIXMATCH_LYRICS_URL_FORMAT, TRACK_ID, LYRICS, BODY, MESSAGE
+    MUSIXMATCH_HEADERS, MUSIXMATCH_LYRICS_URL_FORMAT, MUSIXMATCH_TRACK_ID, LYRICS, BODY, MESSAGE
 from consts.path_consts import MUSIXMATCH_TRACK_IDS_PATH, MUSIXMATCH_TRACKS_LYRICS_PATH
 from utils import to_json, read_json
 
@@ -30,7 +30,7 @@ class MusixmatchLyricsFetcher:
         to_json(d=valid_responses, path=MUSIXMATCH_TRACKS_LYRICS_PATH)
 
     async def _fetch_tracks_lyrics(self, spotify_track_ids: List[str]) -> Dict[str, dict]:
-        musixmatch_track_ids = list(map(lambda track_id: self._track_ids[track_id][TRACK_ID], spotify_track_ids))
+        musixmatch_track_ids = list(map(lambda track_id: self._track_ids[track_id][MUSIXMATCH_TRACK_ID], spotify_track_ids))
         raw_responses = await self._fetch_raw_responses(spotify_track_ids)
         zipped_responses_and_ids = zip(raw_responses, spotify_track_ids, musixmatch_track_ids)
 
@@ -54,7 +54,7 @@ class MusixmatchLyricsFetcher:
         response_lyrics = self._extract_lyrics_from_response(response)
 
         if response_lyrics is not None:
-            response_lyrics[TRACK_ID] = musixmatch_track_id
+            response_lyrics[MUSIXMATCH_TRACK_ID] = musixmatch_track_id
 
             return response_lyrics
 
@@ -72,7 +72,7 @@ class MusixmatchLyricsFetcher:
                                        session: ClientSession,
                                        spotify_track_id: str) -> dict:
         progress_bar.update(1)
-        musixmatch_track_id = self._track_ids[spotify_track_id][TRACK_ID]
+        musixmatch_track_id = self._track_ids[spotify_track_id][MUSIXMATCH_TRACK_ID]
         url = self._build_request_url(musixmatch_track_id)
 
         async with session.get(url=url) as response:
