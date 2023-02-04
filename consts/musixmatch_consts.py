@@ -8,6 +8,9 @@ MUSIXMATCH_HEADERS = {
 }
 MUSIXMATCH_TRACK_ID = 'track_id'
 MESSAGE = 'message'
+HEADER = 'header'
+STATUS_CODE = 'status_code'
+OK_STATUS_CODE = 200
 BODY = 'body'
 TRACK_LIST = 'track_list'
 LYRICS = 'lyrics'

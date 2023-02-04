@@ -1,3 +1,4 @@
+import os
 import re
 from datetime import datetime
 from functools import lru_cache
@@ -6,7 +7,10 @@ import json
 
 import numpy as np
 import spotipy
+from pandas import DataFrame
 from spotipy import SpotifyClientCredentials
+
+from consts.miscellaneous_consts import UTF_8_ENCODING
 
 YEAR_REGEX = re.compile(r'.*([1-3][0-9]{3})')
 JSON_ENCODING = 'utf-8'
@@ -39,3 +43,10 @@ def extract_year(date: str) -> int:
         return int(match.group(1))
 
     return np.nan
+
+
+def append_to_csv(data: DataFrame, output_path: str) -> None:
+    if os.path.exists(output_path):
+        data.to_csv(output_path, header=False, index=False, mode='a', encoding=UTF_8_ENCODING)
+    else:
+        data.to_csv(output_path, index=False, encoding=UTF_8_ENCODING)

@@ -5,15 +5,14 @@ from typing import List, Optional
 
 import pandas as pd
 from asyncio_pool import AioPool
-from pandas import DataFrame
 from shazamio import Shazam
 from tqdm import tqdm
 
 from consts.api_consts import AIO_POOL_SIZE
 from consts.audio_features_consts import KEY
 from consts.data_consts import TOTAL
-from consts.miscellaneous_consts import UTF_8_ENCODING
 from consts.path_consts import SHAZAM_TRACKS_IDS_PATH, SHAZAM_LISTENING_COUNT_PATH
+from utils import append_to_csv
 
 
 class ShazamListeningCountFetcher:
@@ -25,7 +24,7 @@ class ShazamListeningCountFetcher:
         listening_count_records = await self._fetch_listening_count_records(tracks_ids)
         listening_count_data = pd.DataFrame.from_records(listening_count_records)
 
-        self._to_csv(listening_count_data)
+        append_to_csv(data=listening_count_data, output_path=SHAZAM_LISTENING_COUNT_PATH)
 
     def _get_tracks_ids(self, max_tracks: int) -> List[int]:
         tracks_ids_data = pd.read_csv(SHAZAM_TRACKS_IDS_PATH)
@@ -68,13 +67,6 @@ class ShazamListeningCountFetcher:
             KEY: track_id,
             TOTAL: response[TOTAL]
         }
-
-    @staticmethod
-    def _to_csv(listening_count_data: DataFrame) -> None:
-        if os.path.exists(SHAZAM_LISTENING_COUNT_PATH):
-            listening_count_data.to_csv(SHAZAM_LISTENING_COUNT_PATH, header=False, index=False, mode='a', encoding=UTF_8_ENCODING)
-        else:
-            listening_count_data.to_csv(SHAZAM_LISTENING_COUNT_PATH, index=False, encoding=UTF_8_ENCODING)
 
 
 if __name__ == '__main__':

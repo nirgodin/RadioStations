@@ -11,9 +11,9 @@ from tqdm import tqdm
 
 from consts.api_consts import AIO_POOL_SIZE
 from consts.data_consts import ID, SONG, SPOTIFY_ID
-from consts.miscellaneous_consts import UTF_8_ENCODING
 from consts.path_consts import MERGED_DATA_PATH, SHAZAM_TRACKS_IDS_PATH
 from consts.shazam_consts import SHAZAM_TRACK_KEY, HITS, TRACKS, TITLE, HEADING, SUBTITLE, APPLE_MUSIC_ADAM_ID, ARTISTS
+from utils import append_to_csv
 
 
 class ShazamSearchFetcher:
@@ -27,7 +27,7 @@ class ShazamSearchFetcher:
         tracks_ids_data = pd.DataFrame.from_records(tracks_ids_records)
         merged_spotify_ids_data = self._merge_tracks_and_spotify_ids_data(tracks_ids_data, run_subset)
 
-        self._to_csv(merged_spotify_ids_data)
+        append_to_csv(data=merged_spotify_ids_data, output_path=SHAZAM_TRACKS_IDS_PATH)
 
     @staticmethod
     def _extract_relevant_data(data: DataFrame):
@@ -102,13 +102,6 @@ class ShazamSearchFetcher:
             how='left',
             on=[SONG]
         )
-
-    @staticmethod
-    def _to_csv(tracks_ids_data: DataFrame) -> None:
-        if os.path.exists(SHAZAM_TRACKS_IDS_PATH):
-            tracks_ids_data.to_csv(SHAZAM_TRACKS_IDS_PATH, header=False, index=False, mode='a', encoding=UTF_8_ENCODING)
-        else:
-            tracks_ids_data.to_csv(SHAZAM_TRACKS_IDS_PATH, index=False, encoding=UTF_8_ENCODING)
 
 
 if __name__ == '__main__':

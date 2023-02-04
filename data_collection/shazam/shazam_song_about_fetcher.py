@@ -16,7 +16,7 @@ from consts.path_consts import SHAZAM_TRACKS_ABOUT_PATH, SHAZAM_TRACKS_IDS_PATH,
 from consts.shazam_consts import SHAZAM_TRACK_KEY, TITLE, SUBTITLE, GENRES, PRIMARY, PRIMARY_GENRE, ALBUM_ADAM_ID, \
     TRACK_ADAM_ID, SHAZAM_RELEASE_DATE, SECTIONS, METADATA, TEXT, ALBUM, LABEL, SHAZAM_LYRICS, BEACON_DATA, LYRICS_ID, \
     LYRICS_PROVIDER_NAME, LYRICS_PROVIDER_TRACK_ID, COMMON_TRACK_ID, LYRICS_TEXT, LYRICS_FOOTER
-from utils import read_json, to_json
+from utils import read_json, to_json, append_to_csv
 
 
 class ShazamTrackAboutFetcher:
@@ -28,7 +28,7 @@ class ShazamTrackAboutFetcher:
         data = pd.DataFrame.from_records(records)
 
         non_lyrics_data = data.drop(LYRICS_TEXT, axis=1)
-        self._to_csv(non_lyrics_data)
+        append_to_csv(data=non_lyrics_data, output_path=SHAZAM_TRACKS_ABOUT_PATH)
 
         lyrics_data = {str(track[SHAZAM_TRACK_KEY]): track[LYRICS_TEXT] for track in records}
         self._to_json(lyrics_data)
@@ -118,13 +118,6 @@ class ShazamTrackAboutFetcher:
         else:
             tracks_ids_data = pd.read_csv(SHAZAM_TRACKS_ABOUT_PATH)
             return tracks_ids_data[SHAZAM_TRACK_KEY].tolist()
-
-    @staticmethod
-    def _to_csv(data: DataFrame) -> None:
-        if os.path.exists(SHAZAM_TRACKS_ABOUT_PATH):
-            data.to_csv(SHAZAM_TRACKS_ABOUT_PATH, header=False, index=False, mode='a', encoding=UTF_8_ENCODING)
-        else:
-            data.to_csv(SHAZAM_TRACKS_ABOUT_PATH, index=False, encoding=UTF_8_ENCODING)
 
     @staticmethod
     def _to_json(tracks_lyrics: Dict[str, List[str]]) -> None:

@@ -6,12 +6,11 @@ from typing import List, Dict, Generator
 import openai
 import pandas as pd
 from openai.error import ServiceUnavailableError
-from pandas import DataFrame
 from tqdm import tqdm
 
 from consts.data_consts import ARTIST_NAME
-from consts.miscellaneous_consts import UTF_8_ENCODING
 from consts.path_consts import MERGED_DATA_PATH, OPENAI_GENDERS_PATH
+from utils import append_to_csv
 
 GENDER_PROMPT_FORMAT = "Given the name of a music artist, determine his or her gender of the following three options: "\
                        "'Male', 'Female' or 'Band'. In case you are not able to confidently determine the answer, " \
@@ -28,7 +27,7 @@ class OpenAIGenderCompletionFetcher:
                  chunk_size: int = 50,
                  sleep_between_completions: float = 4,
                  n_retries: int = 3):
-        openai.api_key = os.environ["OPENAI_API_KEY"]
+        openai.api_key = os.environ["OPENAI_NEW_API_KEY"]
         self._chunk_size = chunk_size
         self._sleep_between_completions = sleep_between_completions
         self._n_retries = n_retries
@@ -37,7 +36,7 @@ class OpenAIGenderCompletionFetcher:
         for artists_chunk in self._generate_artists_chunks():
             artists_genders = self._complete_artists_genders(artists_chunk)
             genders_data = pd.DataFrame.from_records(artists_genders)
-            self._to_csv(genders_data)
+            append_to_csv(data=genders_data, output_path=OPENAI_GENDERS_PATH)
 
     def _generate_artists_chunks(self) -> Generator[List[str], None, None]:
         data = pd.read_csv(MERGED_DATA_PATH)
@@ -109,13 +108,6 @@ class OpenAIGenderCompletionFetcher:
 
         first_choice = response.choices[0]
         return first_choice.text
-
-    @staticmethod
-    def _to_csv(data: DataFrame) -> None:
-        if os.path.exists(OPENAI_GENDERS_PATH):
-            data.to_csv(OPENAI_GENDERS_PATH, header=False, index=False, mode='a', encoding=UTF_8_ENCODING)
-        else:
-            data.to_csv(OPENAI_GENDERS_PATH, index=False, encoding=UTF_8_ENCODING)
 
 
 if __name__ == '__main__':

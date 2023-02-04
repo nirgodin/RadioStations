@@ -36,28 +36,6 @@ class MusixmatchLyricsFetcher:
 
         return self._get_valid_responses(zipped_responses_and_ids)
 
-    def _get_valid_responses(self, zipped_responses_and_ids: Iterator[Tuple[dict, str, str]]) -> Dict[str, dict]:
-        valid_responses = {}
-
-        for response, spotify_track_id, musixmatch_track_id in zipped_responses_and_ids:
-            response_lyrics = self._extract_single_response_lyrics(response, musixmatch_track_id)
-
-            if response_lyrics is not None:
-                valid_responses[spotify_track_id] = response_lyrics
-
-        return valid_responses
-
-    def _extract_single_response_lyrics(self, response: dict, musixmatch_track_id: str) -> Optional[dict]:
-        if not isinstance(response, dict):
-            return
-
-        response_lyrics = self._extract_lyrics_from_response(response)
-
-        if response_lyrics is not None:
-            response_lyrics[MUSIXMATCH_TRACK_ID] = musixmatch_track_id
-
-            return response_lyrics
-
     async def _fetch_raw_responses(self, spotify_track_ids: List[str]) -> List[dict]:
         pool = AioPool(AIO_POOL_SIZE)
 
@@ -82,6 +60,31 @@ class MusixmatchLyricsFetcher:
 
     def _build_request_url(self, track_id: str) -> str:
         return MUSIXMATCH_LYRICS_URL_FORMAT.format(track_id, self._api_key)
+
+    def _get_valid_responses(self, zipped_responses_and_ids: Iterator[Tuple[dict, str, str]]) -> Dict[str, dict]:
+        valid_responses = {}
+
+        for response, spotify_track_id, musixmatch_track_id in zipped_responses_and_ids:
+            try:
+                response_lyrics = self._extract_single_response_lyrics(response, musixmatch_track_id)
+            except Exception as e:
+                response_lyrics = None
+
+            if response_lyrics is not None:
+                valid_responses[spotify_track_id] = response_lyrics
+
+        return valid_responses
+
+    def _extract_single_response_lyrics(self, response: dict, musixmatch_track_id: str) -> Optional[dict]:
+        if not isinstance(response, dict):
+            return
+
+        response_lyrics = self._extract_lyrics_from_response(response)
+
+        if response_lyrics is not None:
+            response_lyrics[MUSIXMATCH_TRACK_ID] = musixmatch_track_id
+
+            return response_lyrics
 
     @staticmethod
     def _extract_lyrics_from_response(response: dict) -> Optional[dict]:
