@@ -48,13 +48,19 @@ class ShazamTrackAboutFetcher:
         relevant_tracks_ids = []
 
         for track_id in tracks_ids_data[SHAZAM_TRACK_KEY].unique().tolist():
-            if track_id not in self._existing_tracks:
+            if self._is_relevant_track(track_id):
                 relevant_tracks_ids.append(int(track_id))
 
             if len(relevant_tracks_ids) == max_tracks:
                 break
 
         return relevant_tracks_ids
+
+    def _is_relevant_track(self, track_id: float) -> bool:
+        if pd.isna(track_id):
+            return False
+
+        return track_id not in self._existing_tracks
 
     async def _fetch_single_track_info(self, progress_bar: tqdm, track_id: int) -> dict:
         progress_bar.update(1)
