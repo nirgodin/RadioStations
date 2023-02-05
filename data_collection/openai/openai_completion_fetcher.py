@@ -8,18 +8,10 @@ import pandas as pd
 from openai.error import ServiceUnavailableError
 from tqdm import tqdm
 
-from consts.data_consts import ARTIST_NAME
+from consts.data_consts import ARTIST_NAME, POPULARITY
+from consts.openai_consts import GENDER_PROMPT_FORMAT, OPENAI_MODEL, ARTIST_GENDER
 from consts.path_consts import MERGED_DATA_PATH, OPENAI_GENDERS_PATH
 from utils import append_to_csv
-
-GENDER_PROMPT_FORMAT = "Given the name of a music artist, determine his or her gender of the following three options: "\
-                       "'Male', 'Female' or 'Band'. In case you are not able to confidently determine the answer, " \
-                       "return 'Unknown'. For example, given the following prompt 'The gender of John Lennon is', " \
-                       "return 'Male'; given the following prompt 'The gender of Beyonce is', return 'Female'; Given " \
-                       "The following prompt 'The gender of Pink Floyd is', return 'Band'. Your answer should include "\
-                       "one token only. The gender of {} is"
-OPENAI_MODEL = "text-davinci-003"
-ARTIST_GENDER = 'artist_gender'
 
 
 class OpenAIGenderCompletionFetcher:
@@ -39,14 +31,23 @@ class OpenAIGenderCompletionFetcher:
             append_to_csv(data=genders_data, output_path=OPENAI_GENDERS_PATH)
 
     def _generate_artists_chunks(self) -> Generator[List[str], None, None]:
-        data = pd.read_csv(MERGED_DATA_PATH)
-        unique_artists = data[ARTIST_NAME].unique().tolist()
+        unique_artists = self._get_unique_artists_by_desc_popularity()
         non_existing_artists = [artist for artist in unique_artists if artist not in self._get_existing_artists()]
         n_chunks = round(len(non_existing_artists) / self._chunk_size)
 
         for i in range(0, len(non_existing_artists), self._chunk_size):
             print(f'Generating chunk {self._get_chunk_number(i)} out of {n_chunks}')
             yield non_existing_artists[i: i + self._chunk_size]
+
+    @staticmethod
+    def _get_unique_artists_by_desc_popularity() -> List[str]:
+        data = pd.read_csv(MERGED_DATA_PATH)
+        artists_popularity_data = data[[ARTIST_NAME, POPULARITY]]
+        artists_mean_popularity = artists_popularity_data.groupby(by=ARTIST_NAME).mean()
+        artists_mean_popularity.reset_index(level=0, inplace=True)
+        artists_mean_popularity.sort_values(by=POPULARITY, ascending=False, inplace=True)
+
+        return artists_mean_popularity[ARTIST_NAME].unique().tolist()
 
     @staticmethod
     def _get_existing_artists() -> List[str]:
