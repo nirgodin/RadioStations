@@ -1,3 +1,4 @@
+import json
 from typing import List, Iterable, Dict
 
 import pandas as pd
@@ -5,6 +6,9 @@ import pandas as pd
 from bio_enrichers.gender import gender_enricher_utils
 from bio_enrichers.gender.genders import Genders
 from bio_enrichers.tools.wikipedia_manager import WikipediaManager
+from consts.data_consts import ARTIST_NAME
+from consts.openai_consts import ARTIST_GENDER
+from utils import read_json
 
 MALE_HEBREW_WORDS_TXT_FILE_PATH = 'bio_enrichers/gender/resources/male_hebrew_words.txt'
 FEMALE_HEBREW_WORDS_TXT_FILE_PATH = 'bio_enrichers/gender/resources/female_hebrew_words.txt'
@@ -46,8 +50,8 @@ class GenderEnricher:
 
 
 if __name__ == '__main__':
-    data = pd.read_csv(r'C:\Users\nirgo\Documents\GitHub\RadioStations\data\spotify\2022_01_08 20_56_29_287215.csv')
-    artists = data['artist_name'].unique().tolist()
+    data = pd.read_csv(r'C:\Users\nirgo\Documents\GitHub\RadioStations\data\openai\artists_genders.csv', encoding='utf-8-sig')
+    artists = data[data[ARTIST_GENDER].str.contains('Unknown')][ARTIST_NAME].tolist()
 
     gender_enricher = GenderEnricher()
     gender_enricher.find_artists_gender(artists)

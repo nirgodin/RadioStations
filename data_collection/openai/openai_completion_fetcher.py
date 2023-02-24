@@ -5,7 +5,7 @@ from typing import List, Dict, Generator
 
 import openai
 import pandas as pd
-from openai.error import ServiceUnavailableError
+from openai.error import ServiceUnavailableError, RateLimitError, APIError
 from tqdm import tqdm
 
 from consts.data_consts import ARTIST_NAME, POPULARITY
@@ -18,11 +18,13 @@ class OpenAIGenderCompletionFetcher:
     def __init__(self,
                  chunk_size: int = 50,
                  sleep_between_completions: float = 4,
-                 n_retries: int = 3):
-        openai.api_key = os.environ["OPENAI_NEW_API_KEY"]
+                 n_retries: int = 3,
+                 model: str = OPENAI_MODEL):
+        openai.api_key = os.environ["TOM_API_KEY"]
         self._chunk_size = chunk_size
         self._sleep_between_completions = sleep_between_completions
         self._n_retries = n_retries
+        self._model = model
 
     def fetch_artists_genders(self) -> None:
         for artists_chunk in self._generate_artists_chunks():
@@ -91,14 +93,14 @@ class OpenAIGenderCompletionFetcher:
         try:
             return self._create_single_completion(artist_name)
 
-        except ServiceUnavailableError:
+        except (ServiceUnavailableError, RateLimitError, APIError):
             sleep(10)
+            print('Received exception! Retrying')
             return self._get_artist_gender(artist_name=artist_name, retries_left=retries_left-1)
 
-    @staticmethod
-    def _create_single_completion(artist_name: str) -> str:
+    def _create_single_completion(self, artist_name: str) -> str:
         response = openai.Completion.create(
-            model=OPENAI_MODEL,
+            model=self._model,
             prompt=GENDER_PROMPT_FORMAT.format(artist_name),
             temperature=0,
             max_tokens=7
