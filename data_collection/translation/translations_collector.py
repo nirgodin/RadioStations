@@ -14,14 +14,12 @@ from consts.api_consts import AIO_POOL_SIZE
 from consts.data_consts import IS_ISRAELI, ARTIST_NAME
 from consts.language_consts import HEBREW_LANGUAGE_ABBREVIATION, ENGLISH_LANGUAGE_ABBREVIATION
 from consts.microsoft_translator_consts import MICROSOFT_SUBSCRIPTION_KEY, MICROSOFT_SUBSCRIPTION_REGION, \
-    MICROSOFT_TRANSLATION_LOCATION, CLIENT_TRACE_ID
+    MICROSOFT_TRANSLATION_LOCATION, CLIENT_TRACE_ID, TRANSLATION
 from consts.miscellaneous_consts import UTF_8_ENCODING
 from consts.path_consts import MERGED_DATA_PATH, TRANSLATIONS_PATH
 from consts.rapid_api_consts import CONTENT_TYPE
 from data_collection.translation.translators.microsoft_translator import MicrosoftTranslator
 from utils import chain_dicts, append_to_csv, is_in_hebrew
-
-TRANSLATION = 'translation'
 
 
 class TranslationsCollector:
