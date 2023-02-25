@@ -2,14 +2,17 @@ from typing import Dict, Union
 
 from wikipediaapi import WikipediaPage
 
-from bio_enrichers.tools.wikipedia_manager_utils import HEBREW_ABBR, get_hebrew_wikipedia, get_english_wikipedia, \
-    has_any_hebrew_chars, translate_page_title
+from component_factory import ComponentFactory
+from consts.language_consts import HEBREW_LANGUAGE_ABBREVIATION, ENGLISH_LANGUAGE_ABBREVIATION
+from tools.language_detector import LanguageDetector
+from utils import is_in_hebrew
 
 
 class WikipediaManager:
     def __init__(self):
-        self._he_wiki = get_hebrew_wikipedia()
-        self._en_wiki = get_english_wikipedia()
+        self._he_wiki = ComponentFactory.get_wikipedia(HEBREW_LANGUAGE_ABBREVIATION)
+        self._en_wiki = ComponentFactory.get_wikipedia(ENGLISH_LANGUAGE_ABBREVIATION)
+        self._language_detector = LanguageDetector()
 
     def get_page_summary(self, page_title: str) -> str:
         page = self._get_page(page_title)
@@ -19,7 +22,7 @@ class WikipediaManager:
         return page.summary
 
     def _get_page(self, page_title: str) -> Union[WikipediaPage, None]:
-        if has_any_hebrew_chars(page_title):
+        if is_in_hebrew(page_title):
             return self._get_hebrew_page_directly(page_title)
 
         return self._get_hebrew_page_from_english_page(page_title)
@@ -47,9 +50,10 @@ class WikipediaManager:
         return available_translated_pages.get(HEBREW_ABBR, None)
 
     def _get_hebrew_page_using_translation(self, page_title: str):
-        translated_title = translate_page_title(page_title)
-        if translated_title:
-            hebrew_page_with_translated_title = self._he_wiki.page(translated_title)
-
-            if hebrew_page_with_translated_title.exists():
-                return hebrew_page_with_translated_title
+        # translated_title = translate_page_title(page_title)
+        # if translated_title:
+        #     hebrew_page_with_translated_title = self._he_wiki.page(translated_title)
+        #
+        #     if hebrew_page_with_translated_title.exists():
+        #         return hebrew_page_with_translated_title
+        pass

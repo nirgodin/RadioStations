@@ -1,0 +1,6 @@
+import re
+
+LANGUAGE = 'language'
+HEBREW_LANGUAGE_ABBREVIATION = 'he'
+ENGLISH_LANGUAGE_ABBREVIATION = 'en'
+HEBREW_CHAR_REGEX = re.compile(r'[\u0590-\u05fe]')

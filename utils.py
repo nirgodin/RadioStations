@@ -10,6 +10,8 @@ import spotipy
 from pandas import DataFrame
 from spotipy import SpotifyClientCredentials
 
+from component_factory import ComponentFactory
+from consts.language_consts import LANGUAGE, HEBREW_LANGUAGE_ABBREVIATION
 from consts.miscellaneous_consts import UTF_8_ENCODING
 
 YEAR_REGEX = re.compile(r'.*([1-3][0-9]{3})')
@@ -54,3 +56,11 @@ def append_to_csv(data: DataFrame, output_path: str) -> None:
 
 def chain_dicts(dicts: List[dict]) -> dict:
     return reduce(lambda dict1, dict2: {**dict1, **dict2}, dicts)
+
+
+def is_in_hebrew(s: str) -> bool:
+    language_detector = ComponentFactory.get_language_detector()
+    language_and_confidence = language_detector.detect_language(s)
+    language = language_and_confidence[LANGUAGE]
+
+    return language == HEBREW_LANGUAGE_ABBREVIATION

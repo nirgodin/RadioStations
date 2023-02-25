@@ -12,23 +12,20 @@ from tqdm import tqdm
 
 from consts.api_consts import AIO_POOL_SIZE
 from consts.data_consts import IS_ISRAELI, ARTIST_NAME
+from consts.language_consts import HEBREW_LANGUAGE_ABBREVIATION, ENGLISH_LANGUAGE_ABBREVIATION
 from consts.microsoft_translator_consts import MICROSOFT_SUBSCRIPTION_KEY, MICROSOFT_SUBSCRIPTION_REGION, \
     MICROSOFT_TRANSLATION_LOCATION, CLIENT_TRACE_ID
 from consts.miscellaneous_consts import UTF_8_ENCODING
 from consts.path_consts import MERGED_DATA_PATH, TRANSLATIONS_PATH
 from consts.rapid_api_consts import CONTENT_TYPE
 from data_collection.translation.translators.microsoft_translator import MicrosoftTranslator
-from tools.language_detector import LanguageDetector
-from utils import to_json, chain_dicts, read_json, append_to_csv
+from utils import chain_dicts, append_to_csv, is_in_hebrew
 
-LANGUAGE = 'language'
-HEBREW_LANGAUGE_ABBREVIATION = 'he'
 TRANSLATION = 'translation'
 
 
 class TranslationsCollector:
     def __init__(self, chunk_size: int = 50):
-        self._language_detector = LanguageDetector()
         self._chunk_size = chunk_size
 
     async def collect(self):
@@ -86,18 +83,19 @@ class TranslationsCollector:
 
                 return await pool.map(func, israeli_artists)
 
-    async def _translate_single_artist_name(self, translator: MicrosoftTranslator, progress_bar: tqdm, artist_name: str) -> Dict[str, str]:
+    @staticmethod
+    async def _translate_single_artist_name(translator: MicrosoftTranslator,
+                                            progress_bar: tqdm,
+                                            artist_name: str) -> Dict[str, str]:
         progress_bar.update(1)
-        language_and_confidence = self._language_detector.detect_language(artist_name)
-        language = language_and_confidence[LANGUAGE]
 
-        if language == HEBREW_LANGAUGE_ABBREVIATION:
+        if is_in_hebrew(artist_name):
             translation = artist_name
         else:
             translation = await translator.translate(
                 text=artist_name,
-                source_lang=language,
-                target_lang=HEBREW_LANGAUGE_ABBREVIATION
+                source_lang=ENGLISH_LANGUAGE_ABBREVIATION,
+                target_lang=HEBREW_LANGUAGE_ABBREVIATION
             )
 
         return {artist_name: translation}
