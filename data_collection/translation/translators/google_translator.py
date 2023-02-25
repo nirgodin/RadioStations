@@ -5,7 +5,7 @@ from requests import Response
 
 from consts.google_translator_consts import GOOGLE_TRANSLATOR_HOST, GOOGLE_TRANSLATOR_URL, QUERY, SOURCE, TARGET, DATA, \
     TRANSLATIONS, TRANSLATED_TEXT
-from consts.rapid_api_consts import RAPID_API_KEY, X_RAPID_API_HOST, X_RAPID_API_KEY
+from consts.rapid_api_consts import RAPID_API_KEY, X_RAPID_API_HOST, X_RAPID_API_KEY, CONTENT_TYPE
 from data_collection.translation.translator_interface import ITranslator
 import requests
 
@@ -13,7 +13,7 @@ import requests
 class GoogleTranslator(ITranslator):
     def __init__(self):
         self._headers = {
-            "content-type": "application/x-www-form-urlencoded",
+            CONTENT_TYPE: "application/x-www-form-urlencoded",
             "Accept-Encoding": "application/gzip",
             X_RAPID_API_KEY: os.environ[RAPID_API_KEY],
             X_RAPID_API_HOST: GOOGLE_TRANSLATOR_HOST
@@ -22,7 +22,7 @@ class GoogleTranslator(ITranslator):
     def translate(self, text: str, source_lang: str, target_lang: str) -> str:
         raw_response = self._request(text, source_lang, target_lang)
 
-        if not raw_response.status_code == 200:
+        if raw_response.status_code != 200:
             return ''
 
         return self._extract_translation(raw_response)

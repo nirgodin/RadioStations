@@ -1,0 +1,10 @@
+MICROSOFT_HOST = "microsoft-translator-text.p.rapidapi.com"
+API_VERSION = "api-version"
+MICROSOFT_API_VERSION = "3.0"
+MICROSOFT_TRANSLATION_URL = "https://api.cognitive.microsofttranslator.com/translate"
+MICROSOFT_TRANSLATION_LOCATION = 'eastus'
+FROM = 'from'
+TO = 'to'
+MICROSOFT_SUBSCRIPTION_KEY = 'Ocp-Apim-Subscription-Key'
+MICROSOFT_SUBSCRIPTION_REGION = 'Ocp-Apim-Subscription-Region'
+CLIENT_TRACE_ID = 'X-ClientTraceId'

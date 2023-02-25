@@ -1,3 +1,4 @@
 X_RAPID_API_KEY = "X-RapidAPI-Key"
 X_RAPID_API_HOST = "X-RapidAPI-Host"
 RAPID_API_KEY = "RAPID_API_KEY"
+CONTENT_TYPE = "content-type"
