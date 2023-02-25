@@ -1,8 +1,8 @@
 import os
 import re
 from datetime import datetime
-from functools import lru_cache
-from typing import Dict, Any
+from functools import lru_cache, reduce
+from typing import Dict, Any, List
 import json
 
 import numpy as np
@@ -50,3 +50,7 @@ def append_to_csv(data: DataFrame, output_path: str) -> None:
         data.to_csv(output_path, header=False, index=False, mode='a', encoding=UTF_8_ENCODING)
     else:
         data.to_csv(output_path, index=False, encoding=UTF_8_ENCODING)
+
+
+def chain_dicts(dicts: List[dict]) -> dict:
+    return reduce(lambda dict1, dict2: {**dict1, **dict2}, dicts)

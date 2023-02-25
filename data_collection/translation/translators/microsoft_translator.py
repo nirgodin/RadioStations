@@ -3,6 +3,7 @@ import os
 import uuid
 
 import requests
+from aiohttp import ClientSession
 from requests import Response
 
 from consts.google_translator_consts import TRANSLATIONS
@@ -15,40 +16,26 @@ from data_collection.translation.translator_interface import ITranslator
 
 
 class MicrosoftTranslator(ITranslator):
-    def translate(self, text: str, source_lang: str, target_lang: str) -> str:
-        raw_response = self._request(text, source_lang, target_lang)
+    def __init__(self, session: ClientSession):
+        self._session = session
 
-        if raw_response.status_code != 200:
-            return ''
+    async def translate(self, text: str, source_lang: str, target_lang: str) -> str:
+        response = await self._request(text, source_lang, target_lang)
+        return self._extract_translation(response)
 
-        return self._extract_translation(raw_response)
-
-    @staticmethod
-    def _request(text: str, source_lang: str, target_lang: str) -> Response:
+    async def _request(self, text: str, source_lang: str, target_lang: str) -> list:
         params = {
             API_VERSION: MICROSOFT_API_VERSION,
             FROM: source_lang,
             TO: [target_lang]
         }
-        headers = {
-            MICROSOFT_SUBSCRIPTION_KEY: os.environ['MICROSOFT_TRANSLATOR_KEY'],
-            MICROSOFT_SUBSCRIPTION_REGION: MICROSOFT_TRANSLATION_LOCATION,
-            CONTENT_TYPE: 'application/json',
-            CLIENT_TRACE_ID: str(uuid.uuid4())
-        }
         body = [{TEXT: text}]
 
-        return requests.post(
-            url=MICROSOFT_TRANSLATION_URL,
-            params=params,
-            headers=headers,
-            json=body
-        )
+        async with self._session.post(url=MICROSOFT_TRANSLATION_URL, params=params, json=body) as raw_response:
+            return await raw_response.json()
 
     @staticmethod
-    def _extract_translation(raw_response: Response) -> str:
-        response = raw_response.json()
-
+    def _extract_translation(response: list) -> str:
         if not response:
             return ''
 

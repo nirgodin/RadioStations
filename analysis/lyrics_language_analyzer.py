@@ -11,6 +11,7 @@ from tqdm import tqdm
 from consts.data_consts import ID
 from consts.musixmatch_consts import LYRICS_BODY
 from consts.path_consts import MUSIXMATCH_TRACKS_LYRICS_PATH, MUSIXMATCH_TRACKS_LANGUAGES_PATH
+from tools.language_detector import LanguageDetector
 from utils import read_json
 
 LANGUAGE_DETECTOR_FACTORY_KEY = "language_detector"
@@ -20,6 +21,7 @@ SPACY_ENGLISH_SMALL_MODEL = "en_core_web_sm"
 class LyricsLanguageAnalyzer:
     def __init__(self):
         self._tracks_lyrics = read_json(MUSIXMATCH_TRACKS_LYRICS_PATH)
+        self._language_detector = LanguageDetector()
 
     def analyze(self) -> None:
         tracks_languages_records = self._extract_tracks_languages()
@@ -58,7 +60,7 @@ class LyricsLanguageAnalyzer:
         if track_lyrics is None:
             return {ID: spotify_id}
 
-        language_and_confidence = self._get_lyrics_language(track_lyrics)
+        language_and_confidence = self._language_detector.detect_language(track_lyrics)
         language_and_confidence[ID] = spotify_id
 
         return language_and_confidence
@@ -66,28 +68,12 @@ class LyricsLanguageAnalyzer:
     def _extract_track_lyrics(self, spotify_id: str) -> Optional[str]:
         return self._tracks_lyrics.get(spotify_id, {}).get(LYRICS_BODY, None)
 
-    def _get_lyrics_language(self, track_lyrics: str) -> Dict[str, Union[str, float]]:
-        nlp_doc = self._spacy_model(track_lyrics)
-        return nlp_doc._.language
-
     @property
     def _tracks_languages(self) -> DataFrame:
         if not os.path.exists(MUSIXMATCH_TRACKS_LANGUAGES_PATH):
             return pd.DataFrame()
 
         return pd.read_csv(MUSIXMATCH_TRACKS_LANGUAGES_PATH)
-
-    @property
-    def _spacy_model(self) -> Language:
-        spacy_model = spacy.load(SPACY_ENGLISH_SMALL_MODEL)
-        spacy_model.add_pipe(LANGUAGE_DETECTOR_FACTORY_KEY, last=True)
-
-        return spacy_model
-
-    @staticmethod
-    @Language.factory(LANGUAGE_DETECTOR_FACTORY_KEY)
-    def __language_detector(nlp, name):
-        return spacy_langdetect.LanguageDetector()
 
 
 if __name__ == '__main__':
