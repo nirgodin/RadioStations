@@ -1,4 +1,4 @@
-from typing import Dict, Union
+from typing import Dict, Union, Optional
 
 from wikipediaapi import WikipediaPage
 
@@ -15,13 +15,13 @@ class WikipediaManager:
         self._language_detector = LanguageDetector()
 
     def get_page_summary(self, page_title: str) -> str:
-        page = self._get_page(page_title)
+        page = self._get_hebrew_page_directly(page_title)# self._get_page(page_title)
         if page is None:
             return ''
 
         return page.summary
 
-    def _get_page(self, page_title: str) -> Union[WikipediaPage, None]:
+    def _get_page(self, page_title: str) -> Optional[WikipediaPage]:
         if is_in_hebrew(page_title):
             return self._get_hebrew_page_directly(page_title)
 
@@ -32,28 +32,17 @@ class WikipediaManager:
         if hebrew_page.exists():
             return hebrew_page
 
-    def _get_hebrew_page_from_english_page(self, page_title: str) -> Union[WikipediaPage, None]:
+    def _get_hebrew_page_from_english_page(self, page_title: str) -> Optional[WikipediaPage]:
         english_page = self._en_wiki.page(page_title)
         hebrew_langlink_page = self._get_hebrew_page_using_langlinks(english_page)
 
         if hebrew_langlink_page:
             return hebrew_langlink_page
 
-        return self._get_hebrew_page_using_translation(page_title)
-
     @staticmethod
-    def _get_hebrew_page_using_langlinks(english_page: WikipediaPage) -> Union[WikipediaPage, None]:
+    def _get_hebrew_page_using_langlinks(english_page: WikipediaPage) -> Optional[WikipediaPage]:
         if not english_page.exists():
             return None
 
         available_translated_pages: Dict[str, WikipediaPage] = english_page.langlinks
-        return available_translated_pages.get(HEBREW_ABBR, None)
-
-    def _get_hebrew_page_using_translation(self, page_title: str):
-        # translated_title = translate_page_title(page_title)
-        # if translated_title:
-        #     hebrew_page_with_translated_title = self._he_wiki.page(translated_title)
-        #
-        #     if hebrew_page_with_translated_title.exists():
-        #         return hebrew_page_with_translated_title
-        pass
+        return available_translated_pages.get(HEBREW_LANGUAGE_ABBREVIATION, None)
