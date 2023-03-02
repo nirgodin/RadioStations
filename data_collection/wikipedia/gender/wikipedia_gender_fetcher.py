@@ -61,7 +61,7 @@ class WikipediaGenderFetcher:
 
     def _extract_gender_from_page_summary(self, page_summary: str) -> str:
         non_punctuated_summary = re.sub(r'[^\w\s]', ' ', page_summary)
-        tokenized_summary = [token.strip() for token in non_punctuated_summary.split(' ')]
+        tokenized_summary = [token.strip() for token in non_punctuated_summary.split(' ') if token != '']
 
         if self._contains_any_relevant_word(tokenized_summary, self._female_hebrew_words):
             return Genders.FEMALE.value
