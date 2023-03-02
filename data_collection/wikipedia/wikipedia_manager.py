@@ -1,5 +1,6 @@
 from typing import Dict, Union, Optional
 
+from requests import ReadTimeout
 from wikipediaapi import WikipediaPage
 
 from component_factory import ComponentFactory
@@ -27,10 +28,14 @@ class WikipediaManager:
 
         return self._get_hebrew_page_from_english_page(page_title)
 
-    def _get_hebrew_page_directly(self, page_title: str) -> WikipediaPage:
-        hebrew_page = self._he_wiki.page(page_title)
-        if hebrew_page.exists():
-            return hebrew_page
+    def _get_hebrew_page_directly(self, page_title: str) -> Optional[WikipediaPage]:
+        try:
+            hebrew_page = self._he_wiki.page(page_title)
+            if hebrew_page.exists():
+                return hebrew_page
+
+        except ReadTimeout:
+            print(f'Timeout on the following artist: {page_title}. Returning None')
 
     def _get_hebrew_page_from_english_page(self, page_title: str) -> Optional[WikipediaPage]:
         english_page = self._en_wiki.page(page_title)

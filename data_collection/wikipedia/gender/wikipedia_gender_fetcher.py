@@ -1,5 +1,5 @@
 import re
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 import pandas as pd
 from tqdm import tqdm
@@ -20,9 +20,11 @@ BAND_HEBREW_WORDS_TXT_FILE_PATH = 'bio_enrichers/gender/resources/band_hebrew_wo
 class WikipediaGenderFetcher:
     def __init__(self):
         self._wikipedia_manager = WikipediaManager()
-        self._male_hebrew_words = self._get_words(Genders.MALE)
-        self._female_hebrew_words = self._get_words(Genders.FEMALE)
-        self._band_hebrew_words = self._get_words(Genders.BAND)
+        self._gender_words_mapping = {
+            Genders.FEMALE: self._get_words(Genders.FEMALE),
+            Genders.MALE: self._get_words(Genders.MALE),
+            Genders.BAND: self._get_words(Genders.BAND)
+        }
         self._numeric_spaces_punctuation_regex = re.compile(r'[^\w\s]')
 
     def fetch(self) -> None:
@@ -61,19 +63,24 @@ class WikipediaGenderFetcher:
 
     def _extract_gender_from_page_summary(self, page_summary: str) -> str:
         non_punctuated_summary = re.sub(r'[^\w\s]', ' ', page_summary)
-        tokenized_summary = [token.strip() for token in non_punctuated_summary.split(' ') if token != '']
 
-        if self._contains_any_relevant_word(tokenized_summary, self._female_hebrew_words):
-            return Genders.FEMALE.value
+        for raw_token in non_punctuated_summary.split(' '):
+            token_gender = self._extract_single_token_associated_gender(raw_token)
 
-        elif self._contains_any_relevant_word(tokenized_summary, self._male_hebrew_words):
-            return Genders.MALE.value
+            if token_gender is not None:
+                return token_gender
 
-        elif self._contains_any_relevant_word(tokenized_summary, self._band_hebrew_words):
-            return Genders.BAND.value
+        return Genders.UNKNOWN.value
 
-        else:
-            return Genders.UNKNOWN.value
+    def _extract_single_token_associated_gender(self, raw_token: str) -> Optional[str]:
+        stripped_token = raw_token.strip()
+
+        if stripped_token == '':
+            return
+
+        for gender, gender_words in self._gender_words_mapping.items():
+            if stripped_token in gender_words:
+                return gender.value
 
     @staticmethod
     def _get_words(gender: Genders) -> List[str]:
@@ -83,10 +90,6 @@ class WikipediaGenderFetcher:
             hebrew_words: str = f.read()
 
         return hebrew_words.split('\n')
-
-    @staticmethod
-    def _contains_any_relevant_word(tokenized_summary: List[str], relevant_words: List[str]) -> bool:
-        return any(word in tokenized_summary for word in relevant_words)
 
     @property
     def _artists_names_translations(self) -> Dict[str, str]:
