@@ -2,6 +2,7 @@ import re
 from typing import Dict, List, Optional
 
 import pandas as pd
+from pandas import DataFrame
 from tqdm import tqdm
 
 from consts.data_consts import ARTIST_NAME, IS_ISRAELI
@@ -25,12 +26,11 @@ class WikipediaGenderFetcher:
         }
         self._numeric_spaces_punctuation_regex = re.compile(r'[^\w\s]')
 
-    def fetch(self) -> None:
+    def fetch(self, artists: List[str]) -> DataFrame:
         artists_records = []
-        israeli_artists = self._get_israeli_artists()
 
-        with tqdm(total=len(israeli_artists)) as progress_bar:
-            for artist in israeli_artists:
+        with tqdm(total=len(artists)) as progress_bar:
+            for artist in artists:
                 record = {
                     ARTIST_NAME: artist,
                     ARTIST_GENDER: self._find_single_artist_gender(artist)
@@ -38,15 +38,7 @@ class WikipediaGenderFetcher:
                 artists_records.append(record)
                 progress_bar.update(1)
 
-        data = pd.DataFrame.from_records(artists_records)
-        data.to_csv(WIKIPEDIA_ISRAELI_ARTISTS_GENDER_PATH, index=False, encoding=UTF_8_ENCODING)
-
-    @staticmethod
-    def _get_israeli_artists() -> List[str]:
-        data = pd.read_csv(MERGED_DATA_PATH, encoding=UTF_8_ENCODING)
-        israeli_artists_data = data[data[IS_ISRAELI] == True]
-
-        return israeli_artists_data[ARTIST_NAME].unique().tolist()
+        return pd.DataFrame.from_records(artists_records)
 
     def _find_single_artist_gender(self, artist_name: str) -> str:
         translated_artist_name = self._artists_names_translations.get(artist_name)
@@ -91,8 +83,3 @@ class WikipediaGenderFetcher:
         return {
             artist_name: translation for artist_name, translation in zip(data[ARTIST_NAME], data[TRANSLATION])
         }
-
-
-if __name__ == '__main__':
-    gender_fetcher = WikipediaGenderFetcher()
-    gender_fetcher.fetch()

@@ -16,7 +16,7 @@ class WikipediaManager:
         self._language_detector = LanguageDetector()
 
     def get_page_summary(self, page_title: str) -> str:
-        page = self.get_hebrew_page_directly(page_title)# self._get_page(page_title)
+        page = self._get_page(page_title)
         if page is None:
             return ''
 
