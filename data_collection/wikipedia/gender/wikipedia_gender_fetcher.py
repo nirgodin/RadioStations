@@ -8,13 +8,11 @@ from consts.data_consts import ARTIST_NAME, IS_ISRAELI
 from consts.microsoft_translator_consts import TRANSLATION
 from consts.miscellaneous_consts import UTF_8_ENCODING
 from consts.openai_consts import ARTIST_GENDER
-from consts.path_consts import MERGED_DATA_PATH, TRANSLATIONS_PATH, HEBREW_WORDS_TXT_FILE_PATH_FORMAT
+from consts.path_consts import MERGED_DATA_PATH, TRANSLATIONS_PATH, HEBREW_WORDS_TXT_FILE_PATH_FORMAT, \
+    WIKIPEDIA_ISRAELI_ARTISTS_GENDER_PATH
 from data_collection.wikipedia.gender.genders import Genders
 from data_collection.wikipedia.wikipedia_manager import WikipediaManager
-
-MALE_HEBREW_WORDS_TXT_FILE_PATH = 'bio_enrichers/gender/resources/male_hebrew_words.txt'
-FEMALE_HEBREW_WORDS_TXT_FILE_PATH = 'bio_enrichers/gender/resources/female_hebrew_words.txt'
-BAND_HEBREW_WORDS_TXT_FILE_PATH = 'bio_enrichers/gender/resources/band_hebrew_words.txt'
+from utils import load_txt_file_lines
 
 
 class WikipediaGenderFetcher:
@@ -41,7 +39,7 @@ class WikipediaGenderFetcher:
                 progress_bar.update(1)
 
         data = pd.DataFrame.from_records(artists_records)
-        data.to_csv(r'data/wikipedia/israeli_artists_genders.csv', index=False, encoding=UTF_8_ENCODING)
+        data.to_csv(WIKIPEDIA_ISRAELI_ARTISTS_GENDER_PATH, index=False, encoding=UTF_8_ENCODING)
 
     @staticmethod
     def _get_israeli_artists() -> List[str]:
@@ -62,7 +60,7 @@ class WikipediaGenderFetcher:
         return self._extract_gender_from_page_summary(page_summary)
 
     def _extract_gender_from_page_summary(self, page_summary: str) -> str:
-        non_punctuated_summary = re.sub(r'[^\w\s]', ' ', page_summary)
+        non_punctuated_summary = self._numeric_spaces_punctuation_regex.sub(' ', page_summary)
 
         for raw_token in non_punctuated_summary.split(' '):
             token_gender = self._extract_single_token_associated_gender(raw_token)
@@ -85,11 +83,7 @@ class WikipediaGenderFetcher:
     @staticmethod
     def _get_words(gender: Genders) -> List[str]:
         path = HEBREW_WORDS_TXT_FILE_PATH_FORMAT.format(gender.value)
-
-        with open(path, encoding='utf-8') as f:
-            hebrew_words: str = f.read()
-
-        return hebrew_words.split('\n')
+        return load_txt_file_lines(path)
 
     @property
     def _artists_names_translations(self) -> Dict[str, str]:

@@ -2,7 +2,7 @@ import os
 import re
 from datetime import datetime
 from functools import lru_cache, reduce
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Union
 import json
 
 import numpy as np
@@ -18,7 +18,7 @@ YEAR_REGEX = re.compile(r'.*([1-3][0-9]{3})')
 JSON_ENCODING = 'utf-8'
 
 
-def to_json(d: Dict[str, Any], path: str) -> None:
+def to_json(d: Union[dict, list], path: str) -> None:
     with open(path, 'w', encoding=JSON_ENCODING) as f:
         json.dump(d, f, ensure_ascii=False, indent=4)
 
@@ -64,3 +64,10 @@ def is_in_hebrew(s: str) -> bool:
     language = language_and_confidence[LANGUAGE]
 
     return language == HEBREW_LANGUAGE_ABBREVIATION
+
+
+def load_txt_file_lines(path: str) -> List[str]:
+    with open(path, encoding='utf-8') as f:
+        hebrew_words: str = f.read()
+
+    return hebrew_words.split('\n')

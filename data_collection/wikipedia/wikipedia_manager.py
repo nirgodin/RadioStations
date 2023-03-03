@@ -16,7 +16,7 @@ class WikipediaManager:
         self._language_detector = LanguageDetector()
 
     def get_page_summary(self, page_title: str) -> str:
-        page = self._get_hebrew_page_directly(page_title)# self._get_page(page_title)
+        page = self.get_hebrew_page_directly(page_title)# self._get_page(page_title)
         if page is None:
             return ''
 
@@ -24,11 +24,11 @@ class WikipediaManager:
 
     def _get_page(self, page_title: str) -> Optional[WikipediaPage]:
         if is_in_hebrew(page_title):
-            return self._get_hebrew_page_directly(page_title)
+            return self.get_hebrew_page_directly(page_title)
 
         return self._get_hebrew_page_from_english_page(page_title)
 
-    def _get_hebrew_page_directly(self, page_title: str) -> Optional[WikipediaPage]:
+    def get_hebrew_page_directly(self, page_title: str) -> Optional[WikipediaPage]:
         try:
             hebrew_page = self._he_wiki.page(page_title)
             if hebrew_page.exists():
