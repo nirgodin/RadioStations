@@ -11,7 +11,7 @@ from tqdm import tqdm
 from consts.data_consts import ARTIST_NAME
 from consts.openai_consts import GENDER_PROMPT_FORMAT, OPENAI_MODEL, ARTIST_GENDER
 from consts.path_consts import OPENAI_GENDERS_PATH
-from data_utils import groupby_artists_by_desc_popularity
+from utils.data_utils import groupby_artists_by_desc_popularity
 from utils.file_utils import append_to_csv
 
 

@@ -7,7 +7,7 @@ from consts.microsoft_translator_consts import TRANSLATION
 from consts.miscellaneous_consts import UTF_8_ENCODING
 from consts.path_consts import MERGED_DATA_PATH, WIKIPEDIA_ISRAELI_ARTISTS_GENDER_PATH, TRANSLATIONS_PATH
 from data_collection.wikipedia.gender.wikipedia_gender_fetcher import WikipediaGenderFetcher
-from data_utils import map_df_columns
+from utils.data_utils import map_df_columns
 
 
 class IsraeliArtistsGenderFetcher:

@@ -8,7 +8,7 @@ from consts.miscellaneous_consts import UTF_8_ENCODING
 from consts.openai_consts import ARTIST_GENDER
 from consts.path_consts import WIKIPEDIA_ISRAELI_ARTISTS_GENDER_PATH, OPENAI_GENDERS_PATH, \
     WIKIPEDIA_OPENAI_UNKNOWN_GENDERS_PATH
-from data_utils import map_df_columns, groupby_artists_by_desc_popularity
+from utils.data_utils import map_df_columns, groupby_artists_by_desc_popularity
 
 
 class GenderAnalyzer:

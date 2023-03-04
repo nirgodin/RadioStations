@@ -7,7 +7,7 @@ from consts.miscellaneous_consts import UTF_8_ENCODING
 from consts.openai_consts import ARTIST_GENDER
 from consts.path_consts import OPENAI_GENDERS_PATH, WIKIPEDIA_OPENAI_UNKNOWN_GENDERS_PATH
 from data_collection.wikipedia.gender.wikipedia_gender_fetcher import WikipediaGenderFetcher
-from data_utils import groupby_artists_by_desc_popularity
+from utils.data_utils import groupby_artists_by_desc_popularity
 
 
 class OpenAIUnknownArtistsAnalyzer:
