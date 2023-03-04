@@ -3,7 +3,7 @@ import pandas as pd
 from consts.miscellaneous_consts import UTF_8_ENCODING
 from consts.playlists_consts import STATIONS
 from data_collection.spotify.station import Station
-from utils import get_current_datetime
+from utils.general_utils import get_current_datetime
 
 
 def run():
