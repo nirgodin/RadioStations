@@ -11,6 +11,7 @@ from tqdm import tqdm
 from consts.data_consts import ARTIST_NAME, POPULARITY
 from consts.openai_consts import GENDER_PROMPT_FORMAT, OPENAI_MODEL, ARTIST_GENDER
 from consts.path_consts import MERGED_DATA_PATH, OPENAI_GENDERS_PATH
+from data_utils import groupby_artists_by_desc_popularity
 from utils import append_to_csv
 
 
@@ -43,12 +44,7 @@ class OpenAIGenderCompletionFetcher:
 
     @staticmethod
     def _get_unique_artists_by_desc_popularity() -> List[str]:
-        data = pd.read_csv(MERGED_DATA_PATH)
-        artists_popularity_data = data[[ARTIST_NAME, POPULARITY]]
-        artists_mean_popularity = artists_popularity_data.groupby(by=ARTIST_NAME).mean()
-        artists_mean_popularity.reset_index(level=0, inplace=True)
-        artists_mean_popularity.sort_values(by=POPULARITY, ascending=False, inplace=True)
-
+        artists_mean_popularity = groupby_artists_by_desc_popularity()
         return artists_mean_popularity[ARTIST_NAME].unique().tolist()
 
     @staticmethod
