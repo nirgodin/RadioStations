@@ -27,3 +27,7 @@ WIKIPEDIA_RELEVANT_CATEGORIES_PATH = r'data_collection/wikipedia/categories/reso
 WIKIPEDIA_CATEGORIES_PATH = r'data_collection\wikipedia\categories\resources\relevant_categories.json'
 WIKIPEDIA_CATEGORIES_MEMBERS_PATH = r'data\wikipedia\categories_members.csv'
 WIKIPEDIA_OPENAI_UNKNOWN_GENDERS_PATH = r'data\wikipedia\openai_unknown_genders.csv'
+FACE_MODEL_PATH = r'tools/image_detection/resources/res10_300x300_ssd_iter_140000_fp16.caffemodel'
+FACE_MODEL_WEIGHTS_PATH = r'tools/image_detection/resources/deploy.prototxt.txt'
+GENDER_MODEL_WEIGHTS_PATH = r'tools/image_detection/resources/deploy_gender.prototxt'
+GENDER_MODEL_PATH = r'tools/image_detection/resources/gender_net.caffemodel'
