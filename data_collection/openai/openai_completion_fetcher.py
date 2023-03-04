@@ -11,6 +11,7 @@ from tqdm import tqdm
 from consts.data_consts import ARTIST_NAME
 from consts.openai_consts import GENDER_PROMPT_FORMAT, OPENAI_MODEL, ARTIST_GENDER
 from consts.path_consts import OPENAI_GENDERS_PATH
+from tools.data_chunks_generator import DataChunksGenerator
 from utils.data_utils import groupby_artists_by_desc_popularity
 from utils.file_utils import append_to_csv
 
@@ -22,25 +23,21 @@ class OpenAIGenderCompletionFetcher:
                  n_retries: int = 3,
                  model: str = OPENAI_MODEL):
         openai.api_key = os.environ["TOM_API_KEY"]
-        self._chunk_size = chunk_size
         self._sleep_between_completions = sleep_between_completions
         self._n_retries = n_retries
         self._model = model
+        self._data_chunks_generator = DataChunksGenerator(chunk_size)
 
     def fetch_artists_genders(self) -> None:
-        for artists_chunk in self._generate_artists_chunks():
+        chunks = self._data_chunks_generator.generate_data_chunks(
+            lst=self._get_unique_artists_by_desc_popularity(),
+            filtering_list=self._get_existing_artists()
+        )
+
+        for artists_chunk in chunks:
             artists_genders = self._complete_artists_genders(artists_chunk)
             genders_data = pd.DataFrame.from_records(artists_genders)
             append_to_csv(data=genders_data, output_path=OPENAI_GENDERS_PATH)
-
-    def _generate_artists_chunks(self) -> Generator[List[str], None, None]:
-        unique_artists = self._get_unique_artists_by_desc_popularity()
-        non_existing_artists = [artist for artist in unique_artists if artist not in self._get_existing_artists()]
-        n_chunks = round(len(non_existing_artists) / self._chunk_size)
-
-        for i in range(0, len(non_existing_artists), self._chunk_size):
-            print(f'Generating chunk {self._get_chunk_number(i)} out of {n_chunks}')
-            yield non_existing_artists[i: i + self._chunk_size]
 
     @staticmethod
     def _get_unique_artists_by_desc_popularity() -> List[str]:
@@ -55,10 +52,6 @@ class OpenAIGenderCompletionFetcher:
             return genders_data[ARTIST_NAME].unique().tolist()
 
         return []
-
-    def _get_chunk_number(self, index: int) -> int:
-        chunk_number = (index / self._chunk_size) + 1
-        return int(chunk_number)
 
     def _complete_artists_genders(self, artist_names: List[str]) -> List[Dict[str, str]]:
         records = []

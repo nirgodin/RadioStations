@@ -2,7 +2,7 @@ import asyncio
 import os
 import uuid
 from functools import partial
-from typing import List, Dict, Generator
+from typing import List, Dict
 
 import pandas as pd
 from aiohttp import ClientSession
@@ -19,30 +19,27 @@ from consts.miscellaneous_consts import UTF_8_ENCODING
 from consts.path_consts import MERGED_DATA_PATH, TRANSLATIONS_PATH
 from consts.rapid_api_consts import CONTENT_TYPE
 from data_collection.translation.translators.microsoft_translator import MicrosoftTranslator
-from utils.general_utils import chain_dicts, is_in_hebrew
+from tools.data_chunks_generator import DataChunksGenerator
 from utils.file_utils import append_to_csv
+from utils.general_utils import chain_dicts, is_in_hebrew
 
 
 class TranslationsCollector:
     def __init__(self, chunk_size: int = 50):
-        self._chunk_size = chunk_size
+        self._data_chunks_generator = DataChunksGenerator(chunk_size)
 
     async def collect(self):
-        for chunk in self._generate_artists_chunks():
+        chunks = self._data_chunks_generator.generate_data_chunks(
+            lst=self._load_artists_names(),
+            filtering_list=self._get_existing_artists()
+        )
+
+        for chunk in chunks:
             translations = await self._collect_translations(chunk)
             valid_translations = [translation for translation in translations if isinstance(translation, dict)]
             data = self._to_dataframe(valid_translations)
 
             append_to_csv(data=data, output_path=TRANSLATIONS_PATH)
-
-    def _generate_artists_chunks(self) -> Generator[List[str], None, None]:
-        unique_artists = self._load_artists_names()
-        non_existing_artists = [artist for artist in unique_artists if artist not in self._get_existing_artists()]
-        n_chunks = round(len(non_existing_artists) / self._chunk_size)
-
-        for i in range(0, len(non_existing_artists), self._chunk_size):
-            print(f'Generating chunk {self._get_chunk_number(i)} out of {n_chunks}')
-            yield non_existing_artists[i: i + self._chunk_size]
 
     @staticmethod
     def _get_existing_artists() -> List[str]:
@@ -52,10 +49,6 @@ class TranslationsCollector:
             return artists_translations[ARTIST_NAME].tolist()
 
         return []
-
-    def _get_chunk_number(self, index: int) -> int:
-        chunk_number = (index / self._chunk_size) + 1
-        return int(chunk_number)
 
     @staticmethod
     def _load_artists_names() -> List[str]:
