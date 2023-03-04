@@ -8,7 +8,7 @@ from consts.miscellaneous_consts import UTF_8_ENCODING
 from consts.path_consts import WIKIPEDIA_CATEGORIES_PATH, WIKIPEDIA_CATEGORIES_MEMBERS_PATH
 from consts.wikipedia_consts import CATEGORY
 from data_collection.wikipedia.wikipedia_manager import WikipediaManager
-from utils import read_json
+from utils.file_utils import read_json
 
 
 class WikipediaCategoriesFetcher:

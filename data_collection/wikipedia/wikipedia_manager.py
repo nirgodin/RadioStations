@@ -6,7 +6,7 @@ from wikipediaapi import WikipediaPage
 from component_factory import ComponentFactory
 from consts.language_consts import HEBREW_LANGUAGE_ABBREVIATION, ENGLISH_LANGUAGE_ABBREVIATION
 from tools.language_detector import LanguageDetector
-from utils import is_in_hebrew
+from utils.general_utils import is_in_hebrew
 
 
 class WikipediaManager:

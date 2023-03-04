@@ -11,7 +11,7 @@ from consts.api_consts import AIO_POOL_SIZE
 from consts.musixmatch_consts import MUSIXMATCH_API_KEY, DAILY_REQUESTS_LIMIT, \
     MUSIXMATCH_HEADERS, MUSIXMATCH_LYRICS_URL_FORMAT, MUSIXMATCH_TRACK_ID, LYRICS, BODY, MESSAGE
 from consts.path_consts import MUSIXMATCH_TRACK_IDS_PATH, MUSIXMATCH_TRACKS_LYRICS_PATH
-from utils import to_json, read_json
+from utils.file_utils import to_json, read_json
 
 
 class MusixmatchLyricsFetcher:

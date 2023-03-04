@@ -11,7 +11,7 @@ from consts.path_consts import WIKIPEDIA_ISRAELI_ARTISTS_GENDER_PATH, TRANSLATIO
     WIKIPEDIA_RELEVANT_CATEGORIES_PATH, WIKIPEDIA_CATEGORIES_PATH
 from data_collection.wikipedia.gender.genders import Genders
 from data_collection.wikipedia.wikipedia_manager import WikipediaManager
-from utils import load_txt_file_lines, to_json
+from utils.file_utils import load_txt_file_lines, to_json
 
 
 class WikipediaCategoriesSearcher:

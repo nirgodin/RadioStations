@@ -19,7 +19,8 @@ from consts.miscellaneous_consts import UTF_8_ENCODING
 from consts.path_consts import MERGED_DATA_PATH, TRANSLATIONS_PATH
 from consts.rapid_api_consts import CONTENT_TYPE
 from data_collection.translation.translators.microsoft_translator import MicrosoftTranslator
-from utils import chain_dicts, append_to_csv, is_in_hebrew
+from utils.general_utils import chain_dicts, is_in_hebrew
+from utils.file_utils import append_to_csv
 
 
 class TranslationsCollector:

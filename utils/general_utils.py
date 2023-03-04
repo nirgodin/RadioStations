@@ -1,31 +1,15 @@
-import os
 import re
 from datetime import datetime
 from functools import lru_cache, reduce
-from typing import Dict, Any, List, Union
-import json
+from typing import List
 
 import numpy as np
 import spotipy
-from pandas import DataFrame
 from spotipy import SpotifyClientCredentials
 
 from component_factory import ComponentFactory
 from consts.language_consts import LANGUAGE, HEBREW_LANGUAGE_ABBREVIATION
-from consts.miscellaneous_consts import UTF_8_ENCODING
-
-YEAR_REGEX = re.compile(r'.*([1-3][0-9]{3})')
-JSON_ENCODING = 'utf-8'
-
-
-def to_json(d: Union[dict, list], path: str) -> None:
-    with open(path, 'w', encoding=JSON_ENCODING) as f:
-        json.dump(d, f, ensure_ascii=False, indent=4)
-
-
-def read_json(path: str) -> dict:
-    with open(path, 'r', encoding=JSON_ENCODING) as f:
-        return json.load(f)
+from consts.miscellaneous_consts import YEAR_REGEX
 
 
 def get_current_datetime() -> str:
@@ -47,13 +31,6 @@ def extract_year(date: str) -> int:
     return np.nan
 
 
-def append_to_csv(data: DataFrame, output_path: str) -> None:
-    if os.path.exists(output_path):
-        data.to_csv(output_path, header=False, index=False, mode='a', encoding=UTF_8_ENCODING)
-    else:
-        data.to_csv(output_path, index=False, encoding=UTF_8_ENCODING)
-
-
 def chain_dicts(dicts: List[dict]) -> dict:
     return reduce(lambda dict1, dict2: {**dict1, **dict2}, dicts)
 
@@ -64,10 +41,3 @@ def is_in_hebrew(s: str) -> bool:
     language = language_and_confidence[LANGUAGE]
 
     return language == HEBREW_LANGUAGE_ABBREVIATION
-
-
-def load_txt_file_lines(path: str) -> List[str]:
-    with open(path, encoding='utf-8') as f:
-        hebrew_words: str = f.read()
-
-    return hebrew_words.split('\n')

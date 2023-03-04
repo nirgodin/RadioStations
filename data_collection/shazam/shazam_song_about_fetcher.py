@@ -5,18 +5,16 @@ from typing import List, Union, Dict
 
 import pandas as pd
 from asyncio_pool import AioPool
-from pandas import DataFrame
 from shazamio import Shazam
 from tqdm import tqdm
 
 from consts.api_consts import AIO_POOL_SIZE
 from consts.data_consts import TYPE
-from consts.miscellaneous_consts import UTF_8_ENCODING
 from consts.path_consts import SHAZAM_TRACKS_ABOUT_PATH, SHAZAM_TRACKS_IDS_PATH, SHAZAM_TRACKS_LYRICS_PATH
 from consts.shazam_consts import SHAZAM_TRACK_KEY, TITLE, SUBTITLE, GENRES, PRIMARY, PRIMARY_GENRE, ALBUM_ADAM_ID, \
     TRACK_ADAM_ID, SHAZAM_RELEASE_DATE, SECTIONS, METADATA, TEXT, ALBUM, LABEL, SHAZAM_LYRICS, BEACON_DATA, LYRICS_ID, \
     LYRICS_PROVIDER_NAME, LYRICS_PROVIDER_TRACK_ID, COMMON_TRACK_ID, LYRICS_TEXT, LYRICS_FOOTER
-from utils import read_json, to_json, append_to_csv
+from utils.file_utils import read_json, to_json, append_to_csv
 
 
 class ShazamTrackAboutFetcher:

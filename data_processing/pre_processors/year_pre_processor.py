@@ -2,7 +2,7 @@ from pandas import DataFrame
 
 from consts.data_consts import ADDED_AT, BROADCASTING_YEAR
 from data_processing.pre_processors.pre_processor_interface import IPreProcessor
-from utils import extract_year
+from utils.general_utils import extract_year
 
 
 class YearPreProcessor(IPreProcessor):

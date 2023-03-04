@@ -8,7 +8,7 @@ from consts.data_consts import ID, NAME
 from consts.path_consts import SHAZAM_CHARTS_METADATA_PATH, SHAZAM_CITIES_PATH_FORMAT
 from consts.shazam_consts import ISRAEL_COUNTRY_CODE, COUNTRIES, CITIES
 from data_collection.shazam.shazam_utils import extract_tracks_data, to_csv
-from utils import read_json
+from utils.file_utils import read_json
 
 
 class ShazamCitiesFetcher:

@@ -6,7 +6,7 @@ from typing import Generator, List, Tuple, Dict
 from tqdm import tqdm
 
 from consts.path_consts import SHAZAM_TRACKS_LYRICS_PATH, TRACKS_WORD_COUNT_PATH
-from utils import read_json, to_json
+from utils.file_utils import read_json, to_json
 
 
 class TracksWordCountAnalyzer:

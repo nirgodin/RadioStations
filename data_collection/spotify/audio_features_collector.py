@@ -14,7 +14,7 @@ from data_collection.spotify.access_token_generator import AccessTokenGenerator
 from consts.api_consts import AUDIO_FEATURES_URL_FORMAT, AIO_POOL_SIZE
 from consts.data_consts import NAME, ARTIST_NAME, TRACKS, ITEMS, URI
 from consts.path_consts import MERGED_DATA_PATH
-from utils import get_current_datetime, get_spotipy
+from utils.general_utils import get_current_datetime, get_spotipy
 
 
 class AudioFeaturesCollector:

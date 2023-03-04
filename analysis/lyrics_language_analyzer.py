@@ -2,17 +2,14 @@ import os
 from typing import Dict, Union, List, Optional
 
 import pandas as pd
-import spacy
-import spacy_langdetect
 from pandas import DataFrame
-from spacy import Language
 from tqdm import tqdm
 
 from consts.data_consts import ID
 from consts.musixmatch_consts import LYRICS_BODY
 from consts.path_consts import MUSIXMATCH_TRACKS_LYRICS_PATH, MUSIXMATCH_TRACKS_LANGUAGES_PATH
 from tools.language_detector import LanguageDetector
-from utils import read_json
+from utils.file_utils import read_json
 
 LANGUAGE_DETECTOR_FACTORY_KEY = "language_detector"
 SPACY_ENGLISH_SMALL_MODEL = "en_core_web_sm"

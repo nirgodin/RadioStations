@@ -1,19 +1,16 @@
 import re
-from typing import Dict, List, Optional
+from typing import List, Optional
 
 import pandas as pd
 from pandas import DataFrame
 from tqdm import tqdm
 
-from consts.data_consts import ARTIST_NAME, IS_ISRAELI
-from consts.microsoft_translator_consts import TRANSLATION
-from consts.miscellaneous_consts import UTF_8_ENCODING
+from consts.data_consts import ARTIST_NAME
 from consts.openai_consts import ARTIST_GENDER
-from consts.path_consts import MERGED_DATA_PATH, TRANSLATIONS_PATH, HEBREW_WORDS_TXT_FILE_PATH_FORMAT, \
-    WIKIPEDIA_ISRAELI_ARTISTS_GENDER_PATH
+from consts.path_consts import HEBREW_WORDS_TXT_FILE_PATH_FORMAT
 from data_collection.wikipedia.gender.genders import Genders
 from data_collection.wikipedia.wikipedia_manager import WikipediaManager
-from utils import load_txt_file_lines
+from utils.file_utils import load_txt_file_lines
 
 
 class WikipediaGenderFetcher:

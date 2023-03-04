@@ -15,7 +15,7 @@ from consts.musixmatch_consts import MUSIXMATCH_TRACK_SEARCH_URL_FORMAT, MUSIXMA
     MUSIXMATCH_HEADERS
 from consts.path_consts import MUSIXMATCH_TRACK_IDS_PATH, MERGED_DATA_PATH
 from data_collection.musixmatch.track_serach_response_reader import TrackSearchResponseReader
-from utils import to_json, read_json
+from utils.file_utils import to_json, read_json
 
 MUSIXMATCH_RELEVANT_COLUMNS = [
     ARTIST_NAME,
