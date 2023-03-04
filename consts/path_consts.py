@@ -31,3 +31,6 @@ FACE_MODEL_PATH = r'tools/image_detection/resources/res10_300x300_ssd_iter_14000
 FACE_MODEL_WEIGHTS_PATH = r'tools/image_detection/resources/deploy.prototxt.txt'
 GENDER_MODEL_WEIGHTS_PATH = r'tools/image_detection/resources/deploy_gender.prototxt'
 GENDER_MODEL_PATH = r'tools/image_detection/resources/gender_net.caffemodel'
+GOOGLE_IMAGES_GENDER_PATH = r'data/google_images/artists_genders.csv'
+GOOGLE_IMAGES_RESOURCES_PATH = r'data_collection/google_images/resources'
+ARTISTS_PHOTOS_DIR_PATH = r'data_collection/google_images/resources/artists_photos'

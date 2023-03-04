@@ -23,6 +23,10 @@ class GenderImageDetector:
 
     def detect_gender(self, input_path: str, frame_width: int = 400) -> List[Dict[str, Union[str, float]]]:
         img = cv2.imread(input_path, cv2.IMREAD_COLOR)
+
+        if img is None:
+            return []
+
         frame = img.copy()
 
         if frame.shape[1] > frame_width:
