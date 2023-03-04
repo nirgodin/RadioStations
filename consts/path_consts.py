@@ -26,3 +26,4 @@ HEBREW_WORDS_TXT_FILE_PATH_FORMAT = r'data_collection/wikipedia/gender/resources
 WIKIPEDIA_RELEVANT_CATEGORIES_PATH = r'data_collection/wikipedia/categories/resources/relevant_categories_words.txt'
 WIKIPEDIA_CATEGORIES_PATH = r'data_collection\wikipedia\categories\resources\relevant_categories.json'
 WIKIPEDIA_CATEGORIES_MEMBERS_PATH = r'data\wikipedia\categories_members.csv'
+WIKIPEDIA_OPENAI_UNKNOWN_GENDERS_PATH = r'data\wikipedia\openai_unknown_genders.csv'
