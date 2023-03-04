@@ -31,9 +31,11 @@ class WikipediaGenderFetcher:
 
         with tqdm(total=len(artists)) as progress_bar:
             for artist in artists:
+                gender = self._find_single_artist_gender(artist)
+                print(f'{artist} gender is `{gender}`')
                 record = {
                     ARTIST_NAME: artist,
-                    ARTIST_GENDER: self._find_single_artist_gender(artist)
+                    ARTIST_GENDER: gender
                 }
                 artists_records.append(record)
                 progress_bar.update(1)
@@ -41,11 +43,8 @@ class WikipediaGenderFetcher:
         return pd.DataFrame.from_records(artists_records)
 
     def _find_single_artist_gender(self, artist_name: str) -> str:
-        translated_artist_name = self._artists_names_translations.get(artist_name)
-        if translated_artist_name is None:
-            return ''
+        page_summary = self._wikipedia_manager.get_page_summary(page_title=artist_name)
 
-        page_summary = self._wikipedia_manager.get_page_summary(page_title=translated_artist_name)
         if page_summary == '':
             return ''
 
@@ -76,10 +75,3 @@ class WikipediaGenderFetcher:
     def _get_words(gender: Genders) -> List[str]:
         path = HEBREW_WORDS_TXT_FILE_PATH_FORMAT.format(gender.value)
         return load_txt_file_lines(path)
-
-    @property
-    def _artists_names_translations(self) -> Dict[str, str]:
-        data = pd.read_csv(TRANSLATIONS_PATH)
-        return {
-            artist_name: translation for artist_name, translation in zip(data[ARTIST_NAME], data[TRANSLATION])
-        }
