@@ -49,8 +49,9 @@ class ShazamSearchFetcher:
 
         with tqdm(total=number_of_tracks) as progress_bar:
             func = partial(self._search_single_track, progress_bar)
+            tracks = await pool.map(func, data[SONG].tolist())
 
-            return await pool.map(func, data[SONG].tolist())
+        return [track for track in tracks if isinstance(track, dict)]
 
     async def _search_single_track(self, progress_bar: tqdm, song: str) -> Dict[str, str]:
         progress_bar.update(1)
