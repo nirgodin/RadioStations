@@ -12,7 +12,7 @@ class GoogleImagesDownloader:
         self._images_per_artist = images_per_artist
         self._invalid_os_chars_regex = re.compile(r'[/:\"]')
         self._images_paths = None
-        self._clear_images_dir()
+        self._remove_images(images_paths=self._get_image_paths())
 
     def download(self, artist: str) -> List[str]:
         try:
@@ -41,9 +41,17 @@ class GoogleImagesDownloader:
 
         return images_paths
 
-    def _clear_images_dir(self) -> None:
-        for image_path in self._get_image_paths():
-            os.remove(image_path)
+    def _remove_images(self, images_paths: List[str], retries_left: int = 3) -> None:
+        if retries_left == 0:
+            raise PermissionError()
+
+        for image_path in images_paths:
+            try:
+                os.remove(image_path)
+                images_paths.remove(image_path)
+
+            except PermissionError:
+                return self._remove_images(images_paths, retries_left=retries_left-1)
 
     def __enter__(self):
         return self
@@ -52,7 +60,5 @@ class GoogleImagesDownloader:
         if self._images_paths is None:
             return
 
-        for image_path in self._images_paths:
-            os.remove(image_path)
-
+        self._remove_images(self._images_paths)
         self._images_paths = None
