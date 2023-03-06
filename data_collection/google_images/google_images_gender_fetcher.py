@@ -46,8 +46,10 @@ class GoogleImagesGenderFetcher:
 
         with tqdm(total=len(chunk)) as progress_bar:
             for artist in chunk:
-                images_paths = self._image_downloader.download(artist)
-                record = self._get_images_predictions(artist, images_paths)
+                with self._image_downloader as image_downloader:
+                    images_paths = image_downloader.download(artist)
+                    record = self._get_images_predictions(artist, images_paths)
+
                 records.append(record)
                 progress_bar.update(1)
 
@@ -55,6 +57,10 @@ class GoogleImagesGenderFetcher:
 
     def _get_images_predictions(self, artist: str, images_paths: List[str]) -> Dict[str, Union[str, float]]:
         predictions = [self._get_single_image_prediction(path) for path in images_paths]
+
+        if not predictions:
+            return {ARTIST_NAME: artist}
+
         predictions_count = Counter([prediction[ARTIST_GENDER] for prediction in predictions])
         most_common_prediction, most_common_prediction_count = predictions_count.most_common(1)[0]
         confidence = mean([prediction[CONFIDENCE] for prediction in predictions
@@ -116,4 +122,4 @@ class GoogleImagesGenderFetcher:
 
 
 if __name__ == '__main__':
-    GoogleImagesGenderFetcher(chunk_size=10).fetch()
+    GoogleImagesGenderFetcher(chunk_size=20).fetch()
