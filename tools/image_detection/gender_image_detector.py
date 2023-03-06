@@ -54,7 +54,11 @@ class GenderImageDetector:
         return cv2.resize(image, dim, interpolation=inter)
 
     def _get_faces(self, frame: ndarray) -> List[Image]:
-        blob = cv2.dnn.blobFromImage(frame, 1.0, (300, 300), (104, 177.0, 123.0))
+        try:
+            blob = cv2.dnn.blobFromImage(frame, 1.0, (300, 300), (104, 177.0, 123.0))
+        except cv2.error:
+            return []
+
         self._face_model.setInput(blob)
         output = np.squeeze(self._face_model.forward())
         faces = []
@@ -102,7 +106,3 @@ class GenderImageDetector:
     @staticmethod
     def _load_model(weights_path: str, model_path: str) -> dnn_Net:
         return cv2.dnn.readNetFromCaffe(weights_path, model_path)
-
-
-if __name__ == '__main__':
-    GenderImageDetector().detect_gender(r'C:\Users\nirgo\Documents\R\RON1023.jpg')
