@@ -1,6 +1,6 @@
 import asyncio
 from functools import partial
-from typing import Union, Dict, Tuple, List
+from typing import Union, Tuple, List
 
 import numpy as np
 import pandas as pd
@@ -9,18 +9,18 @@ from asyncio_pool import AioPool
 from pandas import DataFrame
 from tqdm import tqdm
 
-from consts.miscellaneous_consts import UTF_8_ENCODING
-from data_collection.spotify.access_token_generator import AccessTokenGenerator
 from consts.api_consts import AUDIO_FEATURES_URL_FORMAT, AIO_POOL_SIZE
 from consts.data_consts import NAME, ARTIST_NAME, TRACKS, ITEMS, URI
+from consts.miscellaneous_consts import UTF_8_ENCODING
 from consts.path_consts import MERGED_DATA_PATH
 from utils.general_utils import get_current_datetime, get_spotipy
+from utils.spotify_utils import build_spotify_headers, is_access_token_expired
 
 
 class AudioFeaturesCollector:
     def __init__(self):
         self._sp = get_spotipy()
-        self._session = ClientSession(headers=self._build_headers())
+        self._session = ClientSession(headers=build_spotify_headers())
 
     async def collect(self, data: DataFrame) -> None:
         unique_tracks_data = data.drop_duplicates(subset=[NAME, ARTIST_NAME])
@@ -58,7 +58,7 @@ class AudioFeaturesCollector:
         async with self._session.get(url=url) as response:
             audio_features_response = await response.json()
 
-        if self._is_access_token_expired(audio_features_response):
+        if is_access_token_expired(audio_features_response):
             await self._renew_client_session()
             return await self._get_single_track_features(progress_bar, artist_and_track)
 
@@ -79,22 +79,9 @@ class AudioFeaturesCollector:
 
         return split_uri[-1]
 
-    @staticmethod
-    def _is_access_token_expired(response: dict) -> bool:
-        return response.get('error', {}).get('status') == 401
-
     async def _renew_client_session(self) -> None:
         await self._session.close()
-        self._session = ClientSession(headers=self._build_headers())
-
-    @staticmethod
-    def _build_headers() -> Dict[str, str]:
-        bearer_token = AccessTokenGenerator.generate()
-        return {
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-            "Authorization": f"Bearer {bearer_token}"
-        }
+        self._session = ClientSession(headers=build_spotify_headers())
 
 
 if __name__ == '__main__':
