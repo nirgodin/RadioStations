@@ -49,13 +49,13 @@ class ArtistsIDsCollector:
         pool = AioPool(AIO_POOL_SIZE)
 
         with tqdm(total=len(artists_and_track_ids)) as progress_bar:
-            func = partial(self._get_single_track_features, progress_bar)
+            func = partial(self._get_single_track_artist_id, progress_bar)
 
             return await pool.map(fn=func, iterable=artists_and_track_ids)
 
-    async def _get_single_track_features(self,
-                                         progress_bar: tqdm,
-                                         artist_and_track_id: str) -> Dict[str, str]:
+    async def _get_single_track_artist_id(self,
+                                          progress_bar: tqdm,
+                                          artist_and_track_id: Tuple[str, str]) -> Dict[str, str]:
         artist, track_id = artist_and_track_id
         progress_bar.update(1)
         url = TRACKS_URL_FORMAT.format(track_id)
@@ -65,7 +65,7 @@ class ArtistsIDsCollector:
 
         if is_access_token_expired(response):
             await self._renew_client_session()
-            return await self._get_single_track_features(progress_bar, track_id)
+            return await self._get_single_track_artist_id(progress_bar, artist_and_track_id)
 
         elif not raw_response.ok:
             return {
