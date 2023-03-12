@@ -10,7 +10,7 @@ from pandas import DataFrame
 from tqdm import tqdm
 
 from consts.api_consts import AIO_POOL_SIZE
-from consts.data_consts import ARTIST_NAME, NAME, ID
+from consts.data_consts import ARTIST_NAME, NAME, ID, POPULARITY
 from consts.musixmatch_consts import MUSIXMATCH_TRACK_SEARCH_URL_FORMAT, MUSIXMATCH_API_KEY, DAILY_REQUESTS_LIMIT, \
     MUSIXMATCH_HEADERS
 from consts.path_consts import MUSIXMATCH_TRACK_IDS_PATH, MERGED_DATA_PATH
@@ -20,7 +20,8 @@ from utils.file_utils import to_json, read_json
 MUSIXMATCH_RELEVANT_COLUMNS = [
     ARTIST_NAME,
     NAME,
-    ID
+    ID,
+    POPULARITY
 ]
 
 
@@ -41,6 +42,7 @@ class MusixmatchSearchFetcher:
 
     def _extract_daily_tracks_subset(self, data: DataFrame) -> DataFrame:
         non_existing_tracks_data = data[~data[ID].isin(self._existing_tracks.keys())]
+        non_existing_tracks_data.sort_values(by=POPULARITY, ascending=False, inplace=True)
         relevant_data = non_existing_tracks_data[MUSIXMATCH_RELEVANT_COLUMNS]
         relevant_data.dropna(subset=[ID], inplace=True)
         daily_subset = relevant_data.head(self._request_limit).reset_index(drop=True)
@@ -51,14 +53,13 @@ class MusixmatchSearchFetcher:
         raw_responses = await self._fetch_raw_responses(data)
         valid_responses = {}
 
-        for response, track_id in zip(raw_responses, data[ID]):
+        for response, (i, row) in zip(raw_responses, data.iterrows()):
             if not isinstance(response, dict):
                 continue
 
-            formatted_response = self._response_reader.read(response)
-
-            if formatted_response is not None:
-                valid_responses[track_id] = formatted_response
+            formatted_response = self._response_reader.read(response, row)
+            track_id = row[ID]
+            valid_responses[track_id] = formatted_response
 
         return valid_responses
 
@@ -98,6 +99,6 @@ class MusixmatchSearchFetcher:
 
 if __name__ == '__main__':
     data = pd.read_csv(MERGED_DATA_PATH)
-    fetcher = MusixmatchSearchFetcher()
+    fetcher = MusixmatchSearchFetcher(request_limit=1)
     loop = asyncio.get_event_loop()
     loop.run_until_complete(fetcher.fetch_tracks_ids(data))

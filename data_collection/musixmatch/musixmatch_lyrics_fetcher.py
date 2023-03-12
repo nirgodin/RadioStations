@@ -20,9 +20,9 @@ class MusixmatchLyricsFetcher:
         self._request_limit = request_limit
 
     async def fetch_tracks_lyrics(self) -> None:
-        tracks_without_lyrics = [
-            track_id for track_id in self._track_ids.keys() if track_id not in self._tracks_lyrics.keys()
-        ]
+        tracks_ids = list(self._track_ids.keys())
+        existing_tracks_lyrics = list(self._tracks_lyrics.keys())
+        tracks_without_lyrics = [track_id for track_id in tracks_ids if track_id not in existing_tracks_lyrics]
         daily_subset = tracks_without_lyrics[:self._request_limit]
         valid_responses = await self._fetch_tracks_lyrics(daily_subset)
         valid_responses.update(self._tracks_lyrics)
@@ -30,8 +30,8 @@ class MusixmatchLyricsFetcher:
         to_json(d=valid_responses, path=MUSIXMATCH_TRACKS_LYRICS_PATH)
 
     async def _fetch_tracks_lyrics(self, spotify_track_ids: List[str]) -> Dict[str, dict]:
-        musixmatch_track_ids = list(map(lambda track_id: self._track_ids[track_id][MUSIXMATCH_TRACK_ID], spotify_track_ids))
-        raw_responses = await self._fetch_raw_responses(spotify_track_ids)
+        musixmatch_track_ids = map(lambda track_id: self._map_spotify_to_musixmatch_track_id(track_id), spotify_track_ids)
+        raw_responses = await self._fetch_raw_responses(list(spotify_track_ids))
         zipped_responses_and_ids = zip(raw_responses, spotify_track_ids, musixmatch_track_ids)
 
         return self._get_valid_responses(zipped_responses_and_ids)
@@ -50,13 +50,20 @@ class MusixmatchLyricsFetcher:
                                        session: ClientSession,
                                        spotify_track_id: str) -> dict:
         progress_bar.update(1)
-        musixmatch_track_id = self._track_ids[spotify_track_id][MUSIXMATCH_TRACK_ID]
+        musixmatch_track_id = self._map_spotify_to_musixmatch_track_id(spotify_track_id)
+
+        if not musixmatch_track_id:
+            return {}
+
         url = self._build_request_url(musixmatch_track_id)
 
         async with session.get(url=url) as response:
             track_lyrics_response = await response.json(content_type=None)
 
         return track_lyrics_response
+
+    def _map_spotify_to_musixmatch_track_id(self, spotify_track_id: str) -> str:
+        return self._track_ids.get(spotify_track_id, {}).get(MUSIXMATCH_TRACK_ID, '')
 
     def _build_request_url(self, track_id: str) -> str:
         return MUSIXMATCH_LYRICS_URL_FORMAT.format(track_id, self._api_key)
@@ -72,6 +79,8 @@ class MusixmatchLyricsFetcher:
 
             if response_lyrics is not None:
                 valid_responses[spotify_track_id] = response_lyrics
+            else:
+                valid_responses[spotify_track_id] = {}
 
         return valid_responses
 
@@ -111,6 +120,6 @@ class MusixmatchLyricsFetcher:
 
 
 if __name__ == '__main__':
-    fetcher = MusixmatchLyricsFetcher(request_limit=5)
+    fetcher = MusixmatchLyricsFetcher(request_limit=1)
     loop = asyncio.get_event_loop()
     loop.run_until_complete(fetcher.fetch_tracks_lyrics())

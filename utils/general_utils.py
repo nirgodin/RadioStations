@@ -1,5 +1,6 @@
 import re
 from datetime import datetime
+from difflib import SequenceMatcher
 from functools import lru_cache, reduce
 from typing import List
 
@@ -41,3 +42,7 @@ def is_in_hebrew(s: str) -> bool:
     language = language_and_confidence[LANGUAGE]
 
     return language == HEBREW_LANGUAGE_ABBREVIATION
+
+
+def get_similarity_score(s1: str, s2: str) -> float:
+    return SequenceMatcher(None, s1, s2).ratio()
