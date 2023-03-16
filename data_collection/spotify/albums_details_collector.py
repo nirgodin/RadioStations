@@ -37,9 +37,12 @@ class AlbumsDetailsCollector:
     async def _collect_single_chunk(self, artists_ids: List[str]) -> None:
         artists_dfs = await self._get_artists_albums(artists_ids)
         valid_dfs = [df for df in artists_dfs if isinstance(df, DataFrame)]
-        albums_data = pd.concat(valid_dfs)
 
-        append_to_csv(data=albums_data, output_path=ALBUMS_DETAILS_OUTPUT_PATH)
+        if valid_dfs:
+            albums_data = pd.concat(valid_dfs)
+            append_to_csv(data=albums_data, output_path=ALBUMS_DETAILS_OUTPUT_PATH)
+        else:
+            print('No valid dfs. Skipping append to csv')
 
     async def _get_artists_albums(self, artists_ids: List[str]) -> List[DataFrame]:
         pool = AioPool(AIO_POOL_SIZE)
