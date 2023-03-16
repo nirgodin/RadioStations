@@ -1,10 +1,9 @@
 from typing import List, Optional
 
-import pandas as pd
 from pandas import DataFrame
 
 from consts.miscellaneous_consts import UTF_8_ENCODING
-from consts.path_consts import MERGED_DATA_PATH, SPOTIFY_DATA_BASE_DIR
+from consts.path_consts import MERGED_DATA_PATH, RADIO_STATIONS_SNAPSHOTS_DIR
 from data_processing.data_merger import DataMerger
 from data_processing.pre_processors.audio_features_pre_processor import AudioFeaturesPreProcessor
 from data_processing.pre_processors.formatter_pre_processor import FormatterPreProcessor
@@ -16,9 +15,12 @@ from data_processing.pre_processors.year_pre_processor import YearPreProcessor
 
 
 class DataPreProcessor:
+    def __init__(self, max_year: int):
+        self._max_year = max_year
+
     def pre_process(self, output_path: Optional[str] = None):
         print(f'Starting to merge data to single data frame')
-        data = DataMerger.merge(dir_path=SPOTIFY_DATA_BASE_DIR, output_path=MERGED_DATA_PATH)
+        data = DataMerger.merge(dir_path=RADIO_STATIONS_SNAPSHOTS_DIR, output_path=MERGED_DATA_PATH)
         pre_processed_data = self._pre_process_data(data)
 
         if output_path is not None:
@@ -38,7 +40,7 @@ class DataPreProcessor:
     @property
     def _sorted_pre_processors(self) -> List[IPreProcessor]:
         return [
-            YearPreProcessor(),
+            YearPreProcessor(max_year=self._max_year),
             IsraeliPreProcessor(),
             GenrePreProcessor(),
             GenderPreProcessor(),

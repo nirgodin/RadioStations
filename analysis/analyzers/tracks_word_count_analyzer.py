@@ -5,15 +5,16 @@ from typing import Generator, List, Tuple, Dict
 
 from tqdm import tqdm
 
+from analysis.analyzer_interface import IAnalyzer
 from consts.path_consts import SHAZAM_TRACKS_LYRICS_PATH, TRACKS_WORD_COUNT_PATH
 from utils.file_utils import read_json, to_json
 
 
-class TracksWordCountAnalyzer:
+class TracksWordCountAnalyzer(IAnalyzer):
     def __init__(self):
         self._numeric_punctuation_spaces_regex = re.compile(r'[^A-Za-z]+')
 
-    def analyze(self):
+    def analyze(self) -> None:
         for chunk in self._generate_lyrics_chunks(chunk_size=50):
             chunk_word_count = self._count_chunk_words(chunk)
             self._append_to_json(chunk_word_count)
@@ -57,6 +58,10 @@ class TracksWordCountAnalyzer:
             chunk_word_count.update(existing_word_count)
 
         to_json(d=chunk_word_count, path=TRACKS_WORD_COUNT_PATH)
+
+    @property
+    def name(self) -> str:
+        return 'tracks word count analyzer'
 
 
 if __name__ == '__main__':

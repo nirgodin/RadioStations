@@ -5,6 +5,7 @@ import pandas as pd
 from pandas import DataFrame
 from tqdm import tqdm
 
+from analysis.analyzer_interface import IAnalyzer
 from consts.data_consts import ID
 from consts.musixmatch_consts import LYRICS_BODY
 from consts.path_consts import MUSIXMATCH_TRACKS_LYRICS_PATH, MUSIXMATCH_TRACKS_LANGUAGES_PATH
@@ -15,7 +16,7 @@ LANGUAGE_DETECTOR_FACTORY_KEY = "language_detector"
 SPACY_ENGLISH_SMALL_MODEL = "en_core_web_sm"
 
 
-class LyricsLanguageAnalyzer:
+class LyricsLanguageAnalyzer(IAnalyzer):
     def __init__(self):
         self._tracks_lyrics = read_json(MUSIXMATCH_TRACKS_LYRICS_PATH)
         self._language_detector = LanguageDetector()
@@ -71,6 +72,10 @@ class LyricsLanguageAnalyzer:
             return pd.DataFrame()
 
         return pd.read_csv(MUSIXMATCH_TRACKS_LANGUAGES_PATH)
+
+    @property
+    def name(self) -> str:
+        return 'lyrics language analyzer'
 
 
 if __name__ == '__main__':

@@ -6,19 +6,24 @@ import pandas as pd
 from pandas import DataFrame
 from tqdm import tqdm
 
+from analysis.analyzer_interface import IAnalyzer
+from consts.data_consts import NAME, ARTIST_NAME, GENRES, GENRE, COUNT
+from consts.miscellaneous_consts import UTF_8_ENCODING
 from consts.path_consts import MERGED_DATA_PATH, GENRES_MAPPING_PATH
 
 
-class GenreAnalyzer:
-    def analyze(self, data_path: str, output_path: Optional[str] = None) -> DataFrame:
-        data = pd.read_csv(data_path)
-        non_duplicated_data = data.drop_duplicates(subset=['name', 'artist_name'])
+class GenreAnalyzer(IAnalyzer):
+    def __init__(self, data_path: str = MERGED_DATA_PATH, output_path: Optional[str] = None):
+        self._data_path = data_path
+        self._output_path = output_path
+
+    def analyze(self) -> None:
+        data = pd.read_csv(self._data_path)
+        non_duplicated_data = data.drop_duplicates(subset=[NAME, ARTIST_NAME])
         genres_count = self._get_genres_count(non_duplicated_data)
 
-        if output_path is not None:
-            genres_count.to_csv(output_path, index=False)
-
-        return genres_count
+        if self._output_path is not None:
+            genres_count.to_csv(self._output_path, index=False, encoding=UTF_8_ENCODING)
 
     def _get_genres_count(self, data: DataFrame) -> DataFrame:
         genres_counts = self._generate_tracks_genres_count(data)
@@ -33,7 +38,7 @@ class GenreAnalyzer:
         with tqdm(total=len(data)) as progress_bar:
             for i, row in data.iterrows():
                 progress_bar.update(1)
-                track_genres = eval(row['genres'])
+                track_genres = eval(row[GENRES])
 
                 if isinstance(track_genres, list):
                     yield Counter(track_genres)
@@ -41,15 +46,19 @@ class GenreAnalyzer:
     @staticmethod
     def _pre_process_genres_count(genres_count: DataFrame) -> DataFrame:
         genres_count.reset_index(level=0, inplace=True)
-        genres_count.columns = ['genre', 'count']
-        genres_count.sort_values(by='count', ascending=False, inplace=True)
+        genres_count.columns = [GENRE, COUNT]
+        genres_count.sort_values(by=COUNT, ascending=False, inplace=True)
 
         return genres_count
 
+    @property
+    def name(self) -> str:
+        return 'genre analyzer'
+
 
 if __name__ == '__main__':
-    analyzer = GenreAnalyzer()
-    analyzer.analyze(
+    analyzer = GenreAnalyzer(
         data_path=MERGED_DATA_PATH,
         output_path=GENRES_MAPPING_PATH
     )
+    analyzer.analyze()

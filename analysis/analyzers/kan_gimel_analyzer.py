@@ -4,11 +4,11 @@ from typing import List, Dict, Optional
 import pandas as pd
 from pandas import DataFrame
 
-from consts.data_consts import NAME, ARTIST_NAME, MAIN_ALBUM, STATION
+from analysis.analyzer_interface import IAnalyzer
+from consts.data_consts import NAME, ARTIST_NAME, MAIN_ALBUM, STATION, COUNT
 from consts.path_consts import KAN_GIMEL_ANALYZER_OUTPUT_PATH, MERGED_DATA_PATH
 from consts.playlists_consts import KAN_GIMEL
 
-COUNT = 'count'
 COUNT_THRESHOLD = 8
 EXCLUDED_ARTISTS = [
     '2Pac',
@@ -16,14 +16,18 @@ EXCLUDED_ARTISTS = [
 ]
 
 
-class KanGimelAnalyzer:
-    def analyze(self, data_path: str, output_path: Optional[str] = None) -> Dict[str, List[str]]:
-        data = pd.read_csv(data_path)
+class KanGimelAnalyzer(IAnalyzer):
+    def __init__(self, data_path: str = MERGED_DATA_PATH, output_path: Optional[str] = KAN_GIMEL_ANALYZER_OUTPUT_PATH):
+        self._data_path = data_path
+        self._output_path = output_path
+
+    def analyze(self) -> None:
+        data = pd.read_csv(self._data_path)
         kan_gimel_data = data[data[STATION] == KAN_GIMEL]
         valid_artists_names = self._extract_valid_artists_names(kan_gimel_data)
         valid_kan_gimel_data = kan_gimel_data[kan_gimel_data[ARTIST_NAME].isin(valid_artists_names)]
 
-        return self._build_output_json_data(valid_kan_gimel_data, output_path)
+        self._build_output_json_data(valid_kan_gimel_data)
 
     def _extract_valid_artists_names(self, data: DataFrame) -> List[str]:
         artists_count = self._get_artists_play_count(data)
@@ -40,15 +44,15 @@ class KanGimelAnalyzer:
 
         return count_data
 
-    def _build_output_json_data(self, data: DataFrame, output_path: Optional[str]) -> Dict[str, List[str]]:
+    def _build_output_json_data(self, data: DataFrame) -> Dict[str, List[str]]:
         jsonified_data = {
             'tracks': self._extract_unique_column_values(data, NAME),
             'artists': self._extract_unique_column_values(data, ARTIST_NAME),
             'albums': self._extract_unique_column_values(data, MAIN_ALBUM)
         }
 
-        if output_path is not None:
-            with open(output_path, 'w') as f:
+        if self._output_path is not None:
+            with open(self._output_path, 'w') as f:
                 json.dump(jsonified_data, f, indent=4, ensure_ascii=True)
 
         return jsonified_data
@@ -57,7 +61,11 @@ class KanGimelAnalyzer:
     def _extract_unique_column_values(data: DataFrame, column_name: str) -> List[str]:
         return [str(value) for value in data[column_name].unique().tolist() if not pd.isna(value)]
 
+    @property
+    def name(self) -> str:
+        return 'kan gimel analyzer'
+
 
 if __name__ == '__main__':
     analyzer = KanGimelAnalyzer()
-    analyzer.analyze(MERGED_DATA_PATH, KAN_GIMEL_ANALYZER_OUTPUT_PATH)
+    analyzer.analyze()

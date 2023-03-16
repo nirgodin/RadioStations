@@ -1,3 +1,5 @@
+from consts.data_consts import MAIN_GENRE, POPULARITY, EXPLICIT, DURATION_MS, IS_ISRAELI, TRACK_NUMBER, RELEASE_DATE, ID
+
 DANCEABILITY = 'danceability'
 ENERGY = 'energy'
 KEY = 'key'
@@ -38,3 +40,21 @@ KEY_NAMES_MAPPING = {
     10: 'A#',
     11: 'B'
 }
+DUMMY_COLUMNS = [
+    KEY,
+    MAIN_GENRE
+]
+PLAYS_COUNT = 'play_count'
+CORRELATION_COLUMNS_SUBSET = AUDIO_FEATURES + [
+    POPULARITY,
+    EXPLICIT,
+    DURATION_MS,
+    IS_ISRAELI,
+    TRACK_NUMBER,
+    RELEASE_DATE,
+    ID,
+    MAIN_GENRE
+]
+CORRELATION = 'correlation'
+X = 'x'
+Y = 'y'

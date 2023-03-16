@@ -3,35 +3,17 @@ from typing import Union
 import pandas as pd
 from pandas import DataFrame
 
-from consts.audio_features_consts import AUDIO_FEATURES, KEY
-from consts.data_consts import POPULARITY, DURATION_MS, EXPLICIT, IS_ISRAELI, ID, \
-    TRACK_NUMBER, RELEASE_DATE, MAIN_GENRE, RELEASE_YEAR
+from analysis.analyzer_interface import IAnalyzer
+from consts.audio_features_consts import AUDIO_FEATURES, DUMMY_COLUMNS, PLAYS_COUNT, CORRELATION_COLUMNS_SUBSET, \
+    CORRELATION, X, Y
+from consts.data_consts import POPULARITY, ID, \
+    RELEASE_DATE, RELEASE_YEAR
 from consts.path_consts import MERGED_DATA_PATH, CORRELATIONS_DATA_PATH
 from utils.general_utils import extract_year
 
-DUMMY_COLUMNS = [
-    KEY,
-    MAIN_GENRE
-]
 
-PLAYS_COUNT = 'play_count'
-CORRELATION_COLUMNS_SUBSET = AUDIO_FEATURES + [
-    POPULARITY,
-    EXPLICIT,
-    DURATION_MS,
-    IS_ISRAELI,
-    TRACK_NUMBER,
-    RELEASE_DATE,
-    ID,
-    MAIN_GENRE
-]
-CORRELATION = 'correlation'
-X = 'x'
-Y = 'y'
-
-
-class AudioFeaturesCorrelationsAnalyzer:
-    def analyze(self):
+class AudioFeaturesCorrelationsAnalyzer(IAnalyzer):
+    def analyze(self) -> None:
         data = self._get_clean_data()
         audio_features_and_popularity = data[CORRELATION_COLUMNS_SUBSET]
         enriched_data = self._build_features(audio_features_and_popularity)
@@ -93,6 +75,10 @@ class AudioFeaturesCorrelationsAnalyzer:
         titlized_value = [token.title() for token in tokenized_value]
 
         return ' '.join(titlized_value)
+
+    @property
+    def name(self) -> str:
+        return 'audio features correlations analyzer'
 
 
 if __name__ == '__main__':

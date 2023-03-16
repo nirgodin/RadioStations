@@ -6,7 +6,7 @@ from utils.general_utils import extract_year
 
 
 class YearPreProcessor(IPreProcessor):
-    def __init__(self, max_year: int = 2022):
+    def __init__(self, max_year: int):
         self._max_year = max_year
 
     def pre_process(self, data: DataFrame) -> DataFrame:

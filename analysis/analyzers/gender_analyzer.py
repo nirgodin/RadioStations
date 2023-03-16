@@ -3,16 +3,17 @@ from typing import Dict, List
 import pandas as pd
 from tqdm import tqdm
 
+from analysis.analyzer_interface import IAnalyzer
 from consts.data_consts import ARTIST_NAME
 from consts.miscellaneous_consts import UTF_8_ENCODING
 from consts.openai_consts import ARTIST_GENDER
 from consts.path_consts import WIKIPEDIA_ISRAELI_ARTISTS_GENDER_PATH, OPENAI_GENDERS_PATH, \
-    WIKIPEDIA_OPENAI_UNKNOWN_GENDERS_PATH
+    WIKIPEDIA_OPENAI_UNKNOWN_GENDERS_PATH, MAPPED_GENDERS_OUTPUT_PATH
 from utils.data_utils import map_df_columns, groupby_artists_by_desc_popularity
 
 
-class GenderAnalyzer:
-    def analyze(self):
+class GenderAnalyzer(IAnalyzer):
+    def analyze(self) -> None:
         artists = self._get_unique_artists_names()
         records = []
 
@@ -23,7 +24,7 @@ class GenderAnalyzer:
                 progress_bar.update(1)
 
         data = pd.DataFrame.from_records(records)
-        data.to_csv(r'data/mapped_genders.csv', index=False, encoding=UTF_8_ENCODING)
+        data.to_csv(MAPPED_GENDERS_OUTPUT_PATH, index=False, encoding=UTF_8_ENCODING)
 
     @staticmethod
     def _get_unique_artists_names() -> List[str]:
@@ -62,6 +63,10 @@ class GenderAnalyzer:
         known_data = data[~data[ARTIST_GENDER].str.contains('unknown')]
 
         return map_df_columns(known_data, ARTIST_NAME, ARTIST_GENDER)
+
+    @property
+    def name(self) -> str:
+        return 'gender analyzer'
 
 
 if __name__ == '__main__':
