@@ -12,7 +12,7 @@ from tqdm import tqdm
 from consts.api_consts import AUDIO_FEATURES_URL_FORMAT, AIO_POOL_SIZE
 from consts.data_consts import NAME, ARTIST_NAME, TRACKS, ITEMS, URI
 from consts.miscellaneous_consts import UTF_8_ENCODING
-from consts.path_consts import MERGED_DATA_PATH
+from consts.path_consts import MERGED_DATA_PATH, AUDIO_FEATURES_CHUNK_OUTPUT_PATH_FORMAT
 from utils.general_utils import get_current_datetime, get_spotipy
 from utils.spotify_utils import build_spotify_headers, is_access_token_expired
 
@@ -37,7 +37,9 @@ class AudioFeaturesCollector:
         print(f'Failed to collect audio features for {len(tracks_features) - len(valid_features)} out of {len(tracks_features)} tracks')
         tracks_features_data = pd.DataFrame.from_records(valid_features)
         now = get_current_datetime()
-        tracks_features_data.to_csv(fr'data/audio_features/{now}.csv', encoding=UTF_8_ENCODING, index=False)
+        output_path = AUDIO_FEATURES_CHUNK_OUTPUT_PATH_FORMAT.format(now)
+
+        tracks_features_data.to_csv(output_path, encoding=UTF_8_ENCODING, index=False)
 
     async def _get_tracks_features(self, data: DataFrame) -> List[dict]:
         pool = AioPool(AIO_POOL_SIZE)
