@@ -137,3 +137,6 @@ dmypy.json
 /google_creds.json
 misc.xml
 vcs.xml
+/data/
+/tools/image_detection/resources/
+/.idea/

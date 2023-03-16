@@ -1,6 +1,7 @@
 import pandas as pd
 
 from consts.miscellaneous_consts import UTF_8_ENCODING
+from consts.path_consts import RADIO_STATIONS_PLAYLIST_SNAPSHOT_PATH_FORMAT
 from consts.playlists_consts import STATIONS
 from data_collection.spotify.station import Station
 from utils.general_utils import get_current_datetime
@@ -15,7 +16,9 @@ def run():
 
     data = pd.concat(dfs)
     now = get_current_datetime()
-    data.to_csv(rf'data/spotify/{now}.csv', encoding=UTF_8_ENCODING, index=False)
+    output_path = RADIO_STATIONS_PLAYLIST_SNAPSHOT_PATH_FORMAT.format(now)
+
+    data.to_csv(output_path, encoding=UTF_8_ENCODING, index=False)
 
 
 if __name__ == '__main__':

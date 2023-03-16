@@ -37,3 +37,4 @@ ARTISTS_PHOTOS_DIR_PATH = r'data_collection/google_images/resources/artists_phot
 MEDIAFOREST_PATH_FORMAT = r'data/mediaforest/{}/{}.csv'
 ARTISTS_IDS_OUTPUT_PATH = r'data/spotify_artists_ids.csv'
 ALBUMS_DETAILS_OUTPUT_PATH = r'data/spotify_albums_details.csv'
+RADIO_STATIONS_PLAYLIST_SNAPSHOT_PATH_FORMAT = r'data/spotify/radio_stations_snapshots/{}.csv'
