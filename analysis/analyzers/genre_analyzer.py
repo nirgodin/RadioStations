@@ -9,7 +9,7 @@ from tqdm import tqdm
 from analysis.analyzer_interface import IAnalyzer
 from consts.data_consts import NAME, ARTIST_NAME, GENRES, GENRE, COUNT
 from consts.miscellaneous_consts import UTF_8_ENCODING
-from consts.path_consts import MERGED_DATA_PATH, GENRES_MAPPING_PATH
+from consts.path_consts import MERGED_DATA_PATH, GENRES_MAPPING_PATH, GENRES_LABELS_PATH
 
 
 class GenreAnalyzer(IAnalyzer):
@@ -21,9 +21,10 @@ class GenreAnalyzer(IAnalyzer):
         data = pd.read_csv(self._data_path)
         non_duplicated_data = data.drop_duplicates(subset=[NAME, ARTIST_NAME])
         genres_count = self._get_genres_count(non_duplicated_data)
+        genres_count_with_labels = self._merge_genres_labels(genres_count)
 
         if self._output_path is not None:
-            genres_count.to_csv(self._output_path, index=False, encoding=UTF_8_ENCODING)
+            genres_count_with_labels.to_csv(self._output_path, index=False, encoding=UTF_8_ENCODING)
 
     def _get_genres_count(self, data: DataFrame) -> DataFrame:
         genres_counts = self._generate_tracks_genres_count(data)
@@ -50,6 +51,15 @@ class GenreAnalyzer(IAnalyzer):
         genres_count.sort_values(by=COUNT, ascending=False, inplace=True)
 
         return genres_count
+
+    @staticmethod
+    def _merge_genres_labels(genres_count: DataFrame) -> DataFrame:
+        genres_labels = pd.read_csv(GENRES_LABELS_PATH)
+        return genres_count.merge(
+            right=genres_labels,
+            how='left',
+            on=GENRE,
+        )
 
     @property
     def name(self) -> str:

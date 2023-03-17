@@ -5,6 +5,7 @@ AUDIO_FEATURES_CHUNK_OUTPUT_PATH_FORMAT = r'data/audio_features/audio_features_c
 AUDIO_FEATURES_BASE_DIR = r'data/audio_features/audio_features_chunks'
 AUDIO_FEATURES_DATA_PATH = r'data/audio_features/audio_features_merged_data.csv'
 CORRELATIONS_DATA_PATH = r'data/popularity_play_count_correlations_data.csv'
+GENRES_LABELS_PATH = r'data\resources\genres_labels.csv'
 GENRES_MAPPING_PATH = r'data/resources/genres_mapping.csv'
 UNIQUE_ANALYZER_OUTPUT_PATH_FORMAT = r'data\unique_{}_share.csv'
 MUSIXMATCH_TRACK_IDS_PATH = r'data/musixmatch/track_ids.json'
