@@ -1,4 +1,5 @@
 import asyncio
+import os.path
 from functools import partial
 from typing import Union, Tuple, List
 
@@ -12,26 +13,40 @@ from tqdm import tqdm
 from consts.api_consts import AUDIO_FEATURES_URL_FORMAT, AIO_POOL_SIZE
 from consts.data_consts import NAME, ARTIST_NAME, TRACKS, ITEMS, URI
 from consts.miscellaneous_consts import UTF_8_ENCODING
-from consts.path_consts import MERGED_DATA_PATH, AUDIO_FEATURES_CHUNK_OUTPUT_PATH_FORMAT
+from consts.path_consts import MERGED_DATA_PATH, AUDIO_FEATURES_CHUNK_OUTPUT_PATH_FORMAT, AUDIO_FEATURES_DATA_PATH
+from tools.data_chunks_generator import DataChunksGenerator
 from utils.general_utils import get_current_datetime, get_spotipy
 from utils.spotify_utils import build_spotify_headers, is_access_token_expired
 
 
 class AudioFeaturesCollector:
-    def __init__(self):
+    def __init__(self, chunk_size: int = 1000):
         self._sp = get_spotipy()
+        self._chunks_generator = DataChunksGenerator(chunk_size)
         self._session = ClientSession(headers=build_spotify_headers())
 
     async def collect(self, data: DataFrame) -> None:
-        unique_tracks_data = data.drop_duplicates(subset=[NAME, ARTIST_NAME])
-        chunks_number = round(len(unique_tracks_data) / 1000)
-        chunks = np.array_split(unique_tracks_data, chunks_number)
+        data.drop_duplicates(subset=[NAME, ARTIST_NAME], inplace=True)
+        artists_and_tracks = [(artist, track) for artist, track in zip(data[ARTIST_NAME], data[NAME])]
+        chunks = self._chunks_generator.generate_data_chunks(
+            lst=artists_and_tracks,
+            filtering_list=self._get_existing_tracks_and_artists()
+        )
 
-        for i, chunk in enumerate(chunks):
-            print(f'Starting to process chunk {i+1} out of {chunks_number}')
+        for chunk in chunks:
             await self._collect_single_chunk(chunk)
 
-    async def _collect_single_chunk(self, chunk: DataFrame) -> None:
+    @staticmethod
+    def _get_existing_tracks_and_artists() -> List[Tuple[str, str]]:
+        if not os.path.exists(AUDIO_FEATURES_DATA_PATH):
+            return []
+
+        existing_data = pd.read_csv(AUDIO_FEATURES_DATA_PATH)
+        existing_data.dropna(subset=[NAME, ARTIST_NAME], inplace=True)
+
+        return [(artist, track) for artist, track in zip(existing_data[ARTIST_NAME], existing_data[NAME])]
+
+    async def _collect_single_chunk(self, chunk: List[Tuple[str, str]]) -> None:
         tracks_features = await self._get_tracks_features(chunk)
         valid_features = [feature for feature in tracks_features if isinstance(feature, dict)]
         print(f'Failed to collect audio features for {len(tracks_features) - len(valid_features)} out of {len(tracks_features)} tracks')
@@ -41,14 +56,13 @@ class AudioFeaturesCollector:
 
         tracks_features_data.to_csv(output_path, encoding=UTF_8_ENCODING, index=False)
 
-    async def _get_tracks_features(self, data: DataFrame) -> List[dict]:
+    async def _get_tracks_features(self, chunk: List[Tuple[str, str]]) -> List[dict]:
         pool = AioPool(AIO_POOL_SIZE)
-        iterable = [(artist, track) for artist, track in zip(data[ARTIST_NAME], data[NAME])]
 
-        with tqdm(total=len(data)) as progress_bar:
+        with tqdm(total=len(chunk)) as progress_bar:
             func = partial(self._get_single_track_features, progress_bar)
 
-            return await pool.map(fn=func, iterable=iterable)
+            return await pool.map(fn=func, iterable=chunk)
 
     async def _get_single_track_features(self,
                                          progress_bar: tqdm,
