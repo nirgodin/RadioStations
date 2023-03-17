@@ -10,6 +10,7 @@ from utils.datetime_utils import get_current_datetime
 
 class RadioStationsSnapshotsRunner:
     def run(self) -> None:
+        print('Starting to run radio stations snapshots runner')
         data = self._get_radio_stations_snapshots()
         now = get_current_datetime()
         output_path = RADIO_STATIONS_PLAYLIST_SNAPSHOT_PATH_FORMAT.format(now)

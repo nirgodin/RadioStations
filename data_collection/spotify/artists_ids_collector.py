@@ -18,8 +18,8 @@ from utils.spotify_utils import build_spotify_headers, is_access_token_expired
 
 
 class ArtistsIDsCollector:
-    def __init__(self, chunk_size: int = 50):
-        self._session = ClientSession(headers=build_spotify_headers())
+    def __init__(self, session: ClientSession, chunk_size: int = 50):
+        self._session = session
         self._chunks_generator = DataChunksGenerator(chunk_size)
 
     async def collect(self):
