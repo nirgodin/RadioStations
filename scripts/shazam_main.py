@@ -24,11 +24,11 @@ async def run():
     search_fetcher = ShazamSearchFetcher()
     print('Starting to fetch tracks ids')
     data = pd.read_csv(MERGED_DATA_PATH)
-    await search_fetcher.search_tracks(data=data, max_tracks=100)
+    await search_fetcher.search_tracks(data=data, max_tracks=300)
 
     track_about_fetcher = ShazamTrackAboutFetcher()
     print('Starting to fetch tracks about')
-    await track_about_fetcher.fetch_tracks_about(max_tracks=100)
+    await track_about_fetcher.fetch_tracks_about(max_tracks=300)
 
 
 if __name__ == '__main__':
