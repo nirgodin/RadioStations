@@ -128,15 +128,20 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# Data
+# IDE files
+/.cache.txt
+misc.xml
+vcs.xml
+/.idea/
+
+# Scripts
 /scraping.bat
 /shazam_scraping.bat
 /musixmatch_scraping.bat
+/run_data_pre_processor.bat
+
+# Data
 /shazam_creds.json
-/.cache.txt
 /google_creds.json
-misc.xml
-vcs.xml
 /data/
 /tools/image_detection/resources/
-/.idea/
