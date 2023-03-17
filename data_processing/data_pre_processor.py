@@ -2,6 +2,9 @@ from typing import List, Optional
 
 from pandas import DataFrame
 
+from analysis.analyzer_interface import IAnalyzer
+from analysis.analyzers.genre_analyzer import GenreAnalyzer
+from analysis.analyzers.kan_gimel_analyzer import KanGimelAnalyzer
 from consts.miscellaneous_consts import UTF_8_ENCODING
 from consts.path_consts import MERGED_DATA_PATH, RADIO_STATIONS_SNAPSHOTS_DIR
 from data_processing.data_merger import DataMerger
@@ -21,12 +24,18 @@ class DataPreProcessor:
     def pre_process(self, output_path: Optional[str] = None):
         print(f'Starting to merge data to single data frame')
         data = DataMerger.merge(dir_path=RADIO_STATIONS_SNAPSHOTS_DIR, output_path=MERGED_DATA_PATH)
+        self._run_pre_script_analyzers()
         pre_processed_data = self._pre_process_data(data)
 
         if output_path is not None:
             pre_processed_data.to_csv(output_path, encoding=UTF_8_ENCODING, index=False)
 
         return pre_processed_data
+
+    def _run_pre_script_analyzers(self) -> None:
+        for analyzer in self._pre_script_analyzers:
+            print(f'Starting to apply {analyzer.name}')
+            analyzer.analyze()
 
     def _pre_process_data(self, data: DataFrame) -> DataFrame:
         pre_processed_data = data.copy(deep=True)
@@ -46,4 +55,11 @@ class DataPreProcessor:
             GenderPreProcessor(),
             AudioFeaturesPreProcessor(),
             FormatterPreProcessor()
+        ]
+
+    @property
+    def _pre_script_analyzers(self) -> List[IAnalyzer]:
+        return [
+            KanGimelAnalyzer(),
+            GenreAnalyzer(),
         ]

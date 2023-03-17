@@ -13,7 +13,7 @@ from consts.path_consts import MERGED_DATA_PATH, GENRES_MAPPING_PATH
 
 
 class GenreAnalyzer(IAnalyzer):
-    def __init__(self, data_path: str = MERGED_DATA_PATH, output_path: Optional[str] = None):
+    def __init__(self, data_path: str = MERGED_DATA_PATH, output_path: Optional[str] = GENRES_MAPPING_PATH):
         self._data_path = data_path
         self._output_path = output_path
 
