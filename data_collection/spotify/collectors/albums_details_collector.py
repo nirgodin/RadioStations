@@ -12,14 +12,14 @@ from tqdm import tqdm
 from consts.api_consts import AIO_POOL_SIZE, ARTISTS_ALBUMS_URL_FORMAT
 from consts.data_consts import ARTIST_ID, ITEMS, NEXT
 from consts.path_consts import ARTISTS_IDS_OUTPUT_PATH, ALBUMS_DETAILS_OUTPUT_PATH
+from data_collection.spotify.base_spotify_collector import BaseSpotifyCollector
 from tools.data_chunks_generator import DataChunksGenerator
 from utils.file_utils import append_to_csv
-from utils.spotify_utils import build_spotify_headers, is_access_token_expired
 
 
-class AlbumsDetailsCollector:
-    def __init__(self, chunk_size: int = 50):
-        self._session = ClientSession(headers=build_spotify_headers())
+class AlbumsDetailsCollector(BaseSpotifyCollector):
+    def __init__(self, session: ClientSession, chunk_size: int):
+        super().__init__(session, chunk_size)
         self._chunks_generator = DataChunksGenerator(chunk_size)
 
     async def collect(self):
@@ -73,7 +73,7 @@ class AlbumsDetailsCollector:
                     albums_pages.append(response)
                     url = response[NEXT]
 
-                elif is_access_token_expired(response):
+                elif self._is_access_token_expired(response):
                     await self._renew_client_session()
                     return await self._fetch_albums_pages(url, albums_pages)
 
@@ -99,10 +99,6 @@ class AlbumsDetailsCollector:
             return
 
         return albums_page.get(ITEMS)
-
-    async def _renew_client_session(self) -> None:
-        await self._session.close()
-        self._session = ClientSession(headers=build_spotify_headers())
 
     @staticmethod
     def _get_existing_artists_ids() -> List[str]:

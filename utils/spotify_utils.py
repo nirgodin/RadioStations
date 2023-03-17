@@ -16,10 +16,6 @@ def build_spotify_headers() -> Dict[str, str]:
     }
 
 
-def is_access_token_expired(response: dict) -> bool:
-    return response.get('error', {}).get('status') == 401
-
-
 @lru_cache(maxsize=1)
 def get_spotipy():
     return spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials())

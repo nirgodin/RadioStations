@@ -1,4 +1,3 @@
-import asyncio
 import os.path
 from functools import partial
 from typing import Union, Tuple, List
@@ -6,23 +5,23 @@ from typing import Union, Tuple, List
 import pandas as pd
 from aiohttp import ClientSession
 from asyncio_pool import AioPool
-from pandas import DataFrame
 from tqdm import tqdm
 
 from consts.api_consts import AUDIO_FEATURES_URL_FORMAT, AIO_POOL_SIZE
 from consts.data_consts import NAME, ARTIST_NAME, TRACKS, ITEMS, URI
 from consts.miscellaneous_consts import UTF_8_ENCODING
 from consts.path_consts import MERGED_DATA_PATH, AUDIO_FEATURES_CHUNK_OUTPUT_PATH_FORMAT, AUDIO_FEATURES_DATA_PATH
+from data_collection.spotify.base_spotify_collector import BaseSpotifyCollector
 from tools.data_chunks_generator import DataChunksGenerator
 from utils.datetime_utils import get_current_datetime
-from utils.spotify_utils import build_spotify_headers, is_access_token_expired, get_spotipy
+from utils.spotify_utils import get_spotipy
 
 
-class AudioFeaturesCollector:
+class AudioFeaturesCollector(BaseSpotifyCollector):
     def __init__(self, session: ClientSession, chunk_size: int):
+        super().__init__(session, chunk_size)
         self._sp = get_spotipy()
         self._chunks_generator = DataChunksGenerator(chunk_size)
-        self._session = session
 
     async def collect(self) -> None:
         data = pd.read_csv(MERGED_DATA_PATH)
@@ -74,7 +73,7 @@ class AudioFeaturesCollector:
         async with self._session.get(url=url) as response:
             audio_features_response = await response.json()
 
-        if is_access_token_expired(audio_features_response):
+        if self._is_access_token_expired(audio_features_response):
             await self._renew_client_session()
             return await self._get_single_track_features(progress_bar, artist_and_track)
 
@@ -94,14 +93,3 @@ class AudioFeaturesCollector:
         split_uri = track_uri.split(':')
 
         return split_uri[-1]
-
-    async def _renew_client_session(self) -> None:
-        await self._session.close()
-        self._session = ClientSession(headers=build_spotify_headers())
-
-
-if __name__ == '__main__':
-    session = ClientSession(headers=build_spotify_headers())
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(AudioFeaturesCollector(session, 1000).collect())
-    session.close()

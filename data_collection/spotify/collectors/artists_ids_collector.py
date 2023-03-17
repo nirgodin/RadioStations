@@ -1,4 +1,3 @@
-import asyncio
 import os.path
 from functools import partial
 from typing import List, Dict, Tuple
@@ -12,14 +11,14 @@ from consts.api_consts import AIO_POOL_SIZE, TRACKS_URL_FORMAT
 from consts.data_consts import ARTIST_NAME, ARTISTS, ARTIST_ID
 from consts.data_consts import ID
 from consts.path_consts import MERGED_DATA_PATH, ARTISTS_IDS_OUTPUT_PATH
+from data_collection.spotify.base_spotify_collector import BaseSpotifyCollector
 from tools.data_chunks_generator import DataChunksGenerator
 from utils.file_utils import append_to_csv
-from utils.spotify_utils import build_spotify_headers, is_access_token_expired
 
 
-class ArtistsIDsCollector:
-    def __init__(self, session: ClientSession, chunk_size: int = 50):
-        self._session = session
+class ArtistsIDsCollector(BaseSpotifyCollector):
+    def __init__(self, session: ClientSession, chunk_size: int):
+        super().__init__(session, chunk_size)
         self._chunks_generator = DataChunksGenerator(chunk_size)
 
     async def collect(self):
@@ -63,7 +62,7 @@ class ArtistsIDsCollector:
         async with self._session.get(url=url) as raw_response:
             response = await raw_response.json()
 
-        if is_access_token_expired(response):
+        if self._is_access_token_expired(response):
             await self._renew_client_session()
             return await self._get_single_track_artist_id(progress_bar, artist_and_track_id)
 
@@ -92,10 +91,6 @@ class ArtistsIDsCollector:
 
         return record
 
-    async def _renew_client_session(self) -> None:
-        await self._session.close()
-        self._session = ClientSession(headers=build_spotify_headers())
-
     @staticmethod
     def _get_existing_artists_and_tracks() -> List[Tuple[str, str]]:
         if not os.path.exists(ARTISTS_IDS_OUTPUT_PATH):
@@ -103,9 +98,3 @@ class ArtistsIDsCollector:
 
         existing_data = pd.read_csv(ARTISTS_IDS_OUTPUT_PATH)
         return [(artist, track_id) for artist, track_id in zip(existing_data[ARTIST_NAME], existing_data[ID])]
-
-
-if __name__ == '__main__':
-    collector = ArtistsIDsCollector()
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(collector.collect())
