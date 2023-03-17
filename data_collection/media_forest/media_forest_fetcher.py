@@ -10,7 +10,7 @@ from consts.media_forest_consts import MEDIA_FOREST_MENUS_MAPPING, MEDIA_FOREST_
 from consts.miscellaneous_consts import UTF_8_ENCODING
 from consts.path_consts import MEDIAFOREST_PATH_FORMAT
 from tools.website_tables_crawler import WebsiteTablesCrawler
-from utils.general_utils import get_current_datetime
+from utils.datetime_utils import get_current_datetime
 
 
 class MediaForestFetcher:

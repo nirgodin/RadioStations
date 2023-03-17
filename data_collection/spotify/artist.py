@@ -5,7 +5,7 @@ from typing import List, Dict, Any
 from dacite import from_dict
 
 from consts.data_consts import ARTIST_NAME, MAIN_GENRE, GENRES, ARTIST_POPULARITY, ARTIST_FOLLOWERS
-from utils.general_utils import get_spotipy
+from utils.spotify_utils import get_spotipy
 
 MAIN_GENRES = [
     'rock',

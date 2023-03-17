@@ -3,7 +3,6 @@ import os.path
 from functools import partial
 from typing import Union, Tuple, List
 
-import numpy as np
 import pandas as pd
 from aiohttp import ClientSession
 from asyncio_pool import AioPool
@@ -15,17 +14,18 @@ from consts.data_consts import NAME, ARTIST_NAME, TRACKS, ITEMS, URI
 from consts.miscellaneous_consts import UTF_8_ENCODING
 from consts.path_consts import MERGED_DATA_PATH, AUDIO_FEATURES_CHUNK_OUTPUT_PATH_FORMAT, AUDIO_FEATURES_DATA_PATH
 from tools.data_chunks_generator import DataChunksGenerator
-from utils.general_utils import get_current_datetime, get_spotipy
-from utils.spotify_utils import build_spotify_headers, is_access_token_expired
+from utils.datetime_utils import get_current_datetime
+from utils.spotify_utils import build_spotify_headers, is_access_token_expired, get_spotipy
 
 
 class AudioFeaturesCollector:
-    def __init__(self, chunk_size: int = 1000):
+    def __init__(self, session: ClientSession, chunk_size: int):
         self._sp = get_spotipy()
         self._chunks_generator = DataChunksGenerator(chunk_size)
-        self._session = ClientSession(headers=build_spotify_headers())
+        self._session = session
 
-    async def collect(self, data: DataFrame) -> None:
+    async def collect(self) -> None:
+        data = pd.read_csv(MERGED_DATA_PATH)
         data.drop_duplicates(subset=[NAME, ARTIST_NAME], inplace=True)
         artists_and_tracks = [(artist, track) for artist, track in zip(data[ARTIST_NAME], data[NAME])]
         chunks = self._chunks_generator.generate_data_chunks(
@@ -101,6 +101,7 @@ class AudioFeaturesCollector:
 
 
 if __name__ == '__main__':
-    data = pd.read_csv(MERGED_DATA_PATH)
+    session = ClientSession(headers=build_spotify_headers())
     loop = asyncio.get_event_loop()
-    loop.run_until_complete(AudioFeaturesCollector().collect(data))
+    loop.run_until_complete(AudioFeaturesCollector(session, 1000).collect())
+    session.close()

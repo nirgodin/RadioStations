@@ -1,26 +1,12 @@
-import re
-from datetime import datetime
 from difflib import SequenceMatcher
-from functools import lru_cache, reduce
+from functools import reduce
 from typing import List
 
 import numpy as np
-import spotipy
-from spotipy import SpotifyClientCredentials
 
 from component_factory import ComponentFactory
 from consts.language_consts import LANGUAGE, HEBREW_LANGUAGE_ABBREVIATION
 from consts.miscellaneous_consts import YEAR_REGEX
-
-
-def get_current_datetime() -> str:
-    now = str(datetime.now()).replace('.', '-')
-    return re.sub(r'[^\w\s]', '_', now)
-
-
-@lru_cache(maxsize=1)
-def get_spotipy():
-    return spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials())
 
 
 def extract_year(date: str) -> int:

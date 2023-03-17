@@ -5,7 +5,7 @@ from pandas import DataFrame
 from consts.miscellaneous_consts import UTF_8_ENCODING
 from consts.shazam_consts import TRACKS, LOCATION
 from data_collection.shazam.shazam_track_response_extractor import ShazamTrackResponseExtractor
-from utils.general_utils import get_current_datetime
+from utils.datetime_utils import get_current_datetime
 
 
 def extract_tracks_data(tracks_data: dict, location: str) -> DataFrame:
