@@ -4,7 +4,7 @@ import pandas as pd
 
 from consts.data_consts import ADDED_AT, FOLLOWERS, TOTAL, SNAPSHOT_ID, TRACKS, ITEMS, STATION, TRACK
 from utils.spotify_utils import get_spotipy
-from data_collection.spotify.track import Track
+from data_collection.spotify.data_classes.track import Track
 from dacite import from_dict
 
 

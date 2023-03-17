@@ -4,7 +4,7 @@ from pandas import DataFrame
 from consts.miscellaneous_consts import UTF_8_ENCODING
 from consts.path_consts import RADIO_STATIONS_PLAYLIST_SNAPSHOT_PATH_FORMAT
 from consts.playlists_consts import STATIONS
-from data_collection.spotify.station import Station
+from data_collection.spotify.data_classes.station import Station
 from utils.datetime_utils import get_current_datetime
 
 
