@@ -24,30 +24,30 @@ class AlbumsDetailsAnalyzer(IAnalyzer):
 
     def _get_merged_aggregated_data(self, data: DataFrame) -> DataFrame:
         aggregated_details_dfs = [
-            self._get_min_and_max_album_release_year(data),
             self._get_median_markets_number(data),
+            self._get_min_and_max_album_release_year(data),
             self._get_albums_count(data)
         ]
         merged_data = reduce(lambda df1, df2: df1.merge(right=df2, how='left', on=ARTIST_ID), aggregated_details_dfs)
 
         return merged_data
 
-    @staticmethod
-    @lru_cache(100)
-    def _calculate_available_markets_number(raw_available_markets: str) -> int:
-        if pd.isna(raw_available_markets):
-            return 0
-
-        available_markets = eval(raw_available_markets)
-        return len(available_markets)
-
     def _get_median_markets_number(self, data: DataFrame) -> DataFrame:
-        data[AVAILABLE_MARKETS_NUMBER] = data[AVAILABLE_MARKETS].apply(lambda x: self._calculate_available_markets_number(x))
+        data[AVAILABLE_MARKETS_NUMBER] = data[AVAILABLE_MARKETS].apply(lambda x: self._calculate_markets_number(x))
         relevant_data = data[[ARTIST_ID, AVAILABLE_MARKETS_NUMBER]]
         grouped_data = self._groupby(relevant_data, group_by=[ARTIST_ID], agg_by=['median'])
         grouped_data.columns = [ARTIST_ID, MEDIAN_MARKETS_NUMBER]
 
         return grouped_data
+
+    @staticmethod
+    @lru_cache(100)
+    def _calculate_markets_number(raw_available_markets: str) -> int:
+        if pd.isna(raw_available_markets):
+            return 0
+
+        available_markets = eval(raw_available_markets)
+        return len(available_markets)
 
     @staticmethod
     def _groupby(data: DataFrame, group_by: List[str], agg_by: List[str]) -> DataFrame:
