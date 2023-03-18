@@ -145,3 +145,4 @@ vcs.xml
 /google_creds.json
 /data/
 /tools/image_detection/resources/
+/analysis/analysis_outputs/

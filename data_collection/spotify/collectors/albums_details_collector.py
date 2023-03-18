@@ -15,6 +15,7 @@ from consts.path_consts import ARTISTS_IDS_OUTPUT_PATH, ALBUMS_DETAILS_OUTPUT_PA
 from data_collection.spotify.base_spotify_collector import BaseSpotifyCollector
 from tools.data_chunks_generator import DataChunksGenerator
 from utils.file_utils import append_to_csv
+from utils.spotify_utils import build_spotify_headers
 
 
 class AlbumsDetailsCollector(BaseSpotifyCollector):
@@ -110,6 +111,6 @@ class AlbumsDetailsCollector(BaseSpotifyCollector):
 
 
 if __name__ == '__main__':
-    collector = AlbumsDetailsCollector()
+    collector = AlbumsDetailsCollector(session=ClientSession(headers=build_spotify_headers()), chunk_size=50)
     loop = asyncio.get_event_loop()
     loop.run_until_complete(collector.collect())
