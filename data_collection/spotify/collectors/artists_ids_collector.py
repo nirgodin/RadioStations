@@ -15,6 +15,7 @@ from consts.path_consts import MERGED_DATA_PATH, ARTISTS_IDS_OUTPUT_PATH
 from data_collection.spotify.base_spotify_collector import BaseSpotifyCollector
 from tools.data_chunks_generator import DataChunksGenerator
 from utils.file_utils import append_to_csv
+from utils.spotify_utils import build_spotify_headers
 
 
 class ArtistsIDsCollector(BaseSpotifyCollector):
@@ -102,7 +103,7 @@ class ArtistsIDsCollector(BaseSpotifyCollector):
 
 
 if __name__ == '__main__':
-    session = ClientSession()
+    session = ClientSession(headers=build_spotify_headers())
     collector = ArtistsIDsCollector(session, 100)
     loop = asyncio.get_event_loop()
     loop.run_until_complete(collector.collect())
