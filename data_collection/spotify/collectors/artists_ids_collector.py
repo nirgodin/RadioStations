@@ -1,3 +1,4 @@
+import asyncio
 import os.path
 from functools import partial
 from typing import List, Dict, Tuple
@@ -98,3 +99,11 @@ class ArtistsIDsCollector(BaseSpotifyCollector):
 
         existing_data = pd.read_csv(ARTISTS_IDS_OUTPUT_PATH)
         return [(artist, track_id) for artist, track_id in zip(existing_data[ARTIST_NAME], existing_data[ID])]
+
+
+if __name__ == '__main__':
+    session = ClientSession()
+    collector = ArtistsIDsCollector(session, 100)
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(collector.collect())
+    session.close()
