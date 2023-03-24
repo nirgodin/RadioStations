@@ -8,6 +8,7 @@ from analysis.analyzers.kan_gimel_analyzer import KanGimelAnalyzer
 from consts.miscellaneous_consts import UTF_8_ENCODING
 from consts.path_consts import MERGED_DATA_PATH, RADIO_STATIONS_SNAPSHOTS_DIR
 from data_processing.data_merger import DataMerger
+from data_processing.pre_processors.albums_details_pre_processor import AlbumsDetailsPreProcessor
 from data_processing.pre_processors.audio_features_pre_processor import AudioFeaturesPreProcessor
 from data_processing.pre_processors.formatter_pre_processor import FormatterPreProcessor
 from data_processing.pre_processors.gender_per_processor import GenderPreProcessor
@@ -54,6 +55,7 @@ class DataPreProcessor:
             GenrePreProcessor(),
             GenderPreProcessor(),
             AudioFeaturesPreProcessor(),
+            AlbumsDetailsPreProcessor(),
             FormatterPreProcessor()
         ]
 
