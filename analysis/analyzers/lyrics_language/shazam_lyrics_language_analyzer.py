@@ -15,10 +15,11 @@ from utils.file_utils import read_json, append_to_csv
 
 
 class ShazamLyricsLanguageAnalyzer(IAnalyzer):
-    def __init__(self, chunks_limit: Optional[int] = None):
+    def __init__(self, chunk_size: int = 50, chunks_limit: Optional[int] = None):
+        self._chunk_size = chunk_size
         self._chunks_limit = chunks_limit
         self._language_detector = LanguageDetector()
-        self._data_chunks_generator = DataChunksGenerator()
+        self._data_chunks_generator = DataChunksGenerator(self._chunk_size)
         self._shazam_tracks_lyrics: Dict[str, List[str]] = read_json(SHAZAM_TRACKS_LYRICS_PATH)
 
     def analyze(self) -> None:

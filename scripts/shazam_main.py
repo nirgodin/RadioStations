@@ -2,6 +2,7 @@ import asyncio
 
 import pandas as pd
 
+from analysis.analyzers.lyrics_language.shazam_lyrics_language_analyzer import ShazamLyricsLanguageAnalyzer
 from consts.path_consts import MERGED_DATA_PATH
 from data_collection.shazam.shazam_city_fetcher import ShazamCitiesFetcher
 from data_collection.shazam.shazam_country_fetcher import ShazamCountryFetcher
@@ -30,6 +31,8 @@ async def run():
     print('Starting to fetch tracks about')
     await track_about_fetcher.fetch_tracks_about(max_tracks=300)
 
+    language_analyzer = ShazamLyricsLanguageAnalyzer(chunk_size=50, chunks_limit=6)
+    language_analyzer.analyze()
 
 if __name__ == '__main__':
     loop = asyncio.get_event_loop()
