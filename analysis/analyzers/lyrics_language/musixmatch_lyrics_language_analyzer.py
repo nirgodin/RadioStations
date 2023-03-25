@@ -13,7 +13,7 @@ from tools.language_detector import LanguageDetector
 from utils.file_utils import read_json
 
 
-class LyricsLanguageAnalyzer(IAnalyzer):
+class MusixmatchLyricsLanguageAnalyzer(IAnalyzer):
     def __init__(self):
         self._tracks_lyrics = read_json(MUSIXMATCH_TRACKS_LYRICS_PATH)
         self._language_detector = LanguageDetector()
@@ -72,9 +72,9 @@ class LyricsLanguageAnalyzer(IAnalyzer):
 
     @property
     def name(self) -> str:
-        return 'lyrics language analyzer'
+        return 'musixmatch lyrics language analyzer'
 
 
 if __name__ == '__main__':
-    analyzer = LyricsLanguageAnalyzer()
+    analyzer = MusixmatchLyricsLanguageAnalyzer()
     analyzer.analyze()
