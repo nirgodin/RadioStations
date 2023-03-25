@@ -12,9 +12,6 @@ from consts.path_consts import MUSIXMATCH_TRACKS_LYRICS_PATH, MUSIXMATCH_TRACKS_
 from tools.language_detector import LanguageDetector
 from utils.file_utils import read_json
 
-LANGUAGE_DETECTOR_FACTORY_KEY = "language_detector"
-SPACY_ENGLISH_SMALL_MODEL = "en_core_web_sm"
-
 
 class LyricsLanguageAnalyzer(IAnalyzer):
     def __init__(self):
