@@ -11,7 +11,7 @@ from data_collection.spotify.collectors.audio_features_collector import AudioFea
 from data_collection.spotify.weekly_run.spotify_collector_config import SpotifyCollectorConfig
 from data_collection.spotify.weekly_run.spotify_weekly_runner_config import SpotifyWeeklyRunnerConfig
 from utils.datetime_utils import now_israel_timezone, DATETIME_FORMAT
-from utils.file_utils import read_json
+from utils.file_utils import read_json, to_json
 from utils.spotify_utils import build_spotify_headers
 
 
@@ -25,10 +25,10 @@ class SpotifyWeeklyRunner:
             script_config: SpotifyCollectorConfig = getattr(self._config, script.name)
 
             if self._should_run(script_config.name, script_config.weekday):
-                headers = build_spotify_headers()
-
-                async with ClientSession(headers=headers) as session:
+                async with ClientSession(headers=build_spotify_headers()) as session:
                     await self._run_script(session, script_config)
+
+                self._update_script_execution_date(script_config.name)
 
     def _should_run(self, script_name: str, script_weekday: int) -> bool:
         now = now_israel_timezone()
@@ -54,3 +54,7 @@ class SpotifyWeeklyRunner:
             chunk_size=script_config.chunk_size
         )
         await collector.collect()
+
+    def _update_script_execution_date(self, script_name: str) -> None:
+        self._weekly_run_latest_executions[script_name] = now_israel_timezone()
+        to_json(d=self._weekly_run_latest_executions, path=SPOTIFY_WEEKLY_RUN_LATEST_EXECUTIONS)
