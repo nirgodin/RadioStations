@@ -43,3 +43,4 @@ RADIO_STATIONS_PLAYLIST_SNAPSHOT_PATH_FORMAT = r'data/spotify/radio_stations_sna
 MAPPED_GENDERS_OUTPUT_PATH = r'data/mapped_genders.csv'
 SPOTIFY_WEEKLY_RUN_LATEST_EXECUTIONS = r'data_collection/spotify/weekly_run/resources/weekly_run_latest_executions.json'
 ALBUMS_DETAILS_ANALYZER_OUTPUT_PATH = r'analysis/analysis_outputs/albums_details_analysis_output.csv'
+SHAZAM_TRACKS_LANGUAGES_PATH = r'data/shazam/tracks_languages.csv'

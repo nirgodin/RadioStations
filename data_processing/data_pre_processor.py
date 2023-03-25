@@ -5,6 +5,7 @@ from pandas import DataFrame
 from analysis.analyzer_interface import IAnalyzer
 from analysis.analyzers.genre_analyzer import GenreAnalyzer
 from analysis.analyzers.kan_gimel_analyzer import KanGimelAnalyzer
+from analysis.analyzers.lyrics_language.shazam_lyrics_language_analyzer import ShazamLyricsLanguageAnalyzer
 from consts.miscellaneous_consts import UTF_8_ENCODING
 from consts.path_consts import MERGED_DATA_PATH, RADIO_STATIONS_SNAPSHOTS_DIR
 from data_processing.data_merger import DataMerger
@@ -14,6 +15,7 @@ from data_processing.pre_processors.formatter_pre_processor import FormatterPreP
 from data_processing.pre_processors.gender_per_processor import GenderPreProcessor
 from data_processing.pre_processors.genre.genre_pre_processor import GenrePreProcessor
 from data_processing.pre_processors.israeli_pre_processor import IsraeliPreProcessor
+from data_processing.pre_processors.language_pre_processor import LanguagePreProcessor
 from data_processing.pre_processors.pre_processor_interface import IPreProcessor
 from data_processing.pre_processors.year_pre_processor import YearPreProcessor
 
@@ -55,6 +57,7 @@ class DataPreProcessor:
             GenrePreProcessor(),
             GenderPreProcessor(),
             AudioFeaturesPreProcessor(),
+            LanguagePreProcessor(),
             AlbumsDetailsPreProcessor(),
             FormatterPreProcessor()
         ]
@@ -64,4 +67,5 @@ class DataPreProcessor:
         return [
             KanGimelAnalyzer(),
             GenreAnalyzer(),
+            ShazamLyricsLanguageAnalyzer()
         ]
