@@ -40,7 +40,7 @@ class ShazamLyricsLanguageAnalyzer(IAnalyzer):
             return []
 
         tracks_languages_data = pd.read_csv(SHAZAM_TRACKS_LANGUAGES_PATH)
-        return tracks_languages_data[SHAZAM_TRACK_KEY].tolist()
+        return [str(track_key) for track_key in tracks_languages_data[SHAZAM_TRACK_KEY]]
 
     def _extract_single_chunk_tracks_languages(self, chunk: List[str]):
         language_records = self._get_tracks_language_records(chunk)
