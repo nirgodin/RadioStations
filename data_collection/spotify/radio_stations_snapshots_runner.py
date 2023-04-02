@@ -1,3 +1,6 @@
+import os.path
+from pathlib import Path
+
 import pandas as pd
 from pandas import DataFrame
 from tqdm import tqdm
@@ -15,6 +18,10 @@ class RadioStationsSnapshotsRunner:
         data = self._get_radio_stations_snapshots()
         now = get_current_datetime()
         output_path = RADIO_STATIONS_PLAYLIST_SNAPSHOT_PATH_FORMAT.format(now)
+        dir_path = Path(os.path.dirname(output_path))
+
+        if not os.path.exists(dir_path):
+            dir_path.mkdir(parents=True)
 
         data.to_csv(output_path, encoding=UTF_8_ENCODING, index=False)
 
