@@ -14,6 +14,7 @@ from consts.path_consts import MERGED_DATA_PATH, AUDIO_FEATURES_CHUNK_OUTPUT_PAT
 from data_collection.spotify.base_spotify_collector import BaseSpotifyCollector
 from tools.data_chunks_generator import DataChunksGenerator
 from utils.datetime_utils import get_current_datetime
+from utils.file_utils import to_csv
 from utils.spotify_utils import get_spotipy
 
 
@@ -53,7 +54,7 @@ class AudioFeaturesCollector(BaseSpotifyCollector):
         now = get_current_datetime()
         output_path = AUDIO_FEATURES_CHUNK_OUTPUT_PATH_FORMAT.format(now)
 
-        tracks_features_data.to_csv(output_path, encoding=UTF_8_ENCODING, index=False)
+        to_csv(data=tracks_features_data, output_path=output_path)
 
     async def _get_tracks_features(self, chunk: List[Tuple[str, str]]) -> List[dict]:
         pool = AioPool(AIO_POOL_SIZE)

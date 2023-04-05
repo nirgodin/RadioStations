@@ -1,5 +1,6 @@
 import json
 import os
+from pathlib import Path
 from typing import Union, List
 
 from pandas import DataFrame
@@ -15,6 +16,14 @@ def to_json(d: Union[dict, list], path: str) -> None:
 def read_json(path: str) -> dict:
     with open(path, 'r', encoding=JSON_ENCODING) as f:
         return json.load(f)
+
+
+def to_csv(data: DataFrame, output_path: str) -> None:
+    if not os.path.exists(output_path):  # For remote runs
+        dir_path = Path(os.path.dirname(output_path))
+        dir_path.mkdir(parents=True)
+
+    data.to_csv(output_path, index=False, encoding=UTF_8_ENCODING)
 
 
 def append_to_csv(data: DataFrame, output_path: str) -> None:

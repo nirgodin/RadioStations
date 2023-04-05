@@ -7,6 +7,7 @@ from consts.path_consts import RADIO_STATIONS_PLAYLIST_SNAPSHOT_PATH_FORMAT
 from consts.playlists_consts import STATIONS
 from data_collection.spotify.data_classes.station import Station
 from utils.datetime_utils import get_current_datetime
+from utils.file_utils import to_csv
 
 
 class RadioStationsSnapshotsRunner:
@@ -16,7 +17,7 @@ class RadioStationsSnapshotsRunner:
         now = get_current_datetime()
         output_path = RADIO_STATIONS_PLAYLIST_SNAPSHOT_PATH_FORMAT.format(now)
 
-        data.to_csv(output_path, encoding=UTF_8_ENCODING, index=False)
+        to_csv(data=data, output_path=output_path)
 
     @staticmethod
     def _get_radio_stations_snapshots() -> DataFrame:
