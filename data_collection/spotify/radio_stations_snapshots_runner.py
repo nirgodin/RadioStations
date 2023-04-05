@@ -2,7 +2,6 @@ import pandas as pd
 from pandas import DataFrame
 from tqdm import tqdm
 
-from consts.miscellaneous_consts import UTF_8_ENCODING
 from consts.path_consts import RADIO_STATIONS_PLAYLIST_SNAPSHOT_PATH_FORMAT
 from consts.playlists_consts import STATIONS
 from data_collection.spotify.data_classes.station import Station

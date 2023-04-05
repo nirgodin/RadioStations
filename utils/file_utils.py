@@ -18,19 +18,19 @@ def read_json(path: str) -> dict:
         return json.load(f)
 
 
-def to_csv(data: DataFrame, output_path: str) -> None:
+def to_csv(data: DataFrame, output_path: str, header: bool = True, mode: str = 'w') -> None:
     if not os.path.exists(output_path):  # For remote runs
         dir_path = Path(os.path.dirname(output_path))
         dir_path.mkdir(parents=True)
 
-    data.to_csv(output_path, index=False, encoding=UTF_8_ENCODING)
+    data.to_csv(output_path, index=False, encoding=UTF_8_ENCODING, header=header, mode=mode)
 
 
 def append_to_csv(data: DataFrame, output_path: str) -> None:
     if os.path.exists(output_path):
-        data.to_csv(output_path, header=False, index=False, mode='a', encoding=UTF_8_ENCODING)
+        to_csv(data=data, output_path=output_path, header=False, mode='a')
     else:
-        data.to_csv(output_path, index=False, encoding=UTF_8_ENCODING)
+        to_csv(data=data, output_path=output_path)
 
 
 def load_txt_file_lines(path: str) -> List[str]:
