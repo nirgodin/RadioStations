@@ -56,5 +56,5 @@ class SpotifyWeeklyRunner:
         await collector.collect()
 
     def _update_script_execution_date(self, script_name: str) -> None:
-        self._weekly_run_latest_executions[script_name] = now_israel_timezone()
+        self._weekly_run_latest_executions[script_name] = now_israel_timezone().strftime(DATETIME_FORMAT)
         to_json(d=self._weekly_run_latest_executions, path=SPOTIFY_WEEKLY_RUN_LATEST_EXECUTIONS)
