@@ -6,14 +6,18 @@ from typing import List, Dict, Tuple
 import pandas as pd
 from aiohttp import ClientSession
 from asyncio_pool import AioPool
+from pandas import DataFrame
 from tqdm import tqdm
 
 from consts.api_consts import AIO_POOL_SIZE, TRACKS_URL_FORMAT
 from consts.data_consts import ARTIST_NAME, ARTISTS, ARTIST_ID
 from consts.data_consts import ID
+from consts.env_consts import SPOTIFY_ARTISTS_IDS_DRIVE_ID
 from consts.path_consts import MERGED_DATA_PATH, ARTISTS_IDS_OUTPUT_PATH
 from data_collection.spotify.base_spotify_collector import BaseSpotifyCollector
 from tools.data_chunks_generator import DataChunksGenerator
+from tools.google_drive.google_drive_file_metadata import GoogleDriveFileMetadata
+from utils.drive_utils import upload_files_to_drive
 from utils.file_utils import append_to_csv
 from utils.spotify_utils import build_spotify_headers
 
@@ -44,7 +48,7 @@ class ArtistsIDsCollector(BaseSpotifyCollector):
         if not artists_ids_data.empty:
             artists_ids_data.dropna(subset=[ARTIST_NAME], inplace=True)
 
-        append_to_csv(data=artists_ids_data, output_path=ARTISTS_IDS_OUTPUT_PATH)
+        self._output_results(artists_ids_data)
 
     async def _get_artists_ids(self, artists_and_track_ids: List[Tuple[str, str]]) -> List[dict]:
         pool = AioPool(AIO_POOL_SIZE)
@@ -100,6 +104,15 @@ class ArtistsIDsCollector(BaseSpotifyCollector):
 
         existing_data = pd.read_csv(ARTISTS_IDS_OUTPUT_PATH)
         return [(artist, track_id) for artist, track_id in zip(existing_data[ARTIST_NAME], existing_data[ID])]
+
+    @staticmethod
+    def _output_results(artists_ids_data: DataFrame) -> None:
+        append_to_csv(data=artists_ids_data, output_path=ARTISTS_IDS_OUTPUT_PATH)
+        file_metadata = GoogleDriveFileMetadata(
+            local_path=ARTISTS_IDS_OUTPUT_PATH,
+            drive_folder_id=os.environ[SPOTIFY_ARTISTS_IDS_DRIVE_ID]
+        )
+        upload_files_to_drive(file_metadata)
 
 
 if __name__ == '__main__':
