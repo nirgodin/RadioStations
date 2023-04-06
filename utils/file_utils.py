@@ -1,14 +1,11 @@
 import json
 import os
 from pathlib import Path
-from typing import Union, List, Optional
+from typing import Union, List
 
 from pandas import DataFrame
 
 from consts.miscellaneous_consts import JSON_ENCODING, UTF_8_ENCODING
-from tools.google_drive.google_drive_adapter import GoogleDriveAdapter
-from tools.google_drive.google_drive_file_metadata import GoogleDriveFileMetadata
-from utils.general_utils import is_remote_run
 
 
 def to_json(d: Union[dict, list], path: str) -> None:
@@ -44,6 +41,5 @@ def load_txt_file_lines(path: str) -> List[str]:
     return hebrew_words.split('\n')
 
 
-def upload_files_to_drive(*files_metadata: GoogleDriveFileMetadata) -> None:
-    if is_remote_run():
-        GoogleDriveAdapter().upload(files_metadata)
+def get_path_suffix(path: str) -> str:
+    return Path(path).suffix
