@@ -1,3 +1,4 @@
+import os
 from difflib import SequenceMatcher
 from functools import reduce
 from typing import List
@@ -32,3 +33,7 @@ def is_in_hebrew(s: str) -> bool:
 
 def get_similarity_score(s1: str, s2: str) -> float:
     return SequenceMatcher(None, s1, s2).ratio()
+
+
+def is_remote_run() -> bool:
+    return os.getenv('IS_REMOTE_RUN') == 'True'

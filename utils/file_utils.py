@@ -1,11 +1,14 @@
 import json
 import os
 from pathlib import Path
-from typing import Union, List
+from typing import Union, List, Optional
 
 from pandas import DataFrame
 
 from consts.miscellaneous_consts import JSON_ENCODING, UTF_8_ENCODING
+from tools.google_drive.google_drive_adapter import GoogleDriveAdapter
+from tools.google_drive.google_drive_file_metadata import GoogleDriveFileMetadata
+from utils.general_utils import is_remote_run
 
 
 def to_json(d: Union[dict, list], path: str) -> None:
@@ -34,7 +37,12 @@ def append_to_csv(data: DataFrame, output_path: str) -> None:
 
 
 def load_txt_file_lines(path: str) -> List[str]:
-    with open(path, encoding='utf-8') as f:
+    with open(path, encoding=JSON_ENCODING) as f:
         hebrew_words: str = f.read()
 
     return hebrew_words.split('\n')
+
+
+def upload_files_to_drive(files_metadata: List[GoogleDriveFileMetadata]) -> None:
+    if is_remote_run():
+        GoogleDriveAdapter().upload(files_metadata)
