@@ -9,7 +9,8 @@ from consts.path_consts import RADIO_STATIONS_PLAYLIST_SNAPSHOT_PATH_FORMAT
 from consts.playlists_consts import STATIONS
 from data_collection.spotify.data_classes.station import Station
 from utils.datetime_utils import get_current_datetime
-from utils.file_utils import to_csv, upload_files_to_drive
+from utils.file_utils import to_csv
+from utils.drive_utils import upload_files_to_drive
 from tools.google_drive.google_drive_file_metadata import GoogleDriveFileMetadata
 
 
