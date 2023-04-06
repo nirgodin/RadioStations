@@ -44,6 +44,6 @@ def load_txt_file_lines(path: str) -> List[str]:
     return hebrew_words.split('\n')
 
 
-def upload_files_to_drive(files_metadata: List[GoogleDriveFileMetadata]) -> None:
+def upload_files_to_drive(*files_metadata: GoogleDriveFileMetadata) -> None:
     if is_remote_run():
         GoogleDriveAdapter().upload(files_metadata)

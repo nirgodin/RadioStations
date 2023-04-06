@@ -1,12 +1,16 @@
+import os
+
 import pandas as pd
 from pandas import DataFrame
 from tqdm import tqdm
 
+from consts.env_consts import RADIO_STATIONS_SNAPSHOTS_DRIVE_ID
 from consts.path_consts import RADIO_STATIONS_PLAYLIST_SNAPSHOT_PATH_FORMAT
 from consts.playlists_consts import STATIONS
 from data_collection.spotify.data_classes.station import Station
 from utils.datetime_utils import get_current_datetime
-from utils.file_utils import to_csv
+from utils.file_utils import to_csv, upload_files_to_drive
+from tools.google_drive.google_drive_file_metadata import GoogleDriveFileMetadata
 
 
 class RadioStationsSnapshotsRunner:
@@ -17,6 +21,11 @@ class RadioStationsSnapshotsRunner:
         output_path = RADIO_STATIONS_PLAYLIST_SNAPSHOT_PATH_FORMAT.format(now)
 
         to_csv(data=data, output_path=output_path)
+        file_metadata = GoogleDriveFileMetadata(
+            local_path=output_path,
+            drive_folder_id=os.environ[RADIO_STATIONS_SNAPSHOTS_DRIVE_ID]
+        )
+        upload_files_to_drive(file_metadata)
 
     @staticmethod
     def _get_radio_stations_snapshots() -> DataFrame:

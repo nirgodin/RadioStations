@@ -1,6 +1,6 @@
 import json
 import os
-from typing import List
+from typing import Iterable
 
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
@@ -17,7 +17,7 @@ class GoogleDriveAdapter:
             credentials=json.loads(os.environ['CREDENTIALS'])
         )
 
-    def upload(self, files_metadata: List[GoogleDriveFileMetadata]) -> None:
+    def upload(self, files_metadata: Iterable[GoogleDriveFileMetadata]) -> None:
         for file in files_metadata:
             media = MediaFileUpload(file.local_path, resumable=True)
 
