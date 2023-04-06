@@ -44,7 +44,7 @@ class AlbumsDetailsCollector(BaseSpotifyCollector):
 
         if valid_dfs:
             albums_data = pd.concat(valid_dfs)
-            append_to_csv(data=albums_data, output_path=ALBUMS_DETAILS_OUTPUT_PATH)
+            self._output_results(albums_data)
         else:
             print('No valid dfs. Skipping append to csv')
 
