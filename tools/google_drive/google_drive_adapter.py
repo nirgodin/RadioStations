@@ -2,6 +2,7 @@ import json
 import os
 from typing import Iterable
 
+from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaFileUpload
@@ -14,7 +15,9 @@ class GoogleDriveAdapter:
         self._drive_service = build(
             serviceName='drive',
             version='v3',
-            credentials=json.loads(os.environ['CREDENTIALS'])
+            credentials=service_account.Credentials.from_service_account_info(
+                json.loads(os.environ['CREDENTIALS'])
+            )
         )
 
     def upload(self, files_metadata: Iterable[GoogleDriveFileMetadata]) -> None:
