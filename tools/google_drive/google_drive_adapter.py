@@ -10,7 +10,7 @@ from tools.google_drive.google_drive_file_metadata import GoogleDriveFileMetadat
 
 
 class GoogleDriveAdapter:
-    def _init_(self):
+    def __init__(self):
         self._drive_service = build(
             serviceName='drive',
             version='v3',
