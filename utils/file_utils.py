@@ -22,8 +22,9 @@ def read_json(path: str) -> dict:
 
 
 def to_csv(data: DataFrame, output_path: str, header: bool = True, mode: str = 'w') -> None:
-    if not os.path.exists(output_path):  # For remote runs
-        dir_path = Path(os.path.dirname(output_path))
+    dir_path = Path(os.path.dirname(output_path))
+
+    if not os.path.exists(dir_path):  # For remote runs
         dir_path.mkdir(parents=True)
 
     data.to_csv(output_path, index=False, encoding=UTF_8_ENCODING, header=header, mode=mode)

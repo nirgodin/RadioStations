@@ -1,0 +1,5 @@
+CLASS = 'class'
+DIV = 'div'
+HEADER_3 = 'h3'
+HEADER_4 = 'h4'
+PARAGRAPH = 'p'
