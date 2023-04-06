@@ -5,15 +5,19 @@ from typing import Union, Tuple, List
 import pandas as pd
 from aiohttp import ClientSession
 from asyncio_pool import AioPool
+from pandas import DataFrame
 from tqdm import tqdm
 
 from consts.api_consts import AUDIO_FEATURES_URL_FORMAT, AIO_POOL_SIZE
 from consts.data_consts import NAME, ARTIST_NAME, TRACKS, ITEMS, URI
+from consts.env_consts import SPOTIFY_AUDIO_FEATURES_DRIVE_ID
 from consts.miscellaneous_consts import UTF_8_ENCODING
 from consts.path_consts import MERGED_DATA_PATH, AUDIO_FEATURES_CHUNK_OUTPUT_PATH_FORMAT, AUDIO_FEATURES_DATA_PATH
 from data_collection.spotify.base_spotify_collector import BaseSpotifyCollector
 from tools.data_chunks_generator import DataChunksGenerator
+from tools.google_drive.google_drive_file_metadata import GoogleDriveFileMetadata
 from utils.datetime_utils import get_current_datetime
+from utils.drive_utils import upload_files_to_drive
 from utils.file_utils import to_csv
 from utils.spotify_utils import get_spotipy
 
@@ -51,10 +55,8 @@ class AudioFeaturesCollector(BaseSpotifyCollector):
         valid_features = [feature for feature in tracks_features if isinstance(feature, dict)]
         print(f'Failed to collect audio features for {len(tracks_features) - len(valid_features)} out of {len(tracks_features)} tracks')
         tracks_features_data = pd.DataFrame.from_records(valid_features)
-        now = get_current_datetime()
-        output_path = AUDIO_FEATURES_CHUNK_OUTPUT_PATH_FORMAT.format(now)
 
-        to_csv(data=tracks_features_data, output_path=output_path)
+        self._output_results(tracks_features_data)
 
     async def _get_tracks_features(self, chunk: List[Tuple[str, str]]) -> List[dict]:
         pool = AioPool(AIO_POOL_SIZE)
@@ -94,3 +96,14 @@ class AudioFeaturesCollector(BaseSpotifyCollector):
         split_uri = track_uri.split(':')
 
         return split_uri[-1]
+
+    @staticmethod
+    def _output_results(tracks_features_data: DataFrame) -> None:
+        now = get_current_datetime()
+        output_path = AUDIO_FEATURES_CHUNK_OUTPUT_PATH_FORMAT.format(now)
+        to_csv(data=tracks_features_data, output_path=output_path)
+        file_metadata = GoogleDriveFileMetadata(
+            local_path=output_path,
+            drive_folder_id=os.environ[SPOTIFY_AUDIO_FEATURES_DRIVE_ID]
+        )
+        upload_files_to_drive(file_metadata)
