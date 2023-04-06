@@ -6,6 +6,7 @@ from typing import List
 import numpy as np
 
 from component_factory import ComponentFactory
+from consts.env_consts import IS_REMOTE_RUN
 from consts.language_consts import LANGUAGE, HEBREW_LANGUAGE_ABBREVIATION
 from consts.miscellaneous_consts import YEAR_REGEX
 
@@ -36,4 +37,4 @@ def get_similarity_score(s1: str, s2: str) -> float:
 
 
 def is_remote_run() -> bool:
-    return os.getenv('IS_REMOTE_RUN') == 'True'
+    return os.getenv(IS_REMOTE_RUN) == 'True'
