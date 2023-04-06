@@ -31,6 +31,7 @@ google-auth==1.35.0
 google-cloud-core==1.7.2
 google-cloud-translate==2.0.1
 googleapis-common-protos==1.55.0
+google-api-python-client==2.82.0
 greenlet==2.0.1
 grpcio==1.44.0
 huggingface-hub==0.12.1
