@@ -1,4 +1,5 @@
 import os
+from time import sleep
 
 import pandas as pd
 from pandas import DataFrame
@@ -22,6 +23,7 @@ class RadioStationsSnapshotsRunner:
         output_path = RADIO_STATIONS_PLAYLIST_SNAPSHOT_PATH_FORMAT.format(now)
 
         to_csv(data=data, output_path=output_path)
+        sleep(5)
         file_metadata = GoogleDriveFileMetadata(
             local_path=output_path,
             drive_folder_id=os.environ[RADIO_STATIONS_SNAPSHOTS_DRIVE_ID]
