@@ -3,10 +3,9 @@ from typing import List, Dict
 from pandas import DataFrame
 from tqdm import tqdm
 
-from consts.data_consts import ARTIST_NAME, NAME
 from consts.media_forest_consts import MEDIA_FOREST_MENUS_MAPPING, MEDIA_FOREST_URL, \
-    MEDIA_FOREST_WEEKLY_CHARTS_XPATH_FORMAT, PHOTOS_COLUMN_NAME, ARTIST_SONG_COLUMN_NAME, ARTISTS_COLUMNS_SPLIT, RANK, \
-    RANK_ORIGINAL_COLUMN_NAME, SONGS_COLUMNS_SPLIT, ARTISTS_RENAME_MAPPING, SONGS_RENAME_MAPPING
+    MEDIA_FOREST_WEEKLY_CHARTS_XPATH_FORMAT, PHOTOS_COLUMN_NAME, ARTISTS_COLUMNS_SPLIT, SONGS_COLUMNS_SPLIT, \
+    ARTISTS_RENAME_MAPPING, SONGS_RENAME_MAPPING
 from consts.miscellaneous_consts import UTF_8_ENCODING
 from consts.path_consts import MEDIAFOREST_PATH_FORMAT
 from tools.website_tables_crawler import WebsiteTablesCrawler
