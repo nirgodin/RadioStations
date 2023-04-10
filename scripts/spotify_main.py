@@ -13,28 +13,28 @@ async def run() -> None:
     radio_stations_snapshots_runner = RadioStationsSnapshotsRunner()
     radio_stations_snapshots_runner.run()
 
-    spotify_weekly_run_config = SpotifyWeeklyRunnerConfig(
-        artists_ids=SpotifyCollectorConfig(
-            name='artists ids collector',
-            weekday=2,
-            collector=ArtistsIDsCollector,
-            chunk_size=100
-        ),
-        albums_details=SpotifyCollectorConfig(
-            name='albums details collector',
-            weekday=3,
-            collector=AlbumsDetailsCollector,
-            chunk_size=50
-        ),
-        audio_features=SpotifyCollectorConfig(
-            name='audio features collector',
-            weekday=4,
-            collector=AudioFeaturesCollector,
-            chunk_size=1000
-        )
-    )
-    weekly_runner = SpotifyWeeklyRunner(spotify_weekly_run_config)
-    await weekly_runner.run()
+    # spotify_weekly_run_config = SpotifyWeeklyRunnerConfig(
+    #     artists_ids=SpotifyCollectorConfig(
+    #         name='artists ids collector',
+    #         weekday=2,
+    #         collector=ArtistsIDsCollector,
+    #         chunk_size=100
+    #     ),
+    #     albums_details=SpotifyCollectorConfig(
+    #         name='albums details collector',
+    #         weekday=3,
+    #         collector=AlbumsDetailsCollector,
+    #         chunk_size=50
+    #     ),
+    #     audio_features=SpotifyCollectorConfig(
+    #         name='audio features collector',
+    #         weekday=4,
+    #         collector=AudioFeaturesCollector,
+    #         chunk_size=1000
+    #     )
+    # )
+    # weekly_runner = SpotifyWeeklyRunner(spotify_weekly_run_config)
+    # await weekly_runner.run()
 
 
 if __name__ == '__main__':
