@@ -51,7 +51,8 @@ class SpotifyWeeklyRunner:
         print(f'Starting to run `{script_config.name}`')
         collector = script_config.collector(
             session=session,
-            chunk_size=script_config.chunk_size
+            chunk_size=script_config.chunk_size,
+            max_chunks_number=script_config.max_chunks_number
         )
         await collector.collect()
 
