@@ -7,6 +7,7 @@ from spotipy import SpotifyClientCredentials
 from data_collection.spotify.access_token_generator import AccessTokenGenerator
 
 
+@lru_cache(maxsize=1)
 def build_spotify_headers() -> Dict[str, str]:
     bearer_token = AccessTokenGenerator.generate()
     return {

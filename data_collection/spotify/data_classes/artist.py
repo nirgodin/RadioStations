@@ -2,10 +2,11 @@ from collections import Counter
 from dataclasses import dataclass
 from typing import List, Dict, Any
 
+import requests
 from dacite import from_dict
 
 from consts.data_consts import ARTIST_NAME, MAIN_GENRE, GENRES, ARTIST_POPULARITY, ARTIST_FOLLOWERS
-from utils.spotify_utils import get_spotipy
+from utils.spotify_utils import get_spotipy, build_spotify_headers
 
 MAIN_GENRES = [
     'rock',
@@ -46,9 +47,12 @@ class Artist:
 
     @classmethod
     def create_from_id(cls, id: str):
-        spotify = get_spotipy()
-        artist_page = spotify.artist(artist_id=id)
-        return from_dict(data_class=Artist, data=artist_page)
+        # spotify = get_spotipy()
+        artist_page = requests.get(
+            url=f'https://api.spotify.com/v1/artists/{id}',
+            headers=build_spotify_headers()
+        )
+        return from_dict(data_class=Artist, data=artist_page.json())
 
     def to_dict(self):
         return {
