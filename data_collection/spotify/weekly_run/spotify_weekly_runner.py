@@ -1,17 +1,14 @@
-import asyncio
 from dataclasses import fields
 from datetime import datetime
 
 from aiohttp import ClientSession
 
 from consts.path_consts import SPOTIFY_WEEKLY_RUN_LATEST_EXECUTIONS
-from data_collection.spotify.collectors.albums_details_collector import AlbumsDetailsCollector
-from data_collection.spotify.collectors.artists_ids_collector import ArtistsIDsCollector
-from data_collection.spotify.collectors.audio_features_collector import AudioFeaturesCollector
 from data_collection.spotify.weekly_run.spotify_collector_config import SpotifyCollectorConfig
 from data_collection.spotify.weekly_run.spotify_weekly_runner_config import SpotifyWeeklyRunnerConfig
 from utils.datetime_utils import now_israel_timezone, DATETIME_FORMAT
 from utils.file_utils import read_json, to_json
+from utils.git_utils import commit_and_push
 from utils.spotify_utils import build_spotify_headers
 
 
@@ -59,3 +56,7 @@ class SpotifyWeeklyRunner:
     def _update_script_execution_date(self, script_name: str) -> None:
         self._weekly_run_latest_executions[script_name] = now_israel_timezone().strftime(DATETIME_FORMAT)
         to_json(d=self._weekly_run_latest_executions, path=SPOTIFY_WEEKLY_RUN_LATEST_EXECUTIONS)
+        commit_and_push(
+            files_paths=[SPOTIFY_WEEKLY_RUN_LATEST_EXECUTIONS],
+            commit_message=f'Ran `{script_name}` script'
+        )
