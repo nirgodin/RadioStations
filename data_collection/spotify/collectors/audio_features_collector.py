@@ -23,8 +23,8 @@ from utils.spotify_utils import get_spotipy
 
 
 class AudioFeaturesCollector(BaseSpotifyCollector):
-    def __init__(self, session: ClientSession, chunk_size: int):
-        super().__init__(session, chunk_size)
+    def __init__(self, session: ClientSession, chunk_size: int, max_chunks_number: int):
+        super().__init__(session, chunk_size, max_chunks_number)
         self._sp = get_spotipy()
         self._chunks_generator = DataChunksGenerator(chunk_size)
 
@@ -37,8 +37,7 @@ class AudioFeaturesCollector(BaseSpotifyCollector):
             filtering_list=self._get_existing_tracks_and_artists()
         )
 
-        for chunk in chunks:
-            await self._collect_single_chunk(chunk)
+        await self._collect_multiple_chunks(chunks)
 
     @staticmethod
     def _get_existing_tracks_and_artists() -> List[Tuple[str, str]]:

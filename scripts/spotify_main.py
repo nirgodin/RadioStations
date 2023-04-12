@@ -18,19 +18,22 @@ async def run() -> None:
             name='artists ids collector',
             weekday=2,
             collector=ArtistsIDsCollector,
-            chunk_size=100
+            chunk_size=100,
+            max_chunks_number=10
         ),
         albums_details=SpotifyCollectorConfig(
             name='albums details collector',
             weekday=3,
             collector=AlbumsDetailsCollector,
-            chunk_size=50
+            chunk_size=50,
+            max_chunks_number=10
         ),
         audio_features=SpotifyCollectorConfig(
             name='audio features collector',
             weekday=4,
             collector=AudioFeaturesCollector,
-            chunk_size=1000
+            chunk_size=1000,
+            max_chunks_number=5
         )
     )
     weekly_runner = SpotifyWeeklyRunner(spotify_weekly_run_config)

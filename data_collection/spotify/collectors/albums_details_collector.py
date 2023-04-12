@@ -22,8 +22,8 @@ from utils.spotify_utils import build_spotify_headers
 
 
 class AlbumsDetailsCollector(BaseSpotifyCollector):
-    def __init__(self, session: ClientSession, chunk_size: int):
-        super().__init__(session, chunk_size)
+    def __init__(self, session: ClientSession, chunk_size: int, max_chunks_number: int):
+        super().__init__(session, chunk_size, max_chunks_number)
         self._chunks_generator = DataChunksGenerator(chunk_size)
 
     async def collect(self):
@@ -33,13 +33,10 @@ class AlbumsDetailsCollector(BaseSpotifyCollector):
         existing_artists_ids = self._get_existing_artists_ids()
         chunks = self._chunks_generator.generate_data_chunks(artists_ids, existing_artists_ids)
 
-        for chunk in chunks:
-            await self._collect_single_chunk(chunk)
+        await self._collect_multiple_chunks(chunks)
 
-        await self._session.close()
-
-    async def _collect_single_chunk(self, artists_ids: List[str]) -> None:
-        artists_dfs = await self._get_artists_albums(artists_ids)
+    async def _collect_single_chunk(self, chunk: List[str]) -> None:
+        artists_dfs = await self._get_artists_albums(chunk)
         valid_dfs = [df for df in artists_dfs if isinstance(df, DataFrame)]
 
         if valid_dfs:

@@ -9,4 +9,5 @@ class SpotifyCollectorConfig:
     name: str
     weekday: int
     chunk_size: int
+    max_chunks_number: int
     collector: Type[BaseSpotifyCollector]

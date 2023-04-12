@@ -23,8 +23,8 @@ from utils.spotify_utils import build_spotify_headers
 
 
 class ArtistsIDsCollector(BaseSpotifyCollector):
-    def __init__(self, session: ClientSession, chunk_size: int):
-        super().__init__(session, chunk_size)
+    def __init__(self, session: ClientSession, chunk_size: int, max_chunks_number: int):
+        super().__init__(session, chunk_size, max_chunks_number)
         self._chunks_generator = DataChunksGenerator(chunk_size)
 
     async def collect(self):
@@ -35,13 +35,10 @@ class ArtistsIDsCollector(BaseSpotifyCollector):
         existing_artists_and_tracks_ids = self._get_existing_artists_and_tracks()
         chunks = self._chunks_generator.generate_data_chunks(artists_and_track_ids, existing_artists_and_tracks_ids)
 
-        for chunk in chunks:
-            await self._collect_single_chunk(chunk)
+        await self._collect_multiple_chunks(chunks)
 
-        await self._session.close()
-
-    async def _collect_single_chunk(self, artists_and_track_ids: List[Tuple[str, str]]) -> None:
-        records = await self._get_artists_ids(artists_and_track_ids)
+    async def _collect_single_chunk(self, chunk: List[Tuple[str, str]]) -> None:
+        records = await self._get_artists_ids(chunk)
         valid_records = [record for record in records if isinstance(record, dict)]
         artists_ids_data = pd.DataFrame.from_records(valid_records)
 
