@@ -146,3 +146,4 @@ vcs.xml
 /tools/image_detection/resources/
 /analysis/analysis_outputs/
 /data
+/service_account_secrets.json
