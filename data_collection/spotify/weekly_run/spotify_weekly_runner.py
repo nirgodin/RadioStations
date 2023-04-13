@@ -8,7 +8,7 @@ from data_collection.spotify.weekly_run.spotify_collector_config import SpotifyC
 from data_collection.spotify.weekly_run.spotify_weekly_runner_config import SpotifyWeeklyRunnerConfig
 from utils.datetime_utils import now_israel_timezone, DATETIME_FORMAT
 from utils.file_utils import read_json, to_json
-from utils.git_utils import commit_and_push
+from utils.vcs_utils import commit_and_push
 from utils.spotify_utils import build_spotify_headers
 
 
