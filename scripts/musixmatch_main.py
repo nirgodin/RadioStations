@@ -5,9 +5,12 @@ import pandas as pd
 from consts.path_consts import MERGED_DATA_PATH
 from data_collection.musixmatch.musixmatch_lyrics_fetcher import MusixmatchLyricsFetcher
 from data_collection.musixmatch.musixmatch_search_fetcher import MusixmatchSearchFetcher
+from tools.environment_manager import EnvironmentManager
 
 
 async def run(request_limit: int):
+    EnvironmentManager().set_env_variables()
+
     search_fetcher = MusixmatchSearchFetcher(request_limit=request_limit)
     print(f'Starting to fetch {request_limit} tracks ids using MusixmatchSearchFetcher')
     await search_fetcher.fetch_tracks_ids(data=pd.read_csv(MERGED_DATA_PATH))

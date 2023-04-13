@@ -7,10 +7,12 @@ from data_collection.spotify.weekly_run.spotify_collector_config import SpotifyC
 from data_collection.spotify.weekly_run.spotify_weekly_runner import SpotifyWeeklyRunner
 from data_collection.spotify.radio_stations_snapshots_runner import RadioStationsSnapshotsRunner
 from data_collection.spotify.weekly_run.spotify_weekly_runner_config import SpotifyWeeklyRunnerConfig
+from tools.environment_manager import EnvironmentManager
 from utils.general_utils import is_remote_run
 
 
 async def run() -> None:
+    EnvironmentManager().set_env_variables()
     radio_stations_snapshots_runner = RadioStationsSnapshotsRunner()
     radio_stations_snapshots_runner.run()
 

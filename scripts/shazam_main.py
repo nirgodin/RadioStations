@@ -8,9 +8,12 @@ from data_collection.shazam.shazam_city_fetcher import ShazamCitiesFetcher
 from data_collection.shazam.shazam_country_fetcher import ShazamCountryFetcher
 from data_collection.shazam.shazam_search_fetcher import ShazamSearchFetcher
 from data_collection.shazam.shazam_song_about_fetcher import ShazamTrackAboutFetcher
+from tools.environment_manager import EnvironmentManager
 
 
 async def run():
+    EnvironmentManager().set_env_variables()
+
     cities_fetcher = ShazamCitiesFetcher()
     print('Starting to fetch data of israeli cities')
     await cities_fetcher.fetch_cities_top_tracks()
