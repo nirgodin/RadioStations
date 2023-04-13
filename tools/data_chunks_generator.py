@@ -1,3 +1,4 @@
+from math import ceil
 from typing import Generator, Optional
 
 
@@ -9,7 +10,7 @@ class DataChunksGenerator:
         if filtering_list is not None:
             lst = [artist for artist in lst if artist not in filtering_list]
 
-        n_chunks = round(len(lst) / self._chunk_size)
+        n_chunks = ceil(len(lst) / self._chunk_size)
 
         for i in range(0, len(lst), self._chunk_size):
             print(f'Generating chunk {self._get_chunk_number(i)} out of {n_chunks}')
