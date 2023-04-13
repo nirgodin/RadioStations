@@ -15,7 +15,7 @@ from consts.miscellaneous_consts import UTF_8_ENCODING
 from consts.path_consts import MERGED_DATA_PATH, AUDIO_FEATURES_CHUNK_OUTPUT_PATH_FORMAT, AUDIO_FEATURES_DATA_PATH
 from data_collection.spotify.base_spotify_collector import BaseSpotifyCollector
 from tools.data_chunks_generator import DataChunksGenerator
-from tools.google_drive.google_drive_file_metadata import GoogleDriveFileMetadata
+from tools.google_drive.google_drive_upload_metadata import GoogleDriveUploadMetadata
 from utils.datetime_utils import get_current_datetime
 from utils.drive_utils import upload_files_to_drive
 from utils.file_utils import to_csv
@@ -101,7 +101,7 @@ class AudioFeaturesCollector(BaseSpotifyCollector):
         now = get_current_datetime()
         output_path = AUDIO_FEATURES_CHUNK_OUTPUT_PATH_FORMAT.format(now)
         to_csv(data=tracks_features_data, output_path=output_path)
-        file_metadata = GoogleDriveFileMetadata(
+        file_metadata = GoogleDriveUploadMetadata(
             local_path=output_path,
             drive_folder_id=os.environ[SPOTIFY_AUDIO_FEATURES_DRIVE_ID]
         )

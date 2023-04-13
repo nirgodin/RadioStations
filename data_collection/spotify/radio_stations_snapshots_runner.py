@@ -12,7 +12,7 @@ from data_collection.spotify.data_classes.station import Station
 from utils.datetime_utils import get_current_datetime
 from utils.file_utils import to_csv
 from utils.drive_utils import upload_files_to_drive
-from tools.google_drive.google_drive_file_metadata import GoogleDriveFileMetadata
+from tools.google_drive.google_drive_upload_metadata import GoogleDriveUploadMetadata
 
 
 class RadioStationsSnapshotsRunner:
@@ -24,7 +24,7 @@ class RadioStationsSnapshotsRunner:
 
         to_csv(data=data, output_path=output_path)
         sleep(5)
-        file_metadata = GoogleDriveFileMetadata(
+        file_metadata = GoogleDriveUploadMetadata(
             local_path=output_path,
             drive_folder_id=os.environ[RADIO_STATIONS_SNAPSHOTS_DRIVE_ID]
         )

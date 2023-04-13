@@ -15,7 +15,7 @@ from consts.env_consts import SPOTIFY_ALBUMS_DETAILS_DRIVE_ID
 from consts.path_consts import ARTISTS_IDS_OUTPUT_PATH, ALBUMS_DETAILS_OUTPUT_PATH
 from data_collection.spotify.base_spotify_collector import BaseSpotifyCollector
 from tools.data_chunks_generator import DataChunksGenerator
-from tools.google_drive.google_drive_file_metadata import GoogleDriveFileMetadata
+from tools.google_drive.google_drive_upload_metadata import GoogleDriveUploadMetadata
 from utils.drive_utils import upload_files_to_drive
 from utils.file_utils import append_to_csv
 from utils.spotify_utils import build_spotify_headers
@@ -112,7 +112,7 @@ class AlbumsDetailsCollector(BaseSpotifyCollector):
     @staticmethod
     def _output_results(albums_data: DataFrame) -> None:
         append_to_csv(data=albums_data, output_path=ALBUMS_DETAILS_OUTPUT_PATH)
-        file_metadata = GoogleDriveFileMetadata(
+        file_metadata = GoogleDriveUploadMetadata(
             local_path=ALBUMS_DETAILS_OUTPUT_PATH,
             drive_folder_id=os.environ[SPOTIFY_ALBUMS_DETAILS_DRIVE_ID]
         )

@@ -6,7 +6,7 @@ from utils.file_utils import get_path_suffix
 
 
 @dataclass
-class GoogleDriveFileMetadata:
+class GoogleDriveUploadMetadata:
     local_path: str
     drive_folder_id: str
     file_name: Optional[str] = None
