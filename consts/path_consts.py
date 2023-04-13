@@ -45,5 +45,5 @@ SPOTIFY_WEEKLY_RUN_LATEST_EXECUTIONS = r'data_collection/spotify/weekly_run/reso
 ALBUMS_DETAILS_ANALYZER_OUTPUT_PATH = r'analysis/analysis_outputs/albums_details_analysis_output.csv'
 SHAZAM_TRACKS_LANGUAGES_PATH = r'data/shazam/tracks_languages.csv'
 MAKO_HIT_LIST_OUTPUT_PATH_FORMAT = r'data/mako_hit_list/{}.csv'
-MAIN_DATA_DIR_PATH = r'./data/'
-DATA_DVC_PATH = r'./data.dvc/'
+MAIN_DATA_DIR_PATH = r'data'
+DATA_DVC_PATH = r'data.dvc'
