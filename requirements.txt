@@ -1,5 +1,6 @@
 aiohttp==3.8.3
 asyncio-pool==0.6.0
+async-lru==2.0.2
 beautifulsoup4==4.12.2
 dacite==1.6.0
 dataclasses-json==0.5.7
