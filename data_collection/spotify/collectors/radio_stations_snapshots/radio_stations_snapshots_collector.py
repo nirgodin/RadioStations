@@ -3,6 +3,7 @@ from functools import partial
 from typing import List, Tuple
 
 from aiohttp import ClientSession
+from async_lru import alru_cache
 from asyncio_pool import AioPool
 from tqdm import tqdm
 
@@ -71,6 +72,7 @@ class RadioStationsSnapshotsCollector(BaseSpotifyCollector):
     def _get_single_artist_id(track: dict) -> str:
         return track.get(ARTISTS, [])[0][ID]  # TODO: Robust
 
+    @alru_cache(maxsize=700)
     async def _get_single_track_artist(self, progress_bar: tqdm, artist_id: str) -> Artist:
         url = ARTISTS_URL_FORMAT.format(artist_id)
 
