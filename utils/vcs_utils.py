@@ -25,4 +25,4 @@ def dvc_add_and_push(commit_message: str, branch_name: str = 'main') -> None:
         commit_message=commit_message,
         branch_name=branch_name
     )
-    subprocess.call(['dvc', '-v', 'push'])
+    subprocess.call(['dvc', 'push', '-v'])
