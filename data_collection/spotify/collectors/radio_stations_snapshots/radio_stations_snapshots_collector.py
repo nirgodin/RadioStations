@@ -1,6 +1,6 @@
 import asyncio
 from functools import partial
-from typing import Dict, List, Tuple
+from typing import List, Tuple
 
 from aiohttp import ClientSession
 from asyncio_pool import AioPool
@@ -13,7 +13,6 @@ from data_collection.spotify.base_spotify_collector import BaseSpotifyCollector
 from data_collection.spotify.collectors.radio_stations_snapshots.artist import Artist
 from data_collection.spotify.collectors.radio_stations_snapshots.station import Station
 from data_collection.spotify.collectors.radio_stations_snapshots.track import Track
-from utils.general_utils import chain_dicts
 from utils.spotify_utils import build_spotify_headers
 
 
@@ -76,7 +75,7 @@ class RadioStationsSnapshotsCollector(BaseSpotifyCollector):
         url = ARTISTS_URL_FORMAT.format(artist_id)
 
         async with self._session.get(url) as raw_response:
-            response = await raw_response.json(content_type=None)
+            response = await raw_response.json()
             progress_bar.update(1)
 
         return Artist.from_dict(response)
