@@ -19,10 +19,10 @@ def commit_and_push(files_paths: List[str], commit_message: str, branch_name: st
 
 
 def dvc_add_and_push(commit_message: str, branch_name: str = 'main') -> None:
-    subprocess.call(['dvc', 'add', MAIN_DATA_DIR_PATH])
+    subprocess.call(['dvc', 'add', '-v', MAIN_DATA_DIR_PATH])
     commit_and_push(
         files_paths=[DATA_DVC_PATH],
         commit_message=commit_message,
         branch_name=branch_name
     )
-    subprocess.call(['dvc', 'push'])
+    subprocess.call(['dvc', '-v', 'push'])
