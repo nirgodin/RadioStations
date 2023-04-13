@@ -147,3 +147,4 @@ vcs.xml
 /analysis/analysis_outputs/
 /data
 /service_account_secrets.json
+/env_variables.json
