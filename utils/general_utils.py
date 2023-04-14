@@ -1,6 +1,7 @@
 import os
 from difflib import SequenceMatcher
 from functools import reduce
+from itertools import chain
 from typing import List, Optional
 
 import numpy as np
@@ -58,3 +59,7 @@ def recursively_flatten_nested_dict(dct: dict, flatten_dct: Optional[dict] = Non
         return recursively_flatten_nested_dict(dct=next_dct, flatten_dct=flatten_dct)
     else:
         return flatten_dct
+
+
+def chain_lists(list_of_lists: List[list]) -> list:
+    return list(chain.from_iterable(list_of_lists))

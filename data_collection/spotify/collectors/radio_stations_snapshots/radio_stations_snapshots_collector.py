@@ -5,7 +5,6 @@ from typing import List, Tuple
 
 import pandas as pd
 from aiohttp import ClientSession
-from async_lru import alru_cache
 from asyncio_pool import AioPool
 from pandas import DataFrame
 from tqdm import tqdm
@@ -19,11 +18,15 @@ from data_collection.spotify.collectors.radio_stations_snapshots.data_classes.ar
 from data_collection.spotify.collectors.radio_stations_snapshots.data_classes.playlist import Playlist
 from data_collection.spotify.collectors.radio_stations_snapshots.data_classes.station import Station
 from data_collection.spotify.collectors.radio_stations_snapshots.data_classes.track import Track
+from tools.data_chunks_generator import DataChunksGenerator
 from tools.google_drive.google_drive_upload_metadata import GoogleDriveUploadMetadata
 from utils.datetime_utils import get_current_datetime
 from utils.drive_utils import upload_files_to_drive
 from utils.file_utils import to_csv
+from utils.general_utils import chain_lists
 from utils.spotify_utils import build_spotify_headers
+
+MAX_ARTISTS_PER_REQUEST = 50
 
 
 class RadioStationsSnapshotsCollector:
@@ -71,12 +74,13 @@ class RadioStationsSnapshotsCollector:
     async def _get_playlist_tracks(self, playlist: Playlist) -> List[Track]:
         print(f'Starting to collect `{playlist.station}` station artists')
         artists_ids = self._get_artists_ids(playlist.tracks)
+        chunks_generator = DataChunksGenerator(chunk_size=MAX_ARTISTS_PER_REQUEST)
+        chunks = chunks_generator.generate_data_chunks(lst=artists_ids, filtering_list=[])
         pool = AioPool(AIO_POOL_SIZE)
-        progress_bar = tqdm(total=len(artists_ids))
-        func = partial(self._get_single_track_artist, progress_bar)
-        artists = await pool.map(func, artists_ids)
+        artists = await pool.map(self._get_single_chunk_artists, chunks)
+        flattened_artists = chain_lists(artists)
 
-        return self._serialize_tracks(playlist.tracks, artists)
+        return self._serialize_tracks(playlist.tracks, flattened_artists)
 
     def _get_artists_ids(self, raw_tracks: List[dict]) -> List[str]:
         artists_ids = []
@@ -91,15 +95,15 @@ class RadioStationsSnapshotsCollector:
     def _get_single_artist_id(track: dict) -> str:
         return track.get(TRACK, {}).get(ARTISTS, [])[0][ID]
 
-    @alru_cache(maxsize=700)
-    async def _get_single_track_artist(self, progress_bar: tqdm, artist_id: str) -> Artist:
-        url = ARTISTS_URL_FORMAT.format(artist_id)
+    async def _get_single_chunk_artists(self, chunk: List[str]) -> List[Artist]:
+        artists_ids = ','.join(chunk)
+        url = ARTISTS_URL_FORMAT.format(artists_ids)
 
         async with self._session.get(url) as raw_response:
             response = await raw_response.json()
-            progress_bar.update(1)
 
-        return Artist.from_spotify_response(response)
+        artists = response[ARTISTS]
+        return [Artist.from_spotify_response(artist) for artist in artists]
 
     @staticmethod
     def _serialize_tracks(raw_tracks: List[dict], artists: List[Artist]) -> List[Track]:
