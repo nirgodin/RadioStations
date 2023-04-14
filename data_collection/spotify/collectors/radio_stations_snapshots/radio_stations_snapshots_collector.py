@@ -31,6 +31,7 @@ class RadioStationsSnapshotsCollector:
         self._session = session
 
     async def collect(self) -> None:
+        print('Starting to run `RadioStationsSnapshotsCollector`')
         playlists = await self._get_stations_playlists()
         stations = await self._collect_stations(playlists)
         dfs = [station.to_dataframe() for station in stations]
@@ -49,6 +50,7 @@ class RadioStationsSnapshotsCollector:
         return stations
 
     async def _get_stations_playlists(self) -> List[Playlist]:
+        print('Starting to collect playlists')
         pool = AioPool(AIO_POOL_SIZE)
         iterable = list(STATIONS.items())
         progress_bar = tqdm(total=len(iterable))
@@ -67,6 +69,7 @@ class RadioStationsSnapshotsCollector:
         return Playlist.from_spotify_response(station_name=station_name, playlist=response)
 
     async def _get_playlist_tracks(self, playlist: Playlist) -> List[Track]:
+        print(f'Starting to collect `{playlist.station}` station artists')
         artists_ids = self._get_artists_ids(playlist.tracks)
         pool = AioPool(AIO_POOL_SIZE)
         progress_bar = tqdm(total=len(artists_ids))

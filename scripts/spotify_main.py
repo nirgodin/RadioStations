@@ -1,20 +1,26 @@
 import asyncio
 
+from aiohttp import ClientSession
+
 from data_collection.spotify.collectors.albums_details_collector import AlbumsDetailsCollector
 from data_collection.spotify.collectors.artists_ids_collector import ArtistsIDsCollector
 from data_collection.spotify.collectors.audio_features_collector import AudioFeaturesCollector
+from data_collection.spotify.collectors.radio_stations_snapshots.radio_stations_snapshots_collector import \
+    RadioStationsSnapshotsCollector
 from data_collection.spotify.weekly_run.spotify_collector_config import SpotifyCollectorConfig
 from data_collection.spotify.weekly_run.spotify_weekly_runner import SpotifyWeeklyRunner
-from data_collection.spotify.radio_stations_snapshots_runner import RadioStationsSnapshotsRunner
 from data_collection.spotify.weekly_run.spotify_weekly_runner_config import SpotifyWeeklyRunnerConfig
 from tools.environment_manager import EnvironmentManager
 from utils.general_utils import is_remote_run
+from utils.spotify_utils import build_spotify_headers
 
 
 async def run() -> None:
     EnvironmentManager().set_env_variables()
-    radio_stations_snapshots_runner = RadioStationsSnapshotsRunner()
-    radio_stations_snapshots_runner.run()
+
+    async with ClientSession(headers=build_spotify_headers()) as session:
+        radio_stations_snapshots_collector = RadioStationsSnapshotsCollector(session)
+        await radio_stations_snapshots_collector.collect()
 
     if not is_remote_run():
         spotify_weekly_run_config = SpotifyWeeklyRunnerConfig(
