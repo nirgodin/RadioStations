@@ -1,11 +1,10 @@
 from dataclasses import dataclass
-from typing import Optional
 
 from dataclasses_json import dataclass_json
 
 from consts.data_consts import NAME, ALBUM, POPULARITY, TRACK_NUMBER, DURATION_MS, EXPLICIT, RELEASE_DATE, TOTAL_TRACKS, \
     TRACK, ADDED_AT
-from data_collection.spotify.collectors.radio_stations_snapshots.artist import Artist
+from data_collection.spotify.collectors.radio_stations_snapshots.data_classes.artist import Artist
 
 
 @dataclass_json

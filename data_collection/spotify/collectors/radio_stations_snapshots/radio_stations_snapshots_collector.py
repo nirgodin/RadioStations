@@ -15,11 +15,10 @@ from consts.data_consts import TRACK, ARTISTS, ID
 from consts.env_consts import RADIO_STATIONS_SNAPSHOTS_DRIVE_ID
 from consts.path_consts import RADIO_STATIONS_PLAYLIST_SNAPSHOT_PATH_FORMAT
 from consts.playlists_consts import STATIONS
-from data_collection.spotify.base_spotify_collector import BaseSpotifyCollector
-from data_collection.spotify.collectors.radio_stations_snapshots.artist import Artist
-from data_collection.spotify.collectors.radio_stations_snapshots.playlist import Playlist
-from data_collection.spotify.collectors.radio_stations_snapshots.station import Station
-from data_collection.spotify.collectors.radio_stations_snapshots.track import Track
+from data_collection.spotify.collectors.radio_stations_snapshots.data_classes.artist import Artist
+from data_collection.spotify.collectors.radio_stations_snapshots.data_classes.playlist import Playlist
+from data_collection.spotify.collectors.radio_stations_snapshots.data_classes.station import Station
+from data_collection.spotify.collectors.radio_stations_snapshots.data_classes.track import Track
 from tools.google_drive.google_drive_upload_metadata import GoogleDriveUploadMetadata
 from utils.datetime_utils import get_current_datetime
 from utils.drive_utils import upload_files_to_drive

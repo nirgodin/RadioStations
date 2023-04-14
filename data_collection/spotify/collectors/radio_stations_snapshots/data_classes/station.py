@@ -6,8 +6,8 @@ from dataclasses_json import dataclass_json
 from pandas import DataFrame
 
 from consts.data_consts import TRACKS
-from data_collection.spotify.collectors.radio_stations_snapshots.playlist import Playlist
-from data_collection.spotify.collectors.radio_stations_snapshots.track import Track
+from data_collection.spotify.collectors.radio_stations_snapshots.data_classes.playlist import Playlist
+from data_collection.spotify.collectors.radio_stations_snapshots.data_classes.track import Track
 from utils.general_utils import recursively_flatten_nested_dict
 
 
