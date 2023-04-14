@@ -27,9 +27,9 @@ from utils.file_utils import to_csv
 from utils.spotify_utils import build_spotify_headers
 
 
-class RadioStationsSnapshotsCollector(BaseSpotifyCollector):
-    def __init__(self, session: ClientSession, chunk_size: int, max_chunks_number: int):
-        super().__init__(session, chunk_size, max_chunks_number)
+class RadioStationsSnapshotsCollector:
+    def __init__(self, session: ClientSession):
+        self._session = session
 
     async def collect(self) -> None:
         playlists = await self._get_stations_playlists()
@@ -48,9 +48,6 @@ class RadioStationsSnapshotsCollector(BaseSpotifyCollector):
             stations.append(station)
 
         return stations
-
-    async def _collect_single_chunk(self, chunk: list) -> None:
-        pass
 
     async def _get_stations_playlists(self) -> List[Playlist]:
         pool = AioPool(AIO_POOL_SIZE)
@@ -127,4 +124,4 @@ class RadioStationsSnapshotsCollector(BaseSpotifyCollector):
 if __name__ == '__main__':
     session = ClientSession(headers=build_spotify_headers())
     loop = asyncio.get_event_loop()
-    loop.run_until_complete(RadioStationsSnapshotsCollector(session, 1, 1).collect())
+    loop.run_until_complete(RadioStationsSnapshotsCollector(session).collect())
