@@ -1,26 +1,30 @@
 from dataclasses import dataclass
-from typing import List, Dict
+from typing import List
 
+import pandas as pd
 from dataclasses_json import dataclass_json
+from pandas import DataFrame
 
-from consts.data_consts import FOLLOWERS, TOTAL, SNAPSHOT_ID, TRACKS, ITEMS
+from consts.data_consts import TRACKS
+from data_collection.spotify.collectors.radio_stations_snapshots.playlist import Playlist
+from data_collection.spotify.collectors.radio_stations_snapshots.track import Track
+from utils.general_utils import recursively_flatten_nested_dict
 
 
 @dataclass_json
 @dataclass
 class Station:
-    name: str
-    id: str
-    followers: int
-    snapshot_id: str
-    tracks: List[dict]
+    playlist: Playlist
+    tracks: List[Track]
 
-    @classmethod
-    def from_playlist(cls, station_name: str, playlist: dict) -> "Station":
-        return cls(
-            name=station_name,
-            id=playlist.get(FOLLOWERS, {}).get(TOTAL, -1),
-            followers=playlist.get(FOLLOWERS, {}).get(TOTAL, -1),
-            snapshot_id=playlist.get(SNAPSHOT_ID, ''),
-            tracks=playlist.get(TRACKS, {}).get(ITEMS, [])
-        )
+    def to_dataframe(self) -> DataFrame:
+        playlist = self.playlist.to_dict()
+        playlist.pop(TRACKS)
+        records = []
+
+        for track in self.tracks:
+            record = recursively_flatten_nested_dict(track.to_dict())
+            record.update(playlist)
+            records.append(record)
+
+        return pd.DataFrame.from_records(records)

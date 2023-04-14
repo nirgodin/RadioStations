@@ -3,7 +3,8 @@ from typing import Optional
 
 from dataclasses_json import dataclass_json
 
-from consts.data_consts import NAME, ALBUM, POPULARITY, TRACK_NUMBER, DURATION_MS, EXPLICIT, RELEASE_DATE, TOTAL_TRACKS
+from consts.data_consts import NAME, ALBUM, POPULARITY, TRACK_NUMBER, DURATION_MS, EXPLICIT, RELEASE_DATE, TOTAL_TRACKS, \
+    TRACK, ADDED_AT
 from data_collection.spotify.collectors.radio_stations_snapshots.artist import Artist
 
 
@@ -19,18 +20,22 @@ class Track:
     main_album: str
     release_date: str
     album_tracks_number: int
-    added_at: Optional[str] = None
+    added_at: str
 
     @classmethod
     def from_raw_track(cls, raw_track: dict, artist: Artist) -> "Track":
+        track = raw_track.get(TRACK, {})
+        album = track.get(ALBUM, {})
+
         return cls(
-            name=raw_track.get(NAME, ''),
+            name=track.get(NAME, ''),
             main_artist=artist,
-            popularity=raw_track.get(POPULARITY, ''),
-            track_number=raw_track.get(TRACK_NUMBER, ''),
-            duration_ms=raw_track.get(DURATION_MS, ''),
-            explicit=raw_track.get(EXPLICIT, ''),
-            main_album=raw_track.get(ALBUM, {}).get(NAME, ''),
-            release_date=raw_track.get(ALBUM, {}).get(RELEASE_DATE, ''),
-            album_tracks_number=raw_track.get(ALBUM, {}).get(TOTAL_TRACKS, ''),
+            popularity=track.get(POPULARITY, ''),
+            track_number=track.get(TRACK_NUMBER, ''),
+            duration_ms=track.get(DURATION_MS, ''),
+            explicit=track.get(EXPLICIT, ''),
+            main_album=album.get(NAME, ''),
+            release_date=album.get(RELEASE_DATE, ''),
+            album_tracks_number=album.get(TOTAL_TRACKS, ''),
+            added_at=raw_track.get(ADDED_AT, '')
         )

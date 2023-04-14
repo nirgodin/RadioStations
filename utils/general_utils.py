@@ -1,7 +1,7 @@
 import os
 from difflib import SequenceMatcher
 from functools import reduce
-from typing import List
+from typing import List, Optional
 
 import numpy as np
 
@@ -38,3 +38,23 @@ def get_similarity_score(s1: str, s2: str) -> float:
 
 def is_remote_run() -> bool:
     return os.getenv(IS_REMOTE_RUN) == 'True'
+
+
+def recursively_flatten_nested_dict(dct: dict, flatten_dct: Optional[dict] = None) -> dict:
+    if flatten_dct is None:
+        flatten_dct = {}
+
+    next_dct = {}
+
+    for k, v in dct.items():
+        if isinstance(v, dict):
+            next_dct.update(v)
+        elif k in flatten_dct.keys():
+            raise ValueError(f'Flattened dict already contains the following key `{k}`')
+        else:
+            flatten_dct[k] = v
+
+    if next_dct:
+        return recursively_flatten_nested_dict(dct=next_dct, flatten_dct=flatten_dct)
+    else:
+        return flatten_dct
