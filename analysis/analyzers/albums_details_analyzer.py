@@ -6,6 +6,7 @@ from pandas import DataFrame
 from tqdm import tqdm
 
 from analysis.analyzer_interface import IAnalyzer
+from consts.aggregation_consts import MEDIAN, MAX, MIN
 from consts.data_consts import ARTIST_ID, ALBUM_GROUP, ALBUM_TYPE, RELEASE_DATE, ALBUM, NAME, COUNT
 from consts.miscellaneous_consts import UTF_8_ENCODING
 from consts.path_consts import ALBUMS_DETAILS_OUTPUT_PATH, ALBUMS_DETAILS_ANALYZER_OUTPUT_PATH
@@ -35,7 +36,7 @@ class AlbumsDetailsAnalyzer(IAnalyzer):
     def _get_median_markets_number(self, data: DataFrame) -> DataFrame:
         data[AVAILABLE_MARKETS_NUMBER] = data[AVAILABLE_MARKETS].apply(lambda x: self._calculate_markets_number(x))
         relevant_data = data[[ARTIST_ID, AVAILABLE_MARKETS_NUMBER]]
-        grouped_data = self._groupby(relevant_data, group_by=[ARTIST_ID], agg_by=['median'])
+        grouped_data = self._groupby(relevant_data, group_by=[ARTIST_ID], agg_by=[MEDIAN])
         grouped_data.columns = [ARTIST_ID, MEDIAN_MARKETS_NUMBER]
 
         return grouped_data
@@ -61,7 +62,7 @@ class AlbumsDetailsAnalyzer(IAnalyzer):
         data[ALBUM_RELEASE_YEAR] = data[RELEASE_DATE].apply(lambda x: extract_year(x))
         albums_data = data[(data[ALBUM_TYPE] == ALBUM) & (data[ALBUM_GROUP] == ALBUM)]
         relevant_data = albums_data[[ARTIST_ID, ALBUM_RELEASE_YEAR]]
-        grouped_data = self._groupby(relevant_data, group_by=[ARTIST_ID], agg_by=['min', 'max'])
+        grouped_data = self._groupby(relevant_data, group_by=[ARTIST_ID], agg_by=[MIN, MAX])
         grouped_data.columns = [ARTIST_ID, FIRST_ALBUM_RELEASE_YEAR, LAST_ALBUM_RELEASE_YEAR]
         grouped_data[YEARS_ACTIVE] = grouped_data[LAST_ALBUM_RELEASE_YEAR] - grouped_data[FIRST_ALBUM_RELEASE_YEAR]
 
