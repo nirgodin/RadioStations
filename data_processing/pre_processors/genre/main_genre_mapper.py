@@ -4,7 +4,7 @@ import pandas as pd
 from nltk import MWETokenizer
 
 from consts.data_consts import GENRE, MAIN_GENRE
-from consts.path_consts import GENRES_MAPPING_PATH
+from consts.path_consts import GENRES_LABELS_PATH
 
 OTHER = 'other'
 TOKENIZER_SEPARATOR = ' '
@@ -35,7 +35,7 @@ class MainGenreMapper:
 
     @property
     def _tagged_genres(self) -> Dict[str, str]:
-        genres_data = pd.read_csv(GENRES_MAPPING_PATH).fillna('')
+        genres_data = pd.read_csv(GENRES_LABELS_PATH).fillna('')
         genres_mapping = {}
 
         for genre, main_genre in zip(genres_data[GENRE], genres_data[MAIN_GENRE]):

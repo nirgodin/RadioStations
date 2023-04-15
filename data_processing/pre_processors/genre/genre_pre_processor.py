@@ -4,7 +4,7 @@ from typing import Dict, List
 from pandas import DataFrame
 from tqdm import tqdm
 
-from consts.data_consts import MAIN_GENRE, GENRES
+from consts.data_consts import MAIN_GENRE, GENRES, N_GENRES
 from data_processing.pre_processors.genre.main_genre_mapper import MainGenreMapper, OTHER
 from data_processing.pre_processors.pre_processor_interface import IPreProcessor
 
@@ -17,12 +17,17 @@ class GenrePreProcessor(IPreProcessor):
 
     def pre_process(self, data: DataFrame) -> DataFrame:
         tracks_raw_genres = data[GENRES].unique().tolist()
+
         main_genres_mapping = self._get_main_genres_mapping(tracks_raw_genres)
         data[MAIN_GENRE] = data[GENRES].map(main_genres_mapping)
+
+        n_genres_mapping = self._get_n_genres_mapping(tracks_raw_genres)
+        data[N_GENRES] = data[GENRES].map(n_genres_mapping)
 
         return data
 
     def _get_main_genres_mapping(self, raw_genres: List[str]) -> Dict[str, str]:
+        print('Mapping raw genres to main genres')
         main_genres = {}
 
         with tqdm(total=len(raw_genres)) as progress_bar:
@@ -67,6 +72,18 @@ class GenrePreProcessor(IPreProcessor):
         genre_name, genre_count = most_common_main_genre[0]
 
         return genre_name
+
+    def _get_n_genres_mapping(self, raw_genres: List[str]) -> Dict[str, int]:
+        print('Mapping raw genres to number of genres')
+        mapping = {}
+
+        with tqdm(total=len(raw_genres)) as progress_bar:
+            for track_raw_genres in raw_genres:
+                genres = self._to_list(track_raw_genres)
+                mapping[track_raw_genres] = len(genres)
+                progress_bar.update(1)
+
+        return mapping
 
     @property
     def name(self) -> str:

@@ -6,6 +6,7 @@ STATION = 'station'
 MAIN_GENRE = 'main_genre'
 GENRE = 'genre'
 GENRES = 'genres'
+N_GENRES = 'n_genres'
 FOLLOWERS = "followers"
 TOTAL = 'total'
 SNAPSHOT_ID = 'snapshot_id'
