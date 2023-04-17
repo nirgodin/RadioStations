@@ -2,7 +2,7 @@ import pandas as pd
 from pandas import DataFrame
 
 from consts.data_consts import ARTIST_NAME
-from consts.path_consts import MAPPED_GENDERS_OUTPUT_PATH, MERGED_DATA_PATH
+from consts.path_consts import MAPPED_GENDERS_OUTPUT_PATH
 from data_processing.pre_processors.pre_processor_interface import IPreProcessor
 
 
