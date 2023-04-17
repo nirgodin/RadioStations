@@ -32,7 +32,10 @@ class DataMerger:
                 progress_bar.update(1)
 
                 if DataMerger._is_csv_file(file_name):
-                    yield DataMerger._generate_single_file_data(dir_path, file_name)
+                    file_data = DataMerger._generate_single_file_data(dir_path, file_name)
+
+                    if not file_data.empty:
+                        yield file_data
 
     @staticmethod
     def _generate_single_file_data(dir_path: str, file_name: str) -> DataFrame:
