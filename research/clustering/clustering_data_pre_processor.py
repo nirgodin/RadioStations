@@ -1,11 +1,15 @@
 from typing import List, Dict
 
+import kneed
+import numpy as np
 import pandas as pd
+from kneed import KneeLocator
 from matplotlib import pyplot as plt
 from pandas import DataFrame
 from sklearn.impute import SimpleImputer
 from sklearn.neighbors import NearestNeighbors
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
+from tqdm import tqdm
 
 from consts.aggregation_consts import FIRST, MEDIAN, MAX, MIN
 from consts.clustering_consts import DROPPABLE_COLUMNS, CATEGORICAL_COLUMNS, GROUPBY_FIRST_COLUMNS, \
@@ -13,7 +17,7 @@ from consts.clustering_consts import DROPPABLE_COLUMNS, CATEGORICAL_COLUMNS, GRO
 from consts.data_consts import SONG
 from consts.path_consts import MERGED_DATA_PATH
 from utils.general_utils import chain_dicts
-from sklearn.cluster import DBSCAN
+from sklearn.cluster import DBSCAN, KMeans
 from collections import Counter
 
 
@@ -21,10 +25,30 @@ class ClusteringDataPreProcessor:
     def pre_process(self, data: DataFrame) -> DataFrame:
         groubyed_data = self._groupby_data(data)
         scaled_data = MinMaxScaler().fit_transform(groubyed_data)
-        db = DBSCAN(eps=0.1, min_samples=10)
-        db.fit(scaled_data)
-        labels_count = Counter(db.labels_.tolist())
+        # min_samples = int(2 * scaled_data.shape[1])
+        # eps = self._find_optimal_epsilon(scaled_data, min_samples)
+        # db = DBSCAN(eps=eps, min_samples=min_samples)
+        # db.fit(scaled_data)
+        k = self._find_optimal_epsilon(scaled_data, 1)
+        km = KMeans(n_clusters=k, random_state=0)
+        km.fit(scaled_data)
+        # labels_count = Counter(db.labels_.tolist())
         print('b')
+
+    def _find_optimal_epsilon(self, scaled_data: DataFrame, min_samples: int) -> int:
+        sum_squared_dist = []
+        with tqdm(total=50) as progress_bar:
+            for k in range(1, 50):
+                km = KMeans(n_clusters=k, random_state=0)
+                km.fit(scaled_data)
+                sum_squared_dist.append(km.inertia_)
+                progress_bar.update(1)
+
+        x = list(range(50))
+        y = sum_squared_dist
+        kn = KneeLocator(x, y, curve='convex', direction='decreasing')
+
+        return kn.knee
 
     def _groupby_data(self, data: DataFrame) -> DataFrame:
         relevant_data = data.drop(DROPPABLE_COLUMNS, axis=1)
