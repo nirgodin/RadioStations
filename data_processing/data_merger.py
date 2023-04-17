@@ -3,6 +3,7 @@ from typing import Generator, Optional, List
 
 import pandas as pd
 from pandas import DataFrame
+from pandas.errors import EmptyDataError
 from tqdm import tqdm
 
 from consts.data_consts import NAME, ADDED_AT, STATION, SCRAPED_AT
@@ -32,10 +33,17 @@ class DataMerger:
                 progress_bar.update(1)
 
                 if DataMerger._is_csv_file(file_name):
-                    file_data = DataMerger._generate_single_file_data(dir_path, file_name)
+                    file_data = DataMerger._wrap_generate_single_file_data(dir_path, file_name)
 
-                    if not file_data.empty:
+                    if file_data is not None:
                         yield file_data
+
+    @staticmethod
+    def _wrap_generate_single_file_data(dir_path: str, file_name: str) -> Optional[DataFrame]:
+        try:
+            return DataMerger._generate_single_file_data(dir_path, file_name)
+        except EmptyDataError:
+            print(f'The following file is empty `{file_name}`. Skipping')
 
     @staticmethod
     def _generate_single_file_data(dir_path: str, file_name: str) -> DataFrame:
