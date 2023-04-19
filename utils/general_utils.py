@@ -1,8 +1,9 @@
 import os
+from bisect import bisect_left
 from difflib import SequenceMatcher
 from functools import reduce
 from itertools import chain
-from typing import List, Optional
+from typing import List, Optional, Tuple, Any
 
 import numpy as np
 
@@ -63,3 +64,14 @@ def recursively_flatten_nested_dict(dct: dict, flatten_dct: Optional[dict] = Non
 
 def chain_lists(list_of_lists: List[list]) -> list:
     return list(chain.from_iterable(list_of_lists))
+
+
+def binary_search(lst: list, value: Any) -> Tuple[bool, int]:
+    index = bisect_left(lst, value)
+
+    try:
+        is_in_list = (lst[index] == value)
+    except IndexError:
+        is_in_list = False
+
+    return is_in_list, index

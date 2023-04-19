@@ -14,6 +14,7 @@ from consts.data_consts import TRACK, ARTISTS, ID
 from consts.env_consts import RADIO_STATIONS_SNAPSHOTS_DRIVE_ID
 from consts.path_consts import RADIO_STATIONS_PLAYLIST_SNAPSHOT_PATH_FORMAT
 from consts.playlists_consts import STATIONS
+from data_collection.spotify.collectors.playlists_collector import PlaylistsCollector
 from data_collection.spotify.collectors.radio_stations_snapshots.data_classes.artist import Artist
 from data_collection.spotify.collectors.radio_stations_snapshots.data_classes.playlist import Playlist
 from data_collection.spotify.collectors.radio_stations_snapshots.data_classes.station import Station
@@ -32,10 +33,11 @@ MAX_ARTISTS_PER_REQUEST = 50
 class RadioStationsSnapshotsCollector:
     def __init__(self, session: ClientSession):
         self._session = session
+        self._playlists_collector = PlaylistsCollector(self._session)
 
     async def collect(self) -> None:
         print('Starting to run `RadioStationsSnapshotsCollector`')
-        playlists = await self._get_stations_playlists()
+        playlists = await self._playlists_collector.collect(STATIONS)
         stations = await self._collect_stations(playlists)
         dfs = [station.to_dataframe() for station in stations]
         data = pd.concat(dfs)
@@ -51,25 +53,6 @@ class RadioStationsSnapshotsCollector:
             stations.append(station)
 
         return stations
-
-    async def _get_stations_playlists(self) -> List[Playlist]:
-        print('Starting to collect playlists')
-        pool = AioPool(AIO_POOL_SIZE)
-        iterable = list(STATIONS.items())
-        progress_bar = tqdm(total=len(iterable))
-        func = partial(self._get_single_playlist, progress_bar)
-
-        return await pool.map(func, iterable)
-
-    async def _get_single_playlist(self, progress_bar: tqdm, station_name_and_playlist_id: Tuple[str, str]) -> Playlist:
-        station_name, playlist_id = station_name_and_playlist_id
-        url = PLAYLIST_URL_FORMAT.format(playlist_id)
-
-        async with self._session.get(url) as raw_response:
-            response = await raw_response.json()
-            progress_bar.update(1)
-
-        return Playlist.from_spotify_response(station_name=station_name, playlist=response)
 
     async def _get_playlist_tracks(self, playlist: Playlist) -> List[Track]:
         print(f'Starting to collect `{playlist.station}` station artists')

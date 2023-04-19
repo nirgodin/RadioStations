@@ -20,3 +20,9 @@ STATIONS = {
     SPOTIFY_TOP_50_GLOBAL_DAILY: '37i9dQZEVXbMDoHDwVN2tF',
     SPOTIFY_VIRAL_50_ISRAEL: '37i9dQZEVXbNGlbFNNXxgC'
 }
+
+
+EQUAL_PLAYLISTS = {
+    'equal_israel': '37i9dQZF1DWVbXsIvZBlOB',
+    'equal_global': '37i9dQZF1DWU8quswnFt3c'
+}
