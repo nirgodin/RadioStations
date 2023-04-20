@@ -1,26 +1,23 @@
-from dataclasses import fields
 from datetime import datetime
+from typing import List
 
 from aiohttp import ClientSession
 
 from consts.path_consts import SPOTIFY_WEEKLY_RUN_LATEST_EXECUTIONS
 from data_collection.spotify.weekly_run.spotify_collector_config import SpotifyCollectorConfig
-from data_collection.spotify.weekly_run.spotify_weekly_runner_config import SpotifyWeeklyRunnerConfig
 from utils.datetime_utils import now_israel_timezone, DATETIME_FORMAT
 from utils.file_utils import read_json, to_json
-from utils.vcs_utils import commit_and_push
 from utils.spotify_utils import build_spotify_headers
+from utils.vcs_utils import commit_and_push
 
 
 class SpotifyWeeklyRunner:
-    def __init__(self, config: SpotifyWeeklyRunnerConfig):
+    def __init__(self, config: List[SpotifyCollectorConfig]):
         self._config = config
         self._weekly_run_latest_executions = read_json(SPOTIFY_WEEKLY_RUN_LATEST_EXECUTIONS)
 
     async def run(self) -> None:
-        for script in fields(self._config):
-            script_config: SpotifyCollectorConfig = getattr(self._config, script.name)
-
+        for script_config in self._config:
             if self._should_run(script_config.name, script_config.weekday):
                 async with ClientSession(headers=build_spotify_headers()) as session:
                     await self._run_script(session, script_config)
