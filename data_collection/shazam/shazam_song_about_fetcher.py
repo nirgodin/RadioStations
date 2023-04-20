@@ -1,7 +1,7 @@
 import asyncio
 import os.path
 from functools import partial
-from typing import List, Union, Dict
+from typing import List, Union, Dict, Iterator
 
 import pandas as pd
 from asyncio_pool import AioPool
@@ -32,8 +32,8 @@ class ShazamTrackAboutFetcher:
         self._to_json(lyrics_data)
 
     async def _fetch_records(self, max_tracks: int) -> List[dict]:
-        print('Starting to fetch tracks about records')
         relevant_tracks_ids = self._get_relevant_tracks_ids(max_tracks)
+        print('Starting to fetch tracks about records')
         pool = AioPool(AIO_POOL_SIZE)
 
         with tqdm(total=len(relevant_tracks_ids)) as progress_bar:
@@ -44,12 +44,10 @@ class ShazamTrackAboutFetcher:
 
     def _get_relevant_tracks_ids(self, max_tracks: int) -> List[int]:
         print('Starting to extract relevant tracks ids')
-        tracks_ids_data = pd.read_csv(SHAZAM_TRACKS_IDS_PATH)
-        tracks_ids = reversed(tracks_ids_data[SHAZAM_TRACK_KEY].unique().tolist())
         relevant_tracks_ids = []
 
         with tqdm(total=max_tracks) as progress_bar:
-            for track_id in tracks_ids:
+            for track_id in self._generate_tracks_ids():
                 if self._is_relevant_track(track_id):
                     relevant_tracks_ids.append(int(track_id))
                     progress_bar.update(1)
@@ -58,6 +56,13 @@ class ShazamTrackAboutFetcher:
                     break
 
         return relevant_tracks_ids
+
+    @staticmethod
+    def _generate_tracks_ids() -> Iterator:
+        tracks_ids_data = pd.read_csv(SHAZAM_TRACKS_IDS_PATH)
+        unique_tracks_ids = tracks_ids_data[SHAZAM_TRACK_KEY].unique().tolist()
+
+        return reversed(unique_tracks_ids)
 
     def _is_relevant_track(self, track_id: float) -> bool:
         if pd.isna(track_id):
