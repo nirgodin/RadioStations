@@ -1,28 +1,29 @@
 import asyncio
-import itertools
 import os.path
-from typing import List, Optional, Dict, Generator, Tuple
+from typing import List, Optional, Dict, Generator
 
 import pandas as pd
 from aiohttp import ClientSession
 from pandas import DataFrame
 from tqdm import tqdm
 
-from consts.data_consts import TRACKS, TRACK, ARTISTS, ARTIST_ID, ID, ARTIST_NAME, NAME, STATION
+from consts.data_consts import TRACK, ARTISTS, ARTIST_ID, ID, ARTIST_NAME, NAME, STATION
 from consts.openai_consts import ARTIST_GENDER
 from consts.path_consts import SPOTIFY_EQUAL_PLAYLISTS_OUTPUT_PATH
 from consts.playlists_consts import EQUAL_PLAYLISTS
+from data_collection.spotify.base_spotify_collector import BaseSpotifyCollector
 from data_collection.spotify.collectors.playlists_collector import PlaylistsCollector
 from data_collection.spotify.collectors.radio_stations_snapshots.data_classes.playlist import Playlist
 from data_collection.wikipedia.gender.genders import Genders
 from tools.environment_manager import EnvironmentManager
-from utils.file_utils import to_csv
+from utils.file_utils import append_to_csv
 from utils.general_utils import chain_lists, binary_search
 from utils.spotify_utils import build_spotify_headers
 
 
-class EqualPlaylistsCollector:
-    def __init__(self, session: ClientSession):
+class EqualPlaylistsCollector(BaseSpotifyCollector):
+    def __init__(self, session: ClientSession, chunk_size: int, max_chunks_number: int):
+        super().__init__(session, chunk_size, max_chunks_number)
         self._session = session
         self._playlists_collector = PlaylistsCollector(self._session)
 
@@ -33,7 +34,7 @@ class EqualPlaylistsCollector:
         records = chain_lists(artists)
         data = self._add_non_existing_artists(records)
 
-        to_csv(data, SPOTIFY_EQUAL_PLAYLISTS_OUTPUT_PATH)
+        append_to_csv(data, SPOTIFY_EQUAL_PLAYLISTS_OUTPUT_PATH)
 
     def _generate_playlists_main_artists(self, playlists: List[Playlist]) -> Generator[List[Dict[str, str]], None, None]:
         for playlist in playlists:
@@ -94,6 +95,9 @@ class EqualPlaylistsCollector:
         if not is_artist_in_list:
             records.insert(insert_index, record)
             existing_artists.insert(insert_index, artist_name)
+
+    async def _collect_single_chunk(self, chunk: list) -> None:
+        pass
 
 
 if __name__ == '__main__':
