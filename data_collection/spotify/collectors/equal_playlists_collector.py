@@ -8,11 +8,13 @@ from aiohttp import ClientSession
 from pandas import DataFrame
 from tqdm import tqdm
 
-from consts.data_consts import TRACKS, TRACK, ARTISTS, ARTIST_ID, ID, ARTIST_NAME, NAME
+from consts.data_consts import TRACKS, TRACK, ARTISTS, ARTIST_ID, ID, ARTIST_NAME, NAME, STATION
+from consts.openai_consts import ARTIST_GENDER
 from consts.path_consts import SPOTIFY_EQUAL_PLAYLISTS_OUTPUT_PATH
 from consts.playlists_consts import EQUAL_PLAYLISTS
 from data_collection.spotify.collectors.playlists_collector import PlaylistsCollector
 from data_collection.spotify.collectors.radio_stations_snapshots.data_classes.playlist import Playlist
+from data_collection.wikipedia.gender.genders import Genders
 from tools.environment_manager import EnvironmentManager
 from utils.file_utils import to_csv
 from utils.general_utils import chain_lists, binary_search
@@ -44,14 +46,14 @@ class EqualPlaylistsCollector:
 
         with tqdm(total=len(playlist.tracks)) as progress_bar:
             for track in playlist.tracks:
-                record = self._extract_single_track_main_artist(track)
+                record = self._extract_single_track_main_artist(track, playlist.station)
                 records.append(record)
                 progress_bar.update(1)
 
         return records
 
     @staticmethod
-    def _extract_single_track_main_artist(track: dict) -> Optional[Dict[str, str]]:
+    def _extract_single_track_main_artist(track: dict, playlist_name: str) -> Optional[Dict[str, str]]:
         artists = track.get(TRACK, {}).get(ARTISTS, [])
         if not artists:
             return
@@ -59,7 +61,9 @@ class EqualPlaylistsCollector:
         main_artist = artists[0]
         return {
             ARTIST_ID: main_artist[ID],
-            ARTIST_NAME: main_artist[NAME]
+            ARTIST_NAME: main_artist[NAME],
+            ARTIST_GENDER: Genders.FEMALE.value,
+            STATION: playlist_name
         }
 
     def _add_non_existing_artists(self, new_records: List[Dict[str, str]]) -> DataFrame:
