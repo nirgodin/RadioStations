@@ -32,6 +32,7 @@ class ShazamTrackAboutFetcher:
         self._to_json(lyrics_data)
 
     async def _fetch_records(self, max_tracks: int) -> List[dict]:
+        print('Starting to fetch tracks about records')
         relevant_tracks_ids = self._get_relevant_tracks_ids(max_tracks)
         pool = AioPool(AIO_POOL_SIZE)
 
@@ -42,15 +43,19 @@ class ShazamTrackAboutFetcher:
         return [record for record in raw_records if isinstance(record, dict)]
 
     def _get_relevant_tracks_ids(self, max_tracks: int) -> List[int]:
+        print('Starting to extract relevant tracks ids')
         tracks_ids_data = pd.read_csv(SHAZAM_TRACKS_IDS_PATH)
+        tracks_ids = reversed(tracks_ids_data[SHAZAM_TRACK_KEY].unique().tolist())
         relevant_tracks_ids = []
 
-        for track_id in tracks_ids_data[SHAZAM_TRACK_KEY].unique().tolist():
-            if self._is_relevant_track(track_id):
-                relevant_tracks_ids.append(int(track_id))
+        with tqdm(total=max_tracks) as progress_bar:
+            for track_id in tracks_ids:
+                if self._is_relevant_track(track_id):
+                    relevant_tracks_ids.append(int(track_id))
+                    progress_bar.update(1)
 
-            if len(relevant_tracks_ids) == max_tracks:
-                break
+                if len(relevant_tracks_ids) == max_tracks:
+                    break
 
         return relevant_tracks_ids
 
@@ -137,4 +142,4 @@ class ShazamTrackAboutFetcher:
 if __name__ == '__main__':
     fetcher = ShazamTrackAboutFetcher()
     loop = asyncio.get_event_loop()
-    loop.run_until_complete(fetcher.fetch_tracks_about(max_tracks=10))
+    loop.run_until_complete(fetcher.fetch_tracks_about(max_tracks=300))
