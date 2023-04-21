@@ -12,8 +12,8 @@ from tqdm import tqdm
 from wikipediaapi import Wikipedia
 
 from consts.api_consts import AIO_POOL_SIZE
-from consts.data_consts import ARTIST_NAME
-from consts.path_consts import WIKIPEDIA_GENDERS_PATH, WIKIPEDIA_AGE_OUTPUT_PATH
+from consts.data_consts import ARTIST_NAME, ARTIST_POPULARITY
+from consts.path_consts import WIKIPEDIA_GENDERS_PATH, WIKIPEDIA_AGE_OUTPUT_PATH, MERGED_DATA_PATH
 from tools.data_chunks_generator import DataChunksGenerator
 from utils.datetime_utils import DATETIME_FORMAT
 from utils.file_utils import append_to_csv
@@ -33,17 +33,41 @@ class WikipediaAgeCollector:
         self._data_chunks_generator = DataChunksGenerator()
 
     async def collect(self):
-        data = pd.read_csv(WIKIPEDIA_GENDERS_PATH)
-        data.dropna(inplace=True)
         chunks = self._data_chunks_generator.generate_data_chunks(
-            lst=data[ARTIST_NAME].unique().tolist(),
+            lst=self._get_contender_artists(),
             filtering_list=self._get_existing_artists()
         )
 
         for chunk in chunks:
-            records = await self._collect_records(chunk)
-            data = pd.DataFrame.from_records(records)
+            await self._collect_single_chunk(chunk)
+
+    @staticmethod
+    def _get_contender_artists() -> List[str]:
+        data = pd.read_csv(MERGED_DATA_PATH)
+        data.dropna(subset=[ARTIST_NAME], inplace=True)
+        data.drop_duplicates(subset=[ARTIST_NAME], inplace=True)
+        data.sort_values(by=[ARTIST_POPULARITY], ascending=False, inplace=True)
+
+        return data[ARTIST_NAME].tolist()
+
+    @staticmethod
+    def _get_existing_artists() -> List[str]:
+        if not os.path.exists(WIKIPEDIA_AGE_OUTPUT_PATH):
+            return []
+
+        data = pd.read_csv(WIKIPEDIA_AGE_OUTPUT_PATH)
+
+        return data[ARTIST_NAME].unique().tolist()
+
+    async def _collect_single_chunk(self, chunk: List[str]) -> None:
+        records = await self._collect_records(chunk)
+        valid_records = [record for record in records if isinstance(record, dict)]
+
+        if valid_records:
+            data = pd.DataFrame.from_records(valid_records)
             append_to_csv(data, WIKIPEDIA_AGE_OUTPUT_PATH)
+        else:
+            print('No valid records. skipped appending to CSV')
 
     async def _collect_records(self, artist_names: List[str]) -> List[Dict[str, str]]:
         pool = AioPool(AIO_POOL_SIZE)
@@ -58,11 +82,7 @@ class WikipediaAgeCollector:
         progress_bar.update(1)
         func = partial(self._wikipedia.page, artist_name)
         page = await self.run_async(func)
-
-        if page.exists():
-            birth_date, death_date = self._get_birth_and_death_date(page.summary)
-        else:
-            birth_date, death_date = '', ''
+        birth_date, death_date = self._get_birth_and_death_date(page.summary)
 
         return {
             ARTIST_NAME: artist_name,
@@ -79,13 +99,14 @@ class WikipediaAgeCollector:
 
     def _extract_normalized_birth_date(self, page_summary: str) -> str:
         raw_birth_date = self._search_between_two_characters(
-            start_char=r'born|b\.',
+            start_char=r'(né|born on|born|b\.)',
             end_char=r'\)',
             text=page_summary
         )
 
         if raw_birth_date:
-            return self._extract_date(raw_birth_date[0])
+            raw_results = raw_birth_date[0]
+            return self._extract_date(raw_results[-1])
         else:
             return ''
 
@@ -134,15 +155,6 @@ class WikipediaAgeCollector:
     async def run_async(func: Callable, max_workers: int = 1):
         with ThreadPoolExecutor(max_workers) as pool:
             return await asyncio.get_event_loop().run_in_executor(pool, func)
-
-    @staticmethod
-    def _get_existing_artists() -> List[str]:
-        if not os.path.exists(WIKIPEDIA_AGE_OUTPUT_PATH):
-            return []
-
-        data = pd.read_csv(WIKIPEDIA_AGE_OUTPUT_PATH)
-
-        return data[ARTIST_NAME].unique().tolist()
 
 
 if __name__ == '__main__':
