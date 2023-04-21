@@ -33,13 +33,12 @@ class WikipediaAgeCollector:
         self._data_chunks_generator = DataChunksGenerator()
 
     async def collect(self):
-        # data = pd.read_csv(WIKIPEDIA_GENDERS_PATH)
-        # data.dropna(inplace=True)
-        # chunks = self._data_chunks_generator.generate_data_chunks(
-        #     lst=data[ARTIST_NAME].unique().tolist(),
-        #     filtering_list=self._get_existing_artists()
-        # )
-        chunks = [['Jimi Hendrix', 'Meir Banai']]
+        data = pd.read_csv(WIKIPEDIA_GENDERS_PATH)
+        data.dropna(inplace=True)
+        chunks = self._data_chunks_generator.generate_data_chunks(
+            lst=data[ARTIST_NAME].unique().tolist(),
+            filtering_list=self._get_existing_artists()
+        )
 
         for chunk in chunks:
             records = await self._collect_records(chunk)
