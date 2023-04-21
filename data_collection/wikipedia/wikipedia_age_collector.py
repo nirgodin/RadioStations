@@ -17,6 +17,7 @@ from consts.path_consts import WIKIPEDIA_GENDERS_PATH, WIKIPEDIA_AGE_OUTPUT_PATH
 from tools.data_chunks_generator import DataChunksGenerator
 from utils.datetime_utils import DATETIME_FORMAT
 from utils.file_utils import append_to_csv
+from utils.regex_utils import search_between_two_characters
 
 WIKIPEDIA_DATETIME_FORMATS = [
     '%B %d %Y',
@@ -98,7 +99,7 @@ class WikipediaAgeCollector:
         return self._extract_normalized_birth_and_death_date(page_summary)
 
     def _extract_normalized_birth_date(self, page_summary: str) -> str:
-        raw_birth_date = self._search_between_two_characters(
+        raw_birth_date = search_between_two_characters(
             start_char=r'(né|born on|born|b\.)',
             end_char=r'\)',
             text=page_summary
@@ -111,7 +112,7 @@ class WikipediaAgeCollector:
             return ''
 
     def _extract_normalized_birth_and_death_date(self, page_summary: str) -> Tuple[str, str]:
-        raw_dates = self._search_between_two_characters(
+        raw_dates = search_between_two_characters(
             start_char=r'\(',
             end_char=r'\)',
             text=page_summary
@@ -127,10 +128,6 @@ class WikipediaAgeCollector:
             return dates[0], dates[1]
         else:
             return '', ''
-
-    @staticmethod
-    def _search_between_two_characters(start_char: str, end_char: str, text: str) -> List[str]:
-        return re.findall(f"{start_char}(.*?){end_char}", text)
 
     def _extract_date(self, raw_date: str) -> str:
         split_date = raw_date.split(';')

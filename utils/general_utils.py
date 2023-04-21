@@ -5,21 +5,9 @@ from functools import reduce
 from itertools import chain
 from typing import List, Optional, Tuple, Any
 
-import numpy as np
-
 from component_factory import ComponentFactory
 from consts.env_consts import IS_REMOTE_RUN
 from consts.language_consts import LANGUAGE, HEBREW_LANGUAGE_ABBREVIATION
-from consts.miscellaneous_consts import YEAR_REGEX
-
-
-def extract_year(date: str) -> int:
-    match = YEAR_REGEX.match(date)
-
-    if match is not None:
-        return int(match.group(1))
-
-    return np.nan
 
 
 def chain_dicts(dicts: List[dict]) -> dict:

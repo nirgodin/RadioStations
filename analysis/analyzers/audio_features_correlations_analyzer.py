@@ -9,7 +9,7 @@ from consts.audio_features_consts import AUDIO_FEATURES, DUMMY_COLUMNS, PLAYS_CO
 from consts.data_consts import POPULARITY, ID, \
     RELEASE_DATE, RELEASE_YEAR
 from consts.path_consts import MERGED_DATA_PATH, CORRELATIONS_DATA_PATH
-from utils.general_utils import extract_year
+from utils.regex_utils import extract_year
 
 
 class AudioFeaturesCorrelationsAnalyzer(IAnalyzer):

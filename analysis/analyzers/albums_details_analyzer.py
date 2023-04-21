@@ -12,7 +12,7 @@ from consts.miscellaneous_consts import UTF_8_ENCODING
 from consts.path_consts import ALBUMS_DETAILS_OUTPUT_PATH, ALBUMS_DETAILS_ANALYZER_OUTPUT_PATH
 from consts.spotify_albums_details_consts import NAMED_ALBUMS_OPTIONS, AVAILABLE_MARKETS_NUMBER, ALBUM_RELEASE_YEAR, \
     AVAILABLE_MARKETS, MEDIAN_MARKETS_NUMBER, FIRST_ALBUM_RELEASE_YEAR, LAST_ALBUM_RELEASE_YEAR, YEARS_ACTIVE
-from utils.general_utils import extract_year
+from utils.regex_utils import extract_year
 
 
 class AlbumsDetailsAnalyzer(IAnalyzer):
