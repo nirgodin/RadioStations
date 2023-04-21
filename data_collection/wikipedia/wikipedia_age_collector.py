@@ -1,10 +1,9 @@
 import asyncio
 import os.path
 import re
-from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
 from functools import partial
-from typing import List, Dict, Tuple, Callable
+from typing import List, Dict, Tuple
 
 import pandas as pd
 from asyncio_pool import AioPool
@@ -13,8 +12,9 @@ from wikipediaapi import Wikipedia
 
 from consts.api_consts import AIO_POOL_SIZE
 from consts.data_consts import ARTIST_NAME, ARTIST_POPULARITY
-from consts.path_consts import WIKIPEDIA_GENDERS_PATH, WIKIPEDIA_AGE_OUTPUT_PATH, MERGED_DATA_PATH
+from consts.path_consts import WIKIPEDIA_AGE_OUTPUT_PATH, MERGED_DATA_PATH
 from tools.data_chunks_generator import DataChunksGenerator
+from utils.callable_utils import run_async
 from utils.datetime_utils import DATETIME_FORMAT
 from utils.file_utils import append_to_csv
 from utils.regex_utils import search_between_two_characters
@@ -82,7 +82,7 @@ class WikipediaAgeCollector:
     async def _collect_single_artist_age(self, progress_bar: tqdm, artist_name: str) -> Dict[str, str]:
         progress_bar.update(1)
         func = partial(self._wikipedia.page, artist_name)
-        page = await self.run_async(func)
+        page = await run_async(func)
         birth_date, death_date = self._get_birth_and_death_date(page.summary)
 
         return {
@@ -147,11 +147,6 @@ class WikipediaAgeCollector:
                 continue
 
         return ''
-
-    @staticmethod
-    async def run_async(func: Callable, max_workers: int = 1):
-        with ThreadPoolExecutor(max_workers) as pool:
-            return await asyncio.get_event_loop().run_in_executor(pool, func)
 
 
 if __name__ == '__main__':
