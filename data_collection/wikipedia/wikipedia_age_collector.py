@@ -79,7 +79,7 @@ class WikipediaAgeCollector:
 
     def _extract_normalized_birth_date(self, page_summary: str) -> str:
         raw_birth_date = self._search_between_two_characters(
-            start_char='born',
+            start_char=r'born|b\.',
             end_char=r'\)',
             text=page_summary
         )
