@@ -4,6 +4,7 @@ import os
 import requests
 
 from consts.api_consts import TOKEN_REQUEST_URL
+from consts.env_consts import SPOTIPY_CLIENT_SECRET, SPOTIPY_CLIENT_ID
 
 
 class AccessTokenGenerator:
@@ -25,8 +26,8 @@ class AccessTokenGenerator:
 
     @staticmethod
     def _get_encoded_header():
-        client_id = os.environ['SPOTIPY_CLIENT_ID']
-        client_secret = os.environ['SPOTIPY_CLIENT_SECRET']
+        client_id = os.environ[SPOTIPY_CLIENT_ID]
+        client_secret = os.environ[SPOTIPY_CLIENT_SECRET]
         bytes_auth = bytes(f"{client_id}:{client_secret}", "ISO-8859-1")
         b64_auth = base64.b64encode(bytes_auth)
 
