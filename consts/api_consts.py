@@ -5,6 +5,7 @@ ARTISTS_ALBUMS_URL_FORMAT = 'https://api.spotify.com/v1/artists/{}/albums?offset
 PLAYLIST_URL_FORMAT = 'https://api.spotify.com/v1/playlists/{}'
 ARTISTS_URL_FORMAT = 'https://api.spotify.com/v1/artists?ids={}'
 CREATE_PLAYLIST_URL_FORMAT = 'https://api.spotify.com/v1/users/{}/playlists'
+ADD_PLAYLIST_ITEMS_URL_FORMAT = 'https://api.spotify.com/v1/playlists/{}/tracks'
 AUTHORIZATION_REQUEST_URL_FORMAT = 'https://accounts.spotify.com/authorize?{}'
 CLIENT_ID = 'client_id'
 RESPONSE_TYPE = 'response_type'
