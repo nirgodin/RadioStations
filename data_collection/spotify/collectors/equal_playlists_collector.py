@@ -85,6 +85,8 @@ class EqualPlaylistsCollector(BaseSpotifyCollector):
             return []
 
         data = pd.read_csv(SPOTIFY_EQUAL_PLAYLISTS_OUTPUT_PATH)
+        data.dropna(subset=[ARTIST_NAME], inplace=True)
+
         return data.to_dict(orient='records')
 
     @staticmethod
