@@ -1,30 +1,22 @@
-import asyncio
-import os
 from typing import List
 
-import pandas as pd
 from aiohttp import ClientSession
 
 from consts.api_consts import CREATE_PLAYLIST_URL_FORMAT, ADD_PLAYLIST_ITEMS_URL_FORMAT
-from consts.data_consts import URI, ID
-from consts.path_consts import MERGED_DATA_PATH
+from consts.data_consts import ID
 from data_collection.spotify.spotify_scope import SpotifyScope
 from tools.environment_manager import EnvironmentManager
 from utils.spotify_utils import build_spotify_headers
 
 
 class PlaylistsCreator:
-    async def create(self, public: bool = True):
+    async def create(self, uris: List[str], public: bool, user_id: str):
         EnvironmentManager().set_env_variables()
-        playlist_id = await self._create_playlist(public)
-        print('b')
-        data = pd.read_csv(MERGED_DATA_PATH, nrows=100)
-        uris = data[URI].dropna().tolist()
-        await self._add_playlist_items(playlist_id, uris)
-        print('b')
+        playlist_id = await self._create_playlist(public, user_id)
+        valid_uris = [uri for uri in uris if isinstance(uri, str)]
+        await self._add_playlist_items(playlist_id, valid_uris)
 
-    async def _create_playlist(self, public: bool) -> str:
-        user_id = os.environ['SPOTIFY_USER_ID']
+    async def _create_playlist(self, public: bool, user_id: str) -> str:
         url = CREATE_PLAYLIST_URL_FORMAT.format(user_id)
         body = {
             "name": "My second automatic playlist",
@@ -46,8 +38,6 @@ class PlaylistsCreator:
         async with self._session.post(url=url, json=body) as raw_response:
             response = await raw_response.json()
 
-        print('b')
-
     @property
     def _session(self) -> ClientSession:
         headers = build_spotify_headers(
@@ -59,8 +49,3 @@ class PlaylistsCreator:
         )
 
         return ClientSession(headers=headers)
-
-
-if __name__ == '__main__':
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(PlaylistsCreator().create())
