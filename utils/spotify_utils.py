@@ -22,3 +22,7 @@ def build_spotify_headers(is_authorization_token: bool = False, scopes: Iterable
 @lru_cache(maxsize=1)
 def get_spotipy():
     return spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials())
+
+
+def build_spotify_query(artist: str, track: str) -> str:
+    return f'{artist} {track}'

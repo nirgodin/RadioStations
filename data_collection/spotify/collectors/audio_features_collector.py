@@ -9,7 +9,7 @@ from pandas import DataFrame
 from tqdm import tqdm
 
 from consts.api_consts import AUDIO_FEATURES_URL_FORMAT, AIO_POOL_SIZE
-from consts.data_consts import NAME, ARTIST_NAME, TRACKS, ITEMS, URI
+from consts.data_consts import NAME, ARTIST_NAME, TRACKS, ITEMS, URI, TRACK
 from consts.env_consts import SPOTIFY_AUDIO_FEATURES_DRIVE_ID
 from consts.path_consts import MERGED_DATA_PATH, AUDIO_FEATURES_CHUNK_OUTPUT_PATH_FORMAT, AUDIO_FEATURES_DATA_PATH
 from data_collection.spotify.base_spotify_collector import BaseSpotifyCollector
@@ -18,7 +18,7 @@ from tools.google_drive.google_drive_upload_metadata import GoogleDriveUploadMet
 from utils.datetime_utils import get_current_datetime
 from utils.drive_utils import upload_files_to_drive
 from utils.file_utils import to_csv
-from utils.spotify_utils import get_spotipy
+from utils.spotify_utils import get_spotipy, build_spotify_query
 
 
 class AudioFeaturesCollector(BaseSpotifyCollector):
@@ -88,8 +88,8 @@ class AudioFeaturesCollector(BaseSpotifyCollector):
         return AUDIO_FEATURES_URL_FORMAT.format(track_id)
 
     def _get_track_id(self, artist: str, track: str) -> Union[dict, None]:
-        query = f'artist:{artist} track:{track}'
-        query_result = self._sp.search(q=query, type="track")
+        query = build_spotify_query(artist, track)
+        query_result = self._sp.search(q=query, type=TRACK)
         track_uri = query_result[TRACKS][ITEMS][0][URI]
         split_uri = track_uri.split(':')
 
