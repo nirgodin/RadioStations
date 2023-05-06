@@ -1,7 +1,7 @@
 import asyncio
 import os
 from functools import partial
-from typing import List, Tuple
+from typing import List, Tuple, Optional
 
 import pandas as pd
 from aiohttp import ClientSession
@@ -70,13 +70,23 @@ class RadioStationsSnapshotsCollector:
 
         for raw_track in raw_tracks:
             artist_id = self._get_single_artist_id(raw_track)
-            artists_ids.append(artist_id)
+
+            if artist_id is not None:
+                artists_ids.append(artist_id)
 
         return artists_ids
 
     @staticmethod
-    def _get_single_artist_id(track: dict) -> str:
-        return track.get(TRACK, {}).get(ARTISTS, [])[0][ID]
+    def _get_single_artist_id(track: dict) -> Optional[str]:
+        inner_track = track.get(TRACK, {})
+        if inner_track is None:
+            return
+
+        artists = inner_track.get(ARTISTS, [])
+        if not artists:
+            return
+
+        return artists[0][ID]
 
     async def _get_single_chunk_artists(self, chunk: List[str]) -> List[Artist]:
         artists_ids = ','.join(chunk)
@@ -93,8 +103,11 @@ class RadioStationsSnapshotsCollector:
         tracks = []
 
         for raw_track, artist in zip(raw_tracks, artists):
-            track = Track.from_raw_track(raw_track, artist)
-            tracks.append(track)
+            inner_track = raw_track.get(TRACK, {})
+
+            if inner_track is not None:
+                track = Track.from_raw_track(inner_track, raw_track, artist)
+                tracks.append(track)
 
         return tracks
 

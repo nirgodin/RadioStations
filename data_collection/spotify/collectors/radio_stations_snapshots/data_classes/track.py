@@ -22,8 +22,7 @@ class Track:
     added_at: str
 
     @classmethod
-    def from_raw_track(cls, raw_track: dict, artist: Artist) -> "Track":
-        track = raw_track.get(TRACK, {})
+    def from_raw_track(cls, track: dict, raw_track: dict, artist: Artist) -> "Track":
         album = track.get(ALBUM, {})
 
         return cls(
