@@ -12,6 +12,7 @@ from consts.path_consts import MERGED_DATA_PATH, RADIO_STATIONS_SNAPSHOTS_DIR
 from data_processing.data_merger import DataMerger
 from data_processing.pre_processors.albums_details_pre_processor import AlbumsDetailsPreProcessor
 from data_processing.pre_processors.audio_features_pre_processor import AudioFeaturesPreProcessor
+from data_processing.pre_processors.duration_pre_processor import DurationPreProcessor
 from data_processing.pre_processors.formatter_pre_processor import FormatterPreProcessor
 from data_processing.pre_processors.gender_pre_processor import GenderPreProcessor
 from data_processing.pre_processors.genre.genre_pre_processor import GenrePreProcessor
@@ -60,6 +61,7 @@ class DataPreProcessor:
             GenderPreProcessor(),
             AudioFeaturesPreProcessor(),
             TracksIDSPreProcessor(),
+            DurationPreProcessor(),
             LanguagePreProcessor(),
             AlbumsDetailsPreProcessor(),
             FormatterPreProcessor()
