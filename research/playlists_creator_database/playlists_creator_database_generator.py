@@ -1,16 +1,15 @@
 from typing import List, Dict
 
 import pandas as pd
-from pandas import DataFrame, Series
+from pandas import DataFrame
 from sklearn.compose import ColumnTransformer
-from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import MinMaxScaler, FunctionTransformer
+from sklearn.preprocessing import FunctionTransformer
 
-from consts.aggregation_consts import FIRST, MEDIAN, MAX, MIN, SUM, COUNT
-from research.playlists_creator_database.playlists_creator_database_consts import DROPPABLE_COLUMNS, \
-    GROUPBY_FIRST_COLUMNS, GROUPBY_MEDIAN_COLUMNS, SCALED_COLUMNS, LINEAR_TRANSFORMED_COLUMNS
-from consts.data_consts import SONG, URI, DURATION_MINUTES, DURATION_MS
+from consts.aggregation_consts import FIRST, MEDIAN, COUNT
+from consts.data_consts import SONG, URI, DURATION_MINUTES, DURATION_MS, MAJOR, MINOR
 from consts.path_consts import MERGED_DATA_PATH, PLAYLISTS_CREATOR_DATABASE_OUTPUT_PATH
+from research.playlists_creator_database.playlists_creator_database_consts import DROPPABLE_COLUMNS, \
+    GROUPBY_FIRST_COLUMNS, GROUPBY_MEDIAN_COLUMNS, LINEAR_TRANSFORMED_COLUMNS
 from utils.general_utils import chain_dicts
 
 ISRAELI_RADIO_PLAY_COUNT = 'israeli_radio_play_count'
@@ -18,6 +17,7 @@ ISRAELI_RADIO_PLAY_COUNT = 'israeli_radio_play_count'
 
 class PlaylistsCreatorDatabaseGenerator:
     def generate_database(self) -> None:
+        print('Starting to create PlaylistsCreator database file')
         data = pd.read_csv(MERGED_DATA_PATH)
         groubyed_data = self._groupby_data(data)
         groubyed_data.dropna(subset=[URI], inplace=True)
@@ -46,23 +46,15 @@ class PlaylistsCreatorDatabaseGenerator:
         return chain_dicts(mappings)
 
     def _apply_transformations(self, groupbyed_data: DataFrame) -> DataFrame:
-        minmax_transformer = Pipeline(
-            steps=[
-                ('minmax', MinMaxScaler()),
-                ('linear', FunctionTransformer(self._apply_linear_transformation))
-            ]
-        )
-        linear_transformer = Pipeline(
-            steps=[
-                ('linear', FunctionTransformer(self._apply_linear_transformation))
-            ]
-        )
+        linear_transformer = FunctionTransformer(self._apply_linear_transformation)
+        mapper_transformer = FunctionTransformer(self._map_mode)
+
         preprocessor = ColumnTransformer(
             verbose_feature_names_out=False,
             remainder='passthrough',
             transformers=[
-                ('minmax', minmax_transformer, SCALED_COLUMNS),
-                ('linear', linear_transformer, LINEAR_TRANSFORMED_COLUMNS)
+                ('linear', linear_transformer, LINEAR_TRANSFORMED_COLUMNS),
+                ('map', mapper_transformer, ['mode'])
             ]
         )
         preprocessor.set_output(transform='pandas')
@@ -70,8 +62,12 @@ class PlaylistsCreatorDatabaseGenerator:
         return preprocessor.fit_transform(groupbyed_data)
 
     @staticmethod
-    def _apply_linear_transformation(series: Series) -> Series:
-        return series * 100
+    def _apply_linear_transformation(data: DataFrame) -> DataFrame:
+        return data * 100
+
+    @staticmethod
+    def _map_mode(data: DataFrame) -> DataFrame:
+        return data.applymap(lambda x: MAJOR if x == 1 else MINOR)
 
 
 if __name__ == '__main__':
