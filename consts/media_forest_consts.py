@@ -1,4 +1,4 @@
-from consts.data_consts import ARTIST_NAME, NAME
+from consts.data_consts import ARTIST_NAME, NAME, PLAY_COUNT
 
 MEDIA_FOREST_URL = 'https://mediaforest-group.com/weekly_charts.html'
 MEDIA_FOREST_WEEKLY_CHARTS_XPATH_FORMAT = '//*[@id="ntttab"]/li[{}]'
@@ -13,7 +13,6 @@ DAY_NIGHT = 'day/night'
 DAY = 'day'
 NIGHT = 'night'
 LEAD_BY = 'lead by'
-PLAY_COUNT = 'play_count'
 STATION = 'station'
 ARTIST_SONG_COLUMN_NAME = 'mediaforest'
 RANK_ORIGINAL_COLUMN_NAME = 'Unnamed: 0'

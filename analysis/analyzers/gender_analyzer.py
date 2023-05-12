@@ -4,17 +4,28 @@ import pandas as pd
 from tqdm import tqdm
 
 from analysis.analyzer_interface import IAnalyzer
-from consts.data_consts import ARTIST_NAME
-from consts.gender_consts import SOURCE, ISRAELI_WIKIPEDIA, OPENAI, GENERAL_WIKIPEDIA, SPOTIFY_EQUAL_PLAYLISTS
+from consts.data_consts import ARTIST_NAME, PREDICTION_SHARE
+from consts.gender_consts import SOURCE, ISRAELI_WIKIPEDIA, OPENAI, GENERAL_WIKIPEDIA, SPOTIFY_EQUAL_PLAYLISTS, \
+    GOOGLE_IMAGES
 from consts.miscellaneous_consts import UTF_8_ENCODING
 from consts.openai_consts import ARTIST_GENDER
 from consts.path_consts import WIKIPEDIA_ISRAELI_ARTISTS_GENDER_PATH, OPENAI_GENDERS_PATH, \
-    WIKIPEDIA_OPENAI_UNKNOWN_GENDERS_PATH, MAPPED_GENDERS_OUTPUT_PATH, SPOTIFY_EQUAL_PLAYLISTS_OUTPUT_PATH
+    WIKIPEDIA_OPENAI_UNKNOWN_GENDERS_PATH, MAPPED_GENDERS_OUTPUT_PATH, SPOTIFY_EQUAL_PLAYLISTS_OUTPUT_PATH, \
+    GOOGLE_IMAGES_GENDER_PATH
 from data_collection.wikipedia.gender.genders import Genders
 from utils.data_utils import map_df_columns, groupby_artists_by_desc_popularity
 
 
 class GenderAnalyzer(IAnalyzer):
+    def __init__(self):
+        self._sources = {
+            SPOTIFY_EQUAL_PLAYLISTS: self._read_and_map_df_columns(SPOTIFY_EQUAL_PLAYLISTS_OUTPUT_PATH),
+            ISRAELI_WIKIPEDIA: self._read_and_map_df_columns(WIKIPEDIA_ISRAELI_ARTISTS_GENDER_PATH),
+            OPENAI: self._read_and_map_df_columns(OPENAI_GENDERS_PATH),
+            GENERAL_WIKIPEDIA: self._read_and_map_df_columns(WIKIPEDIA_OPENAI_UNKNOWN_GENDERS_PATH),
+            GOOGLE_IMAGES: self._get_google_images_classifications()
+        }
+
     def analyze(self) -> None:
         artists = self._get_unique_artists_names()
         records = self._get_artists_genders_records(artists)
@@ -55,14 +66,12 @@ class GenderAnalyzer(IAnalyzer):
             SOURCE: ''
         }
 
-    @property
-    def _sources(self) -> Dict[str, Dict[str, str]]:
-        return {
-            SPOTIFY_EQUAL_PLAYLISTS: self._read_and_map_df_columns(SPOTIFY_EQUAL_PLAYLISTS_OUTPUT_PATH),
-            ISRAELI_WIKIPEDIA: self._read_and_map_df_columns(WIKIPEDIA_ISRAELI_ARTISTS_GENDER_PATH),
-            OPENAI: self._read_and_map_df_columns(OPENAI_GENDERS_PATH),
-            GENERAL_WIKIPEDIA: self._read_and_map_df_columns(WIKIPEDIA_OPENAI_UNKNOWN_GENDERS_PATH)
-        }
+    @staticmethod
+    def _get_google_images_classifications() -> Dict[str, Dict[str, str]]:
+        data = pd.read_csv(GOOGLE_IMAGES_GENDER_PATH).dropna()
+        filtered_data = data[data[PREDICTION_SHARE] >= 0.8]
+
+        return map_df_columns(filtered_data, ARTIST_NAME, ARTIST_GENDER)
 
     @staticmethod
     def _read_and_map_df_columns(path: str) -> Dict[str, str]:

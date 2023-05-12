@@ -10,16 +10,14 @@ import pandas as pd
 from pandas import DataFrame
 from tqdm import tqdm
 
-from consts.data_consts import ARTIST_NAME, NAME, CONFIDENCE
+from consts.data_consts import ARTIST_NAME, NAME, CONFIDENCE, PLAY_COUNT, PREDICTION_SHARE, IMAGES_NUMBER
 from consts.openai_consts import ARTIST_GENDER
-from consts.path_consts import MERGED_DATA_PATH, GOOGLE_IMAGES_GENDER_PATH
+from consts.path_consts import MERGED_DATA_PATH, GOOGLE_IMAGES_GENDER_PATH, MAPPED_GENDERS_OUTPUT_PATH
 from data_collection.google_images.google_images_downloader import GoogleImagesDownloader
 from data_collection.wikipedia.gender.genders import Genders
 from tools.data_chunks_generator import DataChunksGenerator
 from tools.image_detection.gender_image_detector import GenderImageDetector
 from utils.file_utils import append_to_csv
-
-PLAY_COUNT = 'play_count'
 
 
 class GoogleImagesGenderFetcher:
@@ -70,8 +68,8 @@ class GoogleImagesGenderFetcher:
             ARTIST_NAME: artist,
             ARTIST_GENDER: most_common_prediction,
             CONFIDENCE: confidence,
-            'prediction_share': most_common_prediction_count / self._images_per_artist,
-            'images_number': self._images_per_artist
+            PREDICTION_SHARE: most_common_prediction_count / self._images_per_artist,
+            IMAGES_NUMBER: self._images_per_artist
         }
 
     def _get_single_image_prediction(self, image_path: str) -> Dict[str, Union[str, float]]:
@@ -95,7 +93,7 @@ class GoogleImagesGenderFetcher:
 
     def _get_relevant_artists(self):
         play_count = self._get_artists_play_count()
-        genders = pd.read_csv(r'data/mapped_genders.csv')
+        genders = pd.read_csv(MAPPED_GENDERS_OUTPUT_PATH)
         merged = genders.merge(right=play_count, how='left', on=ARTIST_NAME)
         merged.sort_values(by=PLAY_COUNT, ascending=False, inplace=True)
         no_label_artists = merged[merged[ARTIST_GENDER].isna()].reset_index(drop=True)
