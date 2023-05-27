@@ -28,6 +28,8 @@ class PlaylistsCreatorDatabaseGenerator:
         pre_processed_data[DURATION_MINUTES] = pre_processed_data[DURATION_MS].apply(lambda x: x / (1000 * 60))
         pre_processed_data.drop(DURATION_MS, axis=1, inplace=True)
 
+        self._output_results(pre_processed_data)
+
     def _groupby_data(self, data: DataFrame) -> DataFrame:
         relevant_data = data.drop(DROPPABLE_COLUMNS, axis=1)
         relevant_data[ISRAELI_RADIO_PLAY_COUNT] = relevant_data[SONG]
