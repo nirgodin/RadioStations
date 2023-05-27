@@ -5,7 +5,7 @@ from typing import Iterable
 from google.oauth2.service_account import Credentials
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
-from googleapiclient.http import MediaFileUpload
+from googleapiclient.http import MediaFileUpload, BatchHttpRequest
 
 from consts.env_consts import GOOGLE_SERVICE_ACCOUNT_CREDENTIALS
 from consts.path_consts import SERVICE_ACCOUNT_SECRETS_PATH
@@ -41,6 +41,19 @@ class GoogleDriveAdapter:
                 print(f'An error occurred: {error}')
             finally:
                 media.stream().close()
+
+    def clean_folder(self, folder_id: str) -> None:
+        query = f"'{folder_id}' in parents and trashed=false"
+        results = self._drive_service.files().list(q=query).execute()
+        files = results.get('files', [])
+        batch = BatchHttpRequest()
+
+        for file in files:
+            batch.add(self._drive_service.files().delete(fileId=file['id']))
+
+        batch.execute()
+
+        print(f"All folder `{folder_id}` contents deleted successfully!")
 
     @staticmethod
     def _build_credentials() -> Credentials:

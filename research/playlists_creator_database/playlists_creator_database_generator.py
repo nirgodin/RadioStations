@@ -12,6 +12,7 @@ from consts.env_consts import PLAYLISTS_CREATOR_DATABASE_DRIVE_ID
 from consts.path_consts import MERGED_DATA_PATH, PLAYLISTS_CREATOR_DATABASE_OUTPUT_PATH
 from research.playlists_creator_database.playlists_creator_database_consts import DROPPABLE_COLUMNS, \
     GROUPBY_FIRST_COLUMNS, GROUPBY_MEDIAN_COLUMNS, LINEAR_TRANSFORMED_COLUMNS
+from tools.google_drive.google_drive_adapter import GoogleDriveAdapter
 from tools.google_drive.google_drive_upload_metadata import GoogleDriveUploadMetadata
 from utils.drive_utils import upload_files_to_drive
 from utils.general_utils import chain_dicts
@@ -20,6 +21,9 @@ ISRAELI_RADIO_PLAY_COUNT = 'israeli_radio_play_count'
 
 
 class PlaylistsCreatorDatabaseGenerator:
+    def __init__(self):
+        self._google_drive_adapter = GoogleDriveAdapter()
+
     def generate_database(self) -> None:
         print('Starting to create PlaylistsCreator database file')
         data = pd.read_csv(MERGED_DATA_PATH)
@@ -73,16 +77,17 @@ class PlaylistsCreatorDatabaseGenerator:
     def _map_mode(data: DataFrame) -> DataFrame:
         return data.applymap(lambda x: MAJOR if x == 1 else MINOR)
 
-    @staticmethod
-    def _output_results(pre_processed_data: DataFrame) -> None:
+    def _output_results(self, pre_processed_data: DataFrame) -> None:
         pre_processed_data.to_csv(PLAYLISTS_CREATOR_DATABASE_OUTPUT_PATH, index=False)
+        drive_folder_id = os.environ[PLAYLISTS_CREATOR_DATABASE_DRIVE_ID]
+        self._google_drive_adapter.clean_folder(drive_folder_id)
         upload_metadata = GoogleDriveUploadMetadata(
             local_path=PLAYLISTS_CREATOR_DATABASE_OUTPUT_PATH,
-            drive_folder_id=os.environ[PLAYLISTS_CREATOR_DATABASE_DRIVE_ID],
+            drive_folder_id=drive_folder_id,
             file_name='playlists_creator_database.csv'
         )
 
-        upload_files_to_drive(upload_metadata)
+        self._google_drive_adapter.upload([upload_metadata])
 
 
 if __name__ == '__main__':
