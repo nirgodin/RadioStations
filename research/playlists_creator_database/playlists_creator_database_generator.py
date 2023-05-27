@@ -9,12 +9,12 @@ from sklearn.preprocessing import FunctionTransformer
 from consts.aggregation_consts import FIRST, MEDIAN, COUNT
 from consts.data_consts import SONG, URI, DURATION_MINUTES, DURATION_MS, MAJOR, MINOR
 from consts.env_consts import PLAYLISTS_CREATOR_DATABASE_DRIVE_ID
-from consts.path_consts import MERGED_DATA_PATH, PLAYLISTS_CREATOR_DATABASE_OUTPUT_PATH
+from consts.path_consts import MERGED_DATA_PATH, PLAYLISTS_CREATOR_DATABASE_OUTPUT_PATH, \
+    PLAYLISTS_CREATOR_DATABASE_FILE_NAME
 from research.playlists_creator_database.playlists_creator_database_consts import DROPPABLE_COLUMNS, \
     GROUPBY_FIRST_COLUMNS, GROUPBY_MEDIAN_COLUMNS, LINEAR_TRANSFORMED_COLUMNS
 from tools.google_drive.google_drive_adapter import GoogleDriveAdapter
 from tools.google_drive.google_drive_upload_metadata import GoogleDriveUploadMetadata
-from utils.drive_utils import upload_files_to_drive
 from utils.general_utils import chain_dicts
 
 ISRAELI_RADIO_PLAY_COUNT = 'israeli_radio_play_count'
@@ -84,7 +84,7 @@ class PlaylistsCreatorDatabaseGenerator:
         upload_metadata = GoogleDriveUploadMetadata(
             local_path=PLAYLISTS_CREATOR_DATABASE_OUTPUT_PATH,
             drive_folder_id=drive_folder_id,
-            file_name='playlists_creator_database.csv'
+            file_name=PLAYLISTS_CREATOR_DATABASE_FILE_NAME
         )
 
         self._google_drive_adapter.upload([upload_metadata])
