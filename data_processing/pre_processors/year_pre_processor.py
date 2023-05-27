@@ -12,7 +12,7 @@ class YearPreProcessor(IPreProcessor):
     def pre_process(self, data: DataFrame) -> DataFrame:
         data[BROADCASTING_YEAR] = [extract_year(date) for date in data[ADDED_AT]]
         filtered_data = data[data[BROADCASTING_YEAR] <= self._max_year]
-        data[RELEASE_YEAR] = [extract_year(date) for date in data[RELEASE_DATE]]
+        filtered_data[RELEASE_YEAR] = [extract_year(date) for date in filtered_data[RELEASE_DATE]]
 
         return filtered_data
 
