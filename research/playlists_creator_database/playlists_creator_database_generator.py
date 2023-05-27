@@ -79,7 +79,7 @@ class PlaylistsCreatorDatabaseGenerator:
         upload_metadata = GoogleDriveUploadMetadata(
             local_path=PLAYLISTS_CREATOR_DATABASE_OUTPUT_PATH,
             drive_folder_id=os.environ[PLAYLISTS_CREATOR_DATABASE_DRIVE_ID],
-            file_name='groubyed_songs.csv'
+            file_name='playlists_creator_database.csv'
         )
 
         upload_files_to_drive(upload_metadata)
