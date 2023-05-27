@@ -3,6 +3,6 @@ from tools.google_drive.google_drive_upload_metadata import GoogleDriveUploadMet
 from utils.general_utils import is_remote_run
 
 
-def upload_files_to_drive(*files_metadata: GoogleDriveUploadMetadata) -> None:
-    if is_remote_run():
+def upload_files_to_drive(*files_metadata: GoogleDriveUploadMetadata, is_remote: bool = False) -> None:
+    if is_remote or is_remote_run():
         GoogleDriveAdapter().upload(files_metadata)

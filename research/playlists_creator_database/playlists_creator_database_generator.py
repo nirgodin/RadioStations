@@ -1,3 +1,4 @@
+import os
 from typing import List, Dict
 
 import pandas as pd
@@ -77,7 +78,8 @@ class PlaylistsCreatorDatabaseGenerator:
         pre_processed_data.to_csv(PLAYLISTS_CREATOR_DATABASE_OUTPUT_PATH, index=False)
         upload_metadata = GoogleDriveUploadMetadata(
             local_path=PLAYLISTS_CREATOR_DATABASE_OUTPUT_PATH,
-            drive_folder_id=PLAYLISTS_CREATOR_DATABASE_DRIVE_ID
+            drive_folder_id=os.environ[PLAYLISTS_CREATOR_DATABASE_DRIVE_ID],
+            file_name='groubyed_songs.csv'
         )
 
         upload_files_to_drive(upload_metadata)
