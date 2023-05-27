@@ -46,12 +46,9 @@ class GoogleDriveAdapter:
         query = f"'{folder_id}' in parents and trashed=false"
         results = self._drive_service.files().list(q=query).execute()
         files = results.get('files', [])
-        batch = BatchHttpRequest()
 
         for file in files:
-            batch.add(self._drive_service.files().delete(fileId=file['id']))
-
-        batch.execute()
+            self._drive_service.files().delete(fileId=file['id']).execute()
 
         print(f"All folder `{folder_id}` contents deleted successfully!")
 
