@@ -19,14 +19,15 @@ class IsraeliPreProcessor(IPreProcessor):
     def pre_process(self, data: DataFrame) -> DataFrame:
         artists_mapping = self._create_israeli_artists_mapping(data)
         data[IS_ISRAELI] = data[ARTIST_NAME].map(artists_mapping)
+        known_artists_data = data[~data[IS_ISRAELI].isna()]
         unknown_artists_data = data[data[IS_ISRAELI].isna()]
         unknown_artists_data[IS_ISRAELI] = self._is_israeli(unknown_artists_data)
-        return data
+
+        return pd.concat([known_artists_data, unknown_artists_data]).reset_index(drop=True)
 
     def _create_israeli_artists_mapping(self, data: DataFrame) -> Dict[str, Union[bool, float]]:
         print('Mapping artists to Israeli or not')
-        sorted_data = data.sort_values(by=POPULARITY, ascending=False)
-        unique_artists = sorted_data[ARTIST_NAME].unique().tolist()
+        unique_artists = data[ARTIST_NAME].unique().tolist()
         artists_mapping = {}
 
         with tqdm(total=len(unique_artists)) as progress_bar:
@@ -62,16 +63,12 @@ class IsraeliPreProcessor(IPreProcessor):
         return is_israeli
 
     def _is_track_israeli(self, row: Series) -> bool:
-        if self._is_included_in_kan_gimel_data(row[ARTIST_NAME]):
-            return True
-
-        elif self._contains_any_hebrew_character(row[NAME], row[MAIN_ALBUM]):
+        if self._contains_any_hebrew_character(row[NAME], row[MAIN_ALBUM]):
             return True
 
         else:
             return self._has_any_israeli_genre(row[GENRES])
 
-    @lru_cache(maxsize=5000)
     def _is_included_in_kan_gimel_data(self, artist_name: str) -> bool:
         return artist_name in self._kan_gimel_data[ARTISTS]
 
@@ -104,4 +101,5 @@ class IsraeliPreProcessor(IPreProcessor):
 
 
 if __name__ == '__main__':
-    IsraeliPreProcessor().pre_process(pd.read_csv(MERGED_DATA_PATH))
+    d = IsraeliPreProcessor().pre_process(pd.read_csv(MERGED_DATA_PATH))
+    d.to_csv(r'C:\Users\nirgo\Documents\R\israeli_pre_processor_validation.csv', index=False)
