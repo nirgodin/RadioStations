@@ -74,7 +74,6 @@ ISRAELI_PLAYLISTS = {
     'israeli_metal_mix': '37i9dQZF1EIfUNA6VGyfJf',
     'mellow_israeli': '36qTIFW1QvaPbWvZGClUSN',
     'israeli_hip_hop': '37i9dQZF1DX7Mc5eu3d1jD',
-    'israeli_weekend': '37i9dQZF1DXcXpkHQIToU1',
     'israeli_chill': '37i9dQZF1DX5mMspCVmB8S',
     'israeli_00s': '37i9dQZF1DWTPlRmYQmP82',
     'israeli_70s': '37i9dQZF1DX6RBSNNUwAXu',
