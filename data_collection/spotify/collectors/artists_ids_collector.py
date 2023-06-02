@@ -27,7 +27,7 @@ class ArtistsIDsCollector(BaseSpotifyCollector):
         super().__init__(session, chunk_size, max_chunks_number)
         self._chunks_generator = DataChunksGenerator(chunk_size)
 
-    async def collect(self):
+    async def collect(self, **kwargs):
         data = pd.read_csv(MERGED_DATA_PATH)
         data.dropna(subset=[ID], inplace=True)
         data.drop_duplicates(subset=[ARTIST_NAME], inplace=True)

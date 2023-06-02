@@ -48,7 +48,7 @@ class SpotifyWeeklyRunner:
             chunk_size=script_config.chunk_size,
             max_chunks_number=script_config.max_chunks_number
         )
-        await collector.collect()
+        await collector.collect(**script_config.kwargs)
 
     def _update_script_execution_date(self, script_name: str) -> None:
         self._weekly_run_latest_executions[script_name] = now_israel_timezone().strftime(DATETIME_FORMAT)

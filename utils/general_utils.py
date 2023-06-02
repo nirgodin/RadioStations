@@ -3,7 +3,7 @@ from bisect import bisect_left
 from difflib import SequenceMatcher
 from functools import reduce
 from itertools import chain
-from typing import List, Optional, Tuple, Any
+from typing import List, Optional, Tuple, Any, Union, Iterator
 
 from component_factory import ComponentFactory
 from consts.env_consts import IS_REMOTE_RUN
@@ -50,7 +50,7 @@ def recursively_flatten_nested_dict(dct: dict, flatten_dct: Optional[dict] = Non
         return flatten_dct
 
 
-def chain_lists(list_of_lists: List[list]) -> list:
+def chain_lists(list_of_lists: Union[List[list], Iterator[list]]) -> list:
     return list(chain.from_iterable(list_of_lists))
 
 

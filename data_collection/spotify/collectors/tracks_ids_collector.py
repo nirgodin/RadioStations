@@ -1,6 +1,5 @@
 import asyncio
 import os.path
-import urllib
 from functools import partial
 from typing import List, Dict, Tuple
 
@@ -10,11 +9,11 @@ from asyncio_pool import AioPool
 from pandas import DataFrame
 from tqdm import tqdm
 
-from consts.api_consts import AIO_POOL_SIZE, TRACKS_URL_FORMAT, SEARCH_URL
-from consts.data_consts import ARTIST_NAME, ARTISTS, ARTIST_ID, NAME, TRACK, TYPE, TRACKS, ITEMS, URI, SONG
+from consts.api_consts import AIO_POOL_SIZE, SEARCH_URL
+from consts.data_consts import ARTIST_NAME, NAME, TRACK, TYPE, TRACKS, ITEMS, URI, SONG
 from consts.data_consts import ID
-from consts.env_consts import SPOTIFY_ARTISTS_IDS_DRIVE_ID, SPOTIFY_TRACKS_IDS_DRIVE_ID
-from consts.path_consts import MERGED_DATA_PATH, ARTISTS_IDS_OUTPUT_PATH, TRACKS_IDS_OUTPUT_PATH
+from consts.env_consts import SPOTIFY_TRACKS_IDS_DRIVE_ID
+from consts.path_consts import MERGED_DATA_PATH, TRACKS_IDS_OUTPUT_PATH
 from data_collection.spotify.base_spotify_collector import BaseSpotifyCollector
 from tools.data_chunks_generator import DataChunksGenerator
 from tools.environment_manager import EnvironmentManager
@@ -29,7 +28,7 @@ class TracksIDsCollector(BaseSpotifyCollector):
         super().__init__(session, chunk_size, max_chunks_number)
         self._chunks_generator = DataChunksGenerator(chunk_size)
 
-    async def collect(self):
+    async def collect(self, **kwargs):
         EnvironmentManager().set_env_variables()
         data = pd.read_csv(MERGED_DATA_PATH)
         missing_ids_data = data[data[ID].isna()]

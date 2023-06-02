@@ -27,7 +27,7 @@ class AudioFeaturesCollector(BaseSpotifyCollector):
         self._sp = get_spotipy()
         self._chunks_generator = DataChunksGenerator(chunk_size)
 
-    async def collect(self) -> None:
+    async def collect(self, **kwargs) -> None:
         data = pd.read_csv(MERGED_DATA_PATH)
         data.drop_duplicates(subset=[NAME, ARTIST_NAME], inplace=True)
         artists_and_tracks = [(artist, track) for artist, track in zip(data[ARTIST_NAME], data[NAME])]

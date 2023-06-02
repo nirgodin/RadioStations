@@ -26,7 +26,7 @@ class AlbumsDetailsCollector(BaseSpotifyCollector):
         super().__init__(session, chunk_size, max_chunks_number)
         self._chunks_generator = DataChunksGenerator(chunk_size)
 
-    async def collect(self):
+    async def collect(self, **kwargs):
         data = pd.read_csv(ARTISTS_IDS_OUTPUT_PATH)
         data.dropna(subset=[ARTIST_ID], inplace=True)
         artists_ids = data[ARTIST_ID].unique().tolist()

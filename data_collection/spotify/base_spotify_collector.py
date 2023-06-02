@@ -13,7 +13,7 @@ class BaseSpotifyCollector(ABC):
         self._max_chunks_number = max_chunks_number
 
     @abstractmethod
-    async def collect(self) -> None:
+    async def collect(self, **kwargs) -> None:
         raise NotImplementedError
 
     @abstractmethod
