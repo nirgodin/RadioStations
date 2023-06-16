@@ -29,7 +29,7 @@ AUDIO_FEATURES = [
 KEY_NAMES_MAPPING = {
     0: 'C',
     1: 'C#',
-    2: 'E',
+    2: 'D',
     3: 'D#',
     4: 'E',
     5: 'F',
