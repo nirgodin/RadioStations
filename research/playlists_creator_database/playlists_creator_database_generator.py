@@ -12,7 +12,7 @@ from consts.env_consts import PLAYLISTS_CREATOR_DATABASE_DRIVE_ID
 from consts.path_consts import MERGED_DATA_PATH, PLAYLISTS_CREATOR_DATABASE_OUTPUT_PATH, \
     PLAYLISTS_CREATOR_DATABASE_FILE_NAME
 from research.playlists_creator_database.playlists_creator_database_consts import DROPPABLE_COLUMNS, \
-    GROUPBY_FIRST_COLUMNS, GROUPBY_MEDIAN_COLUMNS, LINEAR_TRANSFORMED_COLUMNS
+    GROUPBY_FIRST_COLUMNS, GROUPBY_MIN_MAX_MEDIAN_COLUMNS, LINEAR_TRANSFORMED_COLUMNS
 from tools.google_drive.google_drive_adapter import GoogleDriveAdapter
 from tools.google_drive.google_drive_upload_metadata import GoogleDriveUploadMetadata
 from utils.general_utils import chain_dicts
@@ -47,7 +47,7 @@ class PlaylistsCreatorDatabaseGenerator:
     @staticmethod
     def _build_group_by_aggregation_mapping() -> Dict[str, List[str]]:
         first_mapping = {k: [FIRST] for k in GROUPBY_FIRST_COLUMNS}
-        min_max_median_mapping = {k: [MEDIAN] for k in GROUPBY_MEDIAN_COLUMNS}
+        min_max_median_mapping = {k: [v] for k, v in GROUPBY_MIN_MAX_MEDIAN_COLUMNS.items()}
         song_count_mapping = {ISRAELI_RADIO_PLAY_COUNT: COUNT}
         mappings = [first_mapping, min_max_median_mapping, song_count_mapping]
 
