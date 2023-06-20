@@ -32,7 +32,7 @@ async def run():
 
     track_about_fetcher = ShazamTrackAboutFetcher()
     print('Starting to fetch tracks about')
-    await track_about_fetcher.fetch_tracks_about(max_tracks=300)
+    await track_about_fetcher.fetch_tracks_about(max_tracks=200)
 
     language_analyzer = ShazamLyricsLanguageAnalyzer(chunk_size=50, chunks_limit=6)
     language_analyzer.analyze()
