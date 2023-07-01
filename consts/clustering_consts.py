@@ -11,7 +11,7 @@ from consts.openai_consts import ARTIST_GENDER
 from consts.spotify_albums_details_consts import MEDIAN_MARKETS_NUMBER, FIRST_ALBUM_RELEASE_YEAR, \
     LAST_ALBUM_RELEASE_YEAR, YEARS_ACTIVE, APPEARS_ON_SINGLES_COUNT, APPEARS_ON_COMPILATIONS_COUNT, \
     APPEARS_ON_ALBUMS_COUNT, SINGLES_COUNT, COMPILATIONS_COUNT, ALBUMS_COUNT
-from data_processing.pre_processors.language_pre_processor import SHAZAM_KEY, SHAZAM_ADAMID
+from data_processing.pre_processors.language.language_pre_processor import SHAZAM_KEY, SHAZAM_ADAMID
 
 NON_NUMERIC_COLUMNS = [
     NAME,
