@@ -3,6 +3,7 @@ from typing import List, Optional
 from pandas import DataFrame
 
 from analysis.analyzer_interface import IAnalyzer
+from analysis.analyzers.albums_details_analyzer import AlbumsDetailsAnalyzer
 from analysis.analyzers.gender_analyzer import GenderAnalyzer
 from analysis.analyzers.genre_analyzer import GenreAnalyzer
 from analysis.analyzers.kan_gimel_analyzer import KanGimelAnalyzer
@@ -73,5 +74,6 @@ class DataPreProcessor:
             KanGimelAnalyzer(),
             GenreAnalyzer(),
             ShazamLyricsLanguageAnalyzer(),
-            GenderAnalyzer()
+            GenderAnalyzer(),
+            AlbumsDetailsAnalyzer()
         ]
