@@ -19,6 +19,7 @@ class AlbumsDetailsPreProcessor(IPreProcessor):
     def pre_process(self, data: DataFrame) -> DataFrame:
         data_with_artists_ids = self._merge_artists_ids(data)
         data_with_raw_albums_details = self._merge_raw_albums_details(data_with_artists_ids)
+
         return self._merge_albums_details_aggregated_data(data_with_raw_albums_details)
 
     @staticmethod
