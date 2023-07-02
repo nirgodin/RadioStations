@@ -56,7 +56,9 @@ class PlaylistsArtistsCollector(BaseSpotifyCollector):
         with tqdm(total=len(playlist.tracks)) as progress_bar:
             for track in playlist.tracks:
                 record = self._extract_single_track_main_artist(track, playlist.station, record_key, record_value)
-                records.append(record)
+                if record is not None:
+                    records.append(record)
+
                 progress_bar.update(1)
 
         return records
