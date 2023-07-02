@@ -20,6 +20,7 @@ from data_processing.pre_processors.genre.genre_pre_processor import GenrePrePro
 from data_processing.pre_processors.israeli_pre_processor import IsraeliPreProcessor
 from data_processing.pre_processors.language.language_pre_processor import LanguagePreProcessor
 from data_processing.pre_processors.pre_processor_interface import IPreProcessor
+from data_processing.pre_processors.remastered_pre_processor import RemasteredPreProcessor
 from data_processing.pre_processors.tracks_ids_pre_processor import TracksIDSPreProcessor
 from data_processing.pre_processors.year_pre_processor import YearPreProcessor
 
@@ -65,6 +66,7 @@ class DataPreProcessor:
             DurationPreProcessor(),
             LanguagePreProcessor(),
             AlbumsDetailsPreProcessor(),
+            RemasteredPreProcessor(),
             FormatterPreProcessor()
         ]
 
