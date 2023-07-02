@@ -26,9 +26,9 @@ from utils.spotify_utils import build_spotify_headers
 async def run() -> None:
     EnvironmentManager().set_env_variables()
 
-    async with ClientSession(headers=build_spotify_headers()) as session:
-        radio_stations_snapshots_collector = RadioStationsSnapshotsCollector(session)
-        await radio_stations_snapshots_collector.collect()
+    # async with ClientSession(headers=build_spotify_headers()) as session:
+    #     radio_stations_snapshots_collector = RadioStationsSnapshotsCollector(session)
+    #     await radio_stations_snapshots_collector.collect()
 
     if not is_remote_run():
         spotify_weekly_run_config = [

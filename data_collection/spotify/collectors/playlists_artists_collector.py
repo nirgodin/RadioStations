@@ -61,12 +61,12 @@ class PlaylistsArtistsCollector(BaseSpotifyCollector):
 
         return records
 
-    @staticmethod
-    def _extract_single_track_main_artist(track: dict,
+    def _extract_single_track_main_artist(self,
+                                          track: dict,
                                           playlist_name: str,
                                           record_key: str,
                                           record_value: str) -> Optional[Dict[str, str]]:
-        artists = track.get(TRACK, {}).get(ARTISTS, [])
+        artists = self._extract_raw_track_artists(track)
         if not artists:
             return
 
@@ -77,6 +77,15 @@ class PlaylistsArtistsCollector(BaseSpotifyCollector):
             record_key: record_value,
             STATION: playlist_name
         }
+
+    @staticmethod
+    def _extract_raw_track_artists(track: dict) -> Optional[list]:
+        inner_track = track.get(TRACK, {})
+
+        if inner_track is None:
+            return
+
+        return track.get(TRACK, {}).get(ARTISTS, [])
 
     def _add_non_existing_artists(self, new_records: List[Dict[str, str]], output_path: str) -> DataFrame:
         print('Starting to add non existing artists')
