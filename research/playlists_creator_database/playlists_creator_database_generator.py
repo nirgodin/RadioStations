@@ -1,5 +1,5 @@
 import os
-from typing import List, Dict
+from typing import List, Dict, Optional
 
 import pandas as pd
 from pandas import DataFrame
@@ -7,7 +7,7 @@ from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import FunctionTransformer
 
 from consts.aggregation_consts import FIRST, MEDIAN, COUNT
-from consts.data_consts import SONG, URI, DURATION_MINUTES, DURATION_MS, MAJOR, MINOR
+from consts.data_consts import SONG, URI, DURATION_MINUTES, DURATION_MS, MAJOR, MINOR, IS_REMASTERED, REMASTER
 from consts.env_consts import PLAYLISTS_CREATOR_DATABASE_DRIVE_ID
 from consts.path_consts import MERGED_DATA_PATH, PLAYLISTS_CREATOR_DATABASE_OUTPUT_PATH, \
     PLAYLISTS_CREATOR_DATABASE_FILE_NAME
@@ -18,6 +18,7 @@ from tools.google_drive.google_drive_upload_metadata import GoogleDriveUploadMet
 from utils.general_utils import chain_dicts
 
 ISRAELI_RADIO_PLAY_COUNT = 'israeli_radio_play_count'
+REMASTERED_SEPARATOR = ' - '
 
 
 class PlaylistsCreatorDatabaseGenerator:
@@ -27,6 +28,7 @@ class PlaylistsCreatorDatabaseGenerator:
     def generate_database(self) -> None:
         print('Starting to create PlaylistsCreator database file')
         data = pd.read_csv(MERGED_DATA_PATH)
+        data[SONG] = data[[SONG, IS_REMASTERED]].apply(lambda x: self._reformat_remaster_title(*x), axis=1)
         groubyed_data = self._groupby_data(data)
         groubyed_data.dropna(subset=[URI], inplace=True)
         pre_processed_data = self._apply_transformations(groubyed_data)
@@ -34,6 +36,24 @@ class PlaylistsCreatorDatabaseGenerator:
         pre_processed_data.drop(DURATION_MS, axis=1, inplace=True)
 
         self._output_results(pre_processed_data)
+
+    def _reformat_remaster_title(self, song_name: str, is_remastered: bool) -> str:
+        if not is_remastered:
+            return song_name
+
+        song_name_components = song_name.split(REMASTERED_SEPARATOR)
+        remaster_component_index = self._extract_remaster_component_index(song_name_components)
+
+        if remaster_component_index is None:
+            return song_name
+
+        return REMASTERED_SEPARATOR.join(song_name_components[:remaster_component_index])
+
+    @staticmethod
+    def _extract_remaster_component_index(song_name_components: List[str]) -> Optional[int]:
+        for i, component in enumerate(song_name_components):
+            if component.lower().__contains__(REMASTER):
+                return i
 
     def _groupby_data(self, data: DataFrame) -> DataFrame:
         relevant_data = data.drop(DROPPABLE_COLUMNS, axis=1)
