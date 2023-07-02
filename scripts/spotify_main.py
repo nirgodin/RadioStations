@@ -2,11 +2,12 @@ import asyncio
 
 from aiohttp import ClientSession
 
-from consts.data_consts import IS_ISRAELI
+from consts.data_consts import IS_ISRAELI, IS_LGBTQ
 from consts.miscellaneous_consts import NAMED_PLAYLISTS, RECORD_KEY, RECORD_VALUE, OUTPUT_PATH
 from consts.openai_consts import ARTIST_GENDER
-from consts.path_consts import SPOTIFY_EQUAL_PLAYLISTS_OUTPUT_PATH, SPOTIFY_ISRAELI_PLAYLISTS_OUTPUT_PATH
-from consts.playlists_consts import EQUAL_PLAYLISTS, ISRAELI_PLAYLISTS
+from consts.path_consts import SPOTIFY_EQUAL_PLAYLISTS_OUTPUT_PATH, SPOTIFY_ISRAELI_PLAYLISTS_OUTPUT_PATH, \
+    SPOTIFY_LGBTQ_PLAYLISTS_OUTPUT_PATH
+from consts.playlists_consts import EQUAL_PLAYLISTS, ISRAELI_PLAYLISTS, GLOW_PLAYLISTS
 from data_collection.spotify.collectors.albums_details_collector import AlbumsDetailsCollector
 from data_collection.spotify.collectors.artists_ids_collector import ArtistsIDsCollector
 from data_collection.spotify.collectors.audio_features_collector import AudioFeaturesCollector
@@ -83,6 +84,19 @@ async def run() -> None:
                     RECORD_KEY: IS_ISRAELI,
                     RECORD_VALUE: True,
                     OUTPUT_PATH: SPOTIFY_ISRAELI_PLAYLISTS_OUTPUT_PATH
+                }
+            ),
+            SpotifyCollectorConfig(
+                name='lgbtq playlists collector',
+                weekday=1,
+                collector=PlaylistsArtistsCollector,
+                chunk_size=len(GLOW_PLAYLISTS),
+                max_chunks_number=2,
+                kwargs={
+                    NAMED_PLAYLISTS: GLOW_PLAYLISTS,
+                    RECORD_KEY: IS_LGBTQ,
+                    RECORD_VALUE: True,
+                    OUTPUT_PATH: SPOTIFY_LGBTQ_PLAYLISTS_OUTPUT_PATH
                 }
             )
         ]

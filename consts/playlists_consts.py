@@ -110,3 +110,15 @@ ISRAELI_PLAYLISTS = {
     'israeli_90s': '37i9dQZF1DWXqQgRwQKb7B',
     'israeli_alternative': '37i9dQZF1DX41IYVoQd4Sa'
 }
+
+GLOW_PLAYLISTS = {
+    'glow': '37i9dQZF1DX3LyU0mhfqgP',
+    'glow_israel': '37i9dQZF1DXdO2G4AsEU5v',
+    'glow_us_canada': '37i9dQZF1DWVfhphOFdiHz',
+    'glow_italia': '37i9dQZF1DXbj3m6LiQbmy',
+    'glow_nordics': '37i9dQZF1DX17bYKrZOCwW',
+    'glow_polska': '37i9dQZF1DWUN8lkHHQsn9',
+    'glow_espana': '37i9dQZF1DXckSQXNNdGD6',
+    'glow_be_pride_be_proud': '37i9dQZF1DWTyA2hb8wxhj',
+    'glow_thailand': '37i9dQZF1DX5wAI1s8nC6X'
+}
