@@ -9,7 +9,7 @@ from tqdm import tqdm
 
 from consts.api_consts import AIO_POOL_SIZE
 from consts.data_consts import SONG
-from consts.genius_consts import GENIUS_API_SEARCH_URL, META, STATUS, RESPONSE, RESULT
+from consts.genius_consts import GENIUS_API_SEARCH_URL, RESPONSE, RESULT
 from consts.path_consts import MERGED_DATA_PATH, GENIUS_TRACKS_IDS_OUTPUT_PATH
 from consts.shazam_consts import HITS
 from data_collection.genius.base_genius_collector import BaseGeniusCollector

@@ -15,7 +15,7 @@ from consts.shazam_consts import SHAZAM_TRACK_KEY, TITLE, SUBTITLE, GENRES, PRIM
     TRACK_ADAM_ID, SHAZAM_RELEASE_DATE, SECTIONS, METADATA, TEXT, ALBUM, LABEL, SHAZAM_LYRICS, BEACON_DATA, LYRICS_ID, \
     LYRICS_PROVIDER_NAME, LYRICS_PROVIDER_TRACK_ID, COMMON_TRACK_ID, LYRICS_TEXT, LYRICS_FOOTER
 from utils.data_utils import extract_column_existing_values
-from utils.file_utils import read_json, to_json, append_to_csv
+from utils.file_utils import read_json, to_json, append_to_csv, append_dict_to_json
 
 
 class ShazamTrackAboutFetcher:
@@ -131,10 +131,11 @@ class ShazamTrackAboutFetcher:
         if not os.path.exists(SHAZAM_TRACKS_LYRICS_PATH):
             to_json(d=tracks_lyrics, path=SHAZAM_TRACKS_LYRICS_PATH)
 
-        existing_tracks_lyrics = read_json(SHAZAM_TRACKS_LYRICS_PATH)
-        tracks_lyrics.update(existing_tracks_lyrics)
-
-        to_json(d=tracks_lyrics, path=SHAZAM_TRACKS_LYRICS_PATH)
+        append_dict_to_json(
+            existing_data=read_json(SHAZAM_TRACKS_LYRICS_PATH),
+            new_data=tracks_lyrics,
+            path=SHAZAM_TRACKS_LYRICS_PATH
+        )
 
 
 if __name__ == '__main__':
