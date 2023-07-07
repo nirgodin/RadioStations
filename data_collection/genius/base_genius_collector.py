@@ -5,6 +5,7 @@ from typing import Optional, Generator, List
 from aiohttp import ClientSession
 
 from consts.env_consts import GENIUS_CLIENT_ACCESS_TOKEN
+from consts.genius_consts import META, STATUS
 from tools.data_chunks_generator import DataChunksGenerator
 
 
@@ -25,6 +26,10 @@ class BaseGeniusCollector(ABC):
     @abstractmethod
     async def _collect_single_chunk(self, chunk: List[str]) -> None:
         raise NotImplementedError
+
+    @staticmethod
+    def _is_valid_response(response: dict) -> bool:
+        return response.get(META, {}).get(STATUS) == 200
 
     async def __aenter__(self) -> 'BaseGeniusCollector':
         bearer_token = os.environ[GENIUS_CLIENT_ACCESS_TOKEN]

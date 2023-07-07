@@ -73,10 +73,6 @@ class GeniusSearchCollector(BaseGeniusCollector):
         else:
             return self._build_empty_result(song)
 
-    @staticmethod
-    def _is_valid_response(response: dict) -> bool:
-        return response.get(META, {}).get(STATUS) == 200
-
     def _serialize_first_hit(self, song: str, hit: dict) -> Optional[DataFrame]:
         hit_result = hit.get(RESULT)
 

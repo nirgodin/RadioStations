@@ -43,3 +43,8 @@ def load_txt_file_lines(path: str) -> List[str]:
 
 def get_path_suffix(path: str) -> str:
     return Path(path).suffix
+
+
+def append_dict_to_json(existing_data: dict, new_data: dict, path: str) -> None:
+    new_data.update(existing_data)
+    to_json(new_data, path)

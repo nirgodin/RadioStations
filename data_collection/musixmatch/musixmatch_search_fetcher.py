@@ -15,7 +15,7 @@ from consts.musixmatch_consts import MUSIXMATCH_TRACK_SEARCH_URL_FORMAT, MUSIXMA
     MUSIXMATCH_HEADERS, MUSIXMATCH_RELEVANT_COLUMNS
 from consts.path_consts import MUSIXMATCH_TRACK_IDS_PATH, MERGED_DATA_PATH
 from data_collection.musixmatch.track_serach_response_reader import TrackSearchResponseReader
-from utils.file_utils import to_json, read_json
+from utils.file_utils import to_json, read_json, append_dict_to_json
 
 
 class MusixmatchSearchFetcher:
@@ -29,9 +29,12 @@ class MusixmatchSearchFetcher:
     async def fetch_tracks_ids(self, data: DataFrame) -> None:
         daily_subset = self._extract_daily_tracks_subset(data)
         valid_responses = await self._fetch_tracks(daily_subset)
-        valid_responses.update(self._existing_tracks)
 
-        to_json(d=valid_responses, path=MUSIXMATCH_TRACK_IDS_PATH)
+        append_dict_to_json(
+            existing_data=self._existing_tracks,
+            new_data=valid_responses,
+            path=MUSIXMATCH_TRACK_IDS_PATH
+        )
 
     def _extract_daily_tracks_subset(self, data: DataFrame) -> DataFrame:
         non_existing_tracks_data = data[~data[ID].isin(self._existing_tracks.keys())]

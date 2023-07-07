@@ -1,5 +1,6 @@
 GENIUS_API_BASE_URL = 'https://api.genius.com'
 GENIUS_API_SEARCH_URL = f'{GENIUS_API_BASE_URL}/search'
+GENIUS_API_SONG_URL_FORMAT = f'{GENIUS_API_BASE_URL}/songs/{{}}'
 META = 'meta'
 STATUS = 'status'
 RESPONSE = 'response'
