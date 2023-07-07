@@ -28,6 +28,11 @@ class MusixmatchSearchFetcher:
 
     async def fetch_tracks_ids(self, data: DataFrame) -> None:
         daily_subset = self._extract_daily_tracks_subset(data)
+
+        if daily_subset.empty:
+            print('No tracks to search. Aborting MusixmatchSearchFetcher')
+            return
+
         valid_responses = await self._fetch_tracks(daily_subset)
 
         append_dict_to_json(
