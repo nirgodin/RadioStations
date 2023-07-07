@@ -15,7 +15,7 @@ from consts.musixmatch_consts import MUSIXMATCH_TRACK_SEARCH_URL_FORMAT, MUSIXMA
     MUSIXMATCH_HEADERS, MUSIXMATCH_RELEVANT_COLUMNS
 from consts.path_consts import MUSIXMATCH_TRACK_IDS_PATH, MERGED_DATA_PATH
 from data_collection.musixmatch.track_serach_response_reader import TrackSearchResponseReader
-from utils.file_utils import to_json, read_json, append_dict_to_json
+from utils.file_utils import read_json, append_dict_to_json
 
 
 class MusixmatchSearchFetcher:
