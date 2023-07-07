@@ -15,6 +15,7 @@ from consts.path_consts import MERGED_DATA_PATH, AUDIO_FEATURES_CHUNK_OUTPUT_PAT
 from data_collection.spotify.base_spotify_collector import BaseSpotifyCollector
 from tools.data_chunks_generator import DataChunksGenerator
 from tools.google_drive.google_drive_upload_metadata import GoogleDriveUploadMetadata
+from utils.data_utils import extract_column_existing_values
 from utils.datetime_utils import get_current_datetime
 from utils.drive_utils import upload_files_to_drive
 from utils.file_utils import to_csv
@@ -31,9 +32,10 @@ class AudioFeaturesCollector(BaseSpotifyCollector):
         data = pd.read_csv(MERGED_DATA_PATH)
         data.drop_duplicates(subset=[NAME, ARTIST_NAME], inplace=True)
         artists_and_tracks = [(artist, track) for artist, track in zip(data[ARTIST_NAME], data[NAME])]
+        existing_artists_and_tracks = extract_column_existing_values(AUDIO_FEATURES_DATA_PATH, [ARTIST_NAME, NAME])
         chunks = self._chunks_generator.generate_data_chunks(
             lst=artists_and_tracks,
-            filtering_list=self._get_existing_tracks_and_artists()
+            filtering_list=existing_artists_and_tracks
         )
 
         await self._collect_multiple_chunks(chunks)

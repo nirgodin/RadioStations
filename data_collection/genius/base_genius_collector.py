@@ -8,7 +8,7 @@ from consts.env_consts import GENIUS_CLIENT_ACCESS_TOKEN
 from tools.data_chunks_generator import DataChunksGenerator
 
 
-class BaseGeniusFetcher(ABC):
+class BaseGeniusCollector(ABC):
     def __init__(self, chunk_size: int, max_chunks_number: int, session: Optional[ClientSession] = None):
         self._chunk_size = chunk_size
         self._max_chunks_number = max_chunks_number
@@ -26,7 +26,7 @@ class BaseGeniusFetcher(ABC):
     async def _collect_single_chunk(self, chunk: List[str]) -> None:
         raise NotImplementedError
 
-    async def __aenter__(self) -> 'BaseGeniusFetcher':
+    async def __aenter__(self) -> 'BaseGeniusCollector':
         bearer_token = os.environ[GENIUS_CLIENT_ACCESS_TOKEN]
         headers = {
             "Accept": "application/json",

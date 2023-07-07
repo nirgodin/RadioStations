@@ -1,5 +1,4 @@
 import asyncio
-import os
 from functools import partial
 from typing import List, Optional
 
@@ -13,11 +12,12 @@ from consts.data_consts import SONG
 from consts.genius_consts import GENIUS_API_SEARCH_URL, META, STATUS, RESPONSE, RESULT
 from consts.path_consts import MERGED_DATA_PATH, GENIUS_TRACKS_IDS_OUTPUT_PATH
 from consts.shazam_consts import HITS
-from data_collection.genius.base_genius_fetcher import BaseGeniusFetcher
+from data_collection.genius.base_genius_collector import BaseGeniusCollector
+from utils.data_utils import extract_column_existing_values
 from utils.file_utils import append_to_csv
 
 
-class GeniusSearchFetcher(BaseGeniusFetcher):
+class GeniusSearchCollector(BaseGeniusCollector):
     def __init__(self, chunk_size: int, max_chunks_number: int):
         super().__init__(chunk_size, max_chunks_number)
 
@@ -25,7 +25,7 @@ class GeniusSearchFetcher(BaseGeniusFetcher):
         data = self._load_data()
         chunks = self._chunks_generator.generate_data_chunks(
             lst=data[SONG].unique().tolist(),
-            filtering_list=self._get_existing_songs()
+            filtering_list=extract_column_existing_values(path=GENIUS_TRACKS_IDS_OUTPUT_PATH, column_name=SONG)
         )
 
         await self._collect_multiple_chunks(chunks)
@@ -38,14 +38,6 @@ class GeniusSearchFetcher(BaseGeniusFetcher):
         data.reset_index(drop=True, inplace=True)
 
         return data
-
-    @staticmethod
-    def _get_existing_songs() -> List[str]:
-        if not os.path.exists(GENIUS_TRACKS_IDS_OUTPUT_PATH):
-            return []
-
-        existing_data = pd.read_csv(GENIUS_TRACKS_IDS_OUTPUT_PATH)
-        return existing_data[SONG].tolist()
 
     async def _collect_single_chunk(self, chunk: List[str]) -> None:
         pool = AioPool(AIO_POOL_SIZE)
@@ -100,7 +92,7 @@ class GeniusSearchFetcher(BaseGeniusFetcher):
 
 
 async def run_genius_search_fetcher(chunk_size: int = 50, max_chunks_number: int = 10) -> None:
-    async with GeniusSearchFetcher(chunk_size, max_chunks_number) as fetcher:
+    async with GeniusSearchCollector(chunk_size, max_chunks_number) as fetcher:
         await fetcher.fetch()
 
 

@@ -18,6 +18,7 @@ from data_collection.spotify.base_spotify_collector import BaseSpotifyCollector
 from tools.data_chunks_generator import DataChunksGenerator
 from tools.environment_manager import EnvironmentManager
 from tools.google_drive.google_drive_upload_metadata import GoogleDriveUploadMetadata
+from utils.data_utils import extract_column_existing_values
 from utils.drive_utils import upload_files_to_drive
 from utils.file_utils import append_to_csv
 from utils.spotify_utils import build_spotify_headers, build_spotify_query
@@ -34,7 +35,7 @@ class TracksIDsCollector(BaseSpotifyCollector):
         missing_ids_data = data[data[ID].isna()]
         missing_ids_data.drop_duplicates(subset=[SONG], inplace=True)
         artists_and_tracks_names = self._extract_artists_and_tracks_names(missing_ids_data)
-        existing_artists_and_tracks_names = self._get_existing_artists_and_tracks()
+        existing_artists_and_tracks_names = extract_column_existing_values(TRACKS_IDS_OUTPUT_PATH, [ARTIST_NAME, NAME])
         chunks = self._chunks_generator.generate_data_chunks(artists_and_tracks_names, existing_artists_and_tracks_names)
 
         await self._collect_multiple_chunks(chunks)
@@ -98,13 +99,6 @@ class TracksIDsCollector(BaseSpotifyCollector):
         record[URI] = first_track[URI]
 
         return record
-
-    def _get_existing_artists_and_tracks(self) -> List[Tuple[str, str]]:
-        if not os.path.exists(TRACKS_IDS_OUTPUT_PATH):
-            return []
-
-        existing_data = pd.read_csv(TRACKS_IDS_OUTPUT_PATH)
-        return self._extract_artists_and_tracks_names(existing_data)
 
     @staticmethod
     def _extract_artists_and_tracks_names(data: DataFrame) -> List[Tuple[str, str]]:

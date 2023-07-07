@@ -1,3 +1,6 @@
+import os
+from typing import Union, List
+
 import pandas as pd
 from pandas import DataFrame
 
@@ -19,3 +22,15 @@ def map_df_columns(data: DataFrame, key_column: str, value_column: str) -> dict:
     return {
         key: value for key, value in zip(data[key_column], data[value_column])
     }
+
+
+def extract_column_existing_values(path: str, column_name: Union[str, List[str]]) -> list:
+    if not os.path.exists(path):
+        return []
+
+    existing_data = pd.read_csv(path)
+
+    if isinstance(column_name, str):
+        return existing_data[column_name].tolist()
+    else:
+        return list(existing_data[column_name].itertuples(index=False, name=None))

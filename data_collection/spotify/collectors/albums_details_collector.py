@@ -16,6 +16,7 @@ from consts.path_consts import ARTISTS_IDS_OUTPUT_PATH, ALBUMS_DETAILS_OUTPUT_PA
 from data_collection.spotify.base_spotify_collector import BaseSpotifyCollector
 from tools.data_chunks_generator import DataChunksGenerator
 from tools.google_drive.google_drive_upload_metadata import GoogleDriveUploadMetadata
+from utils.data_utils import extract_column_existing_values
 from utils.drive_utils import upload_files_to_drive
 from utils.file_utils import append_to_csv
 from utils.spotify_utils import build_spotify_headers
@@ -30,7 +31,7 @@ class AlbumsDetailsCollector(BaseSpotifyCollector):
         data = pd.read_csv(ARTISTS_IDS_OUTPUT_PATH)
         data.dropna(subset=[ARTIST_ID], inplace=True)
         artists_ids = data[ARTIST_ID].unique().tolist()
-        existing_artists_ids = self._get_existing_artists_ids()
+        existing_artists_ids = extract_column_existing_values(path=ALBUMS_DETAILS_OUTPUT_PATH, column_name=ARTIST_ID)
         chunks = self._chunks_generator.generate_data_chunks(artists_ids, existing_artists_ids)
 
         await self._collect_multiple_chunks(chunks)
@@ -100,14 +101,6 @@ class AlbumsDetailsCollector(BaseSpotifyCollector):
             return
 
         return albums_page.get(ITEMS)
-
-    @staticmethod
-    def _get_existing_artists_ids() -> List[str]:
-        if not os.path.exists(ALBUMS_DETAILS_OUTPUT_PATH):
-            return []
-
-        existing_data = pd.read_csv(ALBUMS_DETAILS_OUTPUT_PATH)
-        return existing_data[ARTIST_ID].tolist()
 
     @staticmethod
     def _output_results(albums_data: DataFrame) -> None:
