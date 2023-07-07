@@ -12,17 +12,10 @@ from tqdm import tqdm
 from consts.api_consts import AIO_POOL_SIZE
 from consts.data_consts import ARTIST_NAME, NAME, ID, POPULARITY
 from consts.musixmatch_consts import MUSIXMATCH_TRACK_SEARCH_URL_FORMAT, MUSIXMATCH_API_KEY, DAILY_REQUESTS_LIMIT, \
-    MUSIXMATCH_HEADERS
+    MUSIXMATCH_HEADERS, MUSIXMATCH_RELEVANT_COLUMNS
 from consts.path_consts import MUSIXMATCH_TRACK_IDS_PATH, MERGED_DATA_PATH
 from data_collection.musixmatch.track_serach_response_reader import TrackSearchResponseReader
 from utils.file_utils import to_json, read_json
-
-MUSIXMATCH_RELEVANT_COLUMNS = [
-    ARTIST_NAME,
-    NAME,
-    ID,
-    POPULARITY
-]
 
 
 class MusixmatchSearchFetcher:

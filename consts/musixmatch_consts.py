@@ -1,3 +1,5 @@
+from consts.data_consts import ARTIST_NAME, NAME, ID, POPULARITY
+
 MUSIXMATCH_TRACK_SEARCH_URL_FORMAT = 'http://api.musixmatch.com/ws/1.1/track.search?q_artist={}&q_track={}&apikey={}'
 MUSIXMATCH_LYRICS_URL_FORMAT = 'http://api.musixmatch.com/ws/1.1/track.lyrics.get?track_id={}&apikey={}'
 MUSIXMATCH_API_KEY = 'MUSIXMATCH_API_KEY'
@@ -17,3 +19,10 @@ LYRICS = 'lyrics'
 LYRICS_BODY = 'lyrics_body'
 TRACK_NAME = 'track_name'
 TRACK_RATING = 'track_rating'
+
+MUSIXMATCH_RELEVANT_COLUMNS = [
+    ARTIST_NAME,
+    NAME,
+    ID,
+    POPULARITY
+]

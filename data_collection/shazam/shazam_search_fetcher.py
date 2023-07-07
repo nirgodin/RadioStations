@@ -13,6 +13,7 @@ from consts.api_consts import AIO_POOL_SIZE
 from consts.data_consts import ID, SONG, SPOTIFY_ID
 from consts.path_consts import MERGED_DATA_PATH, SHAZAM_TRACKS_IDS_PATH
 from consts.shazam_consts import SHAZAM_TRACK_KEY, HITS, TRACKS, TITLE, HEADING, SUBTITLE, APPLE_MUSIC_ADAM_ID, ARTISTS
+from utils.data_utils import extract_column_existing_values
 from utils.file_utils import append_to_csv
 
 
@@ -33,12 +34,7 @@ class ShazamSearchFetcher:
     def _extract_relevant_data(data: DataFrame):
         non_na_data = data.dropna(subset=[ID, SONG])
         non_duplicated_data = non_na_data.drop_duplicates(subset=[ID, SONG])
-
-        if not os.path.exists(SHAZAM_TRACKS_IDS_PATH):
-            return non_duplicated_data
-
-        existing_tracks_ids_data = pd.read_csv(SHAZAM_TRACKS_IDS_PATH)
-        exiting_song_names = existing_tracks_ids_data[SONG].tolist()
+        exiting_song_names = extract_column_existing_values(SHAZAM_TRACKS_IDS_PATH, SONG)
 
         return non_duplicated_data[~non_duplicated_data[SONG].isin(exiting_song_names)]
 

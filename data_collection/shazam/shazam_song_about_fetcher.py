@@ -14,12 +14,14 @@ from consts.path_consts import SHAZAM_TRACKS_ABOUT_PATH, SHAZAM_TRACKS_IDS_PATH,
 from consts.shazam_consts import SHAZAM_TRACK_KEY, TITLE, SUBTITLE, GENRES, PRIMARY, PRIMARY_GENRE, ALBUM_ADAM_ID, \
     TRACK_ADAM_ID, SHAZAM_RELEASE_DATE, SECTIONS, METADATA, TEXT, ALBUM, LABEL, SHAZAM_LYRICS, BEACON_DATA, LYRICS_ID, \
     LYRICS_PROVIDER_NAME, LYRICS_PROVIDER_TRACK_ID, COMMON_TRACK_ID, LYRICS_TEXT, LYRICS_FOOTER
+from utils.data_utils import extract_column_existing_values
 from utils.file_utils import read_json, to_json, append_to_csv
 
 
 class ShazamTrackAboutFetcher:
     def __init__(self, shazam: Shazam = Shazam()):
         self._shazam = shazam
+        self._existing_tracks = extract_column_existing_values(SHAZAM_TRACKS_ABOUT_PATH, SHAZAM_TRACK_KEY)
 
     async def fetch_tracks_about(self, max_tracks: int) -> None:
         records = await self._fetch_records(max_tracks)
@@ -123,15 +125,6 @@ class ShazamTrackAboutFetcher:
                 return section
 
         return {}
-
-    @property
-    def _existing_tracks(self) -> List[str]:
-        if not os.path.exists(SHAZAM_TRACKS_ABOUT_PATH):
-            return []
-
-        else:
-            tracks_ids_data = pd.read_csv(SHAZAM_TRACKS_ABOUT_PATH)
-            return tracks_ids_data[SHAZAM_TRACK_KEY].tolist()
 
     @staticmethod
     def _to_json(tracks_lyrics: Dict[str, List[str]]) -> None:
