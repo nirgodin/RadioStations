@@ -140,6 +140,7 @@ vcs.xml
 /musixmatch_scraping.bat
 /run_data_pre_processor.bat
 /run_mako_hit_list.bat
+/genius_scraping.bat
 
 # Data
 /shazam_creds.json

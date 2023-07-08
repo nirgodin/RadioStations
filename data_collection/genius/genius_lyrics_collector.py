@@ -1,9 +1,8 @@
-import asyncio
 import itertools
 import os
 import re
 from functools import partial
-from typing import List, Optional, Dict
+from typing import List, Optional, Dict, Generator
 
 import pandas as pd
 from aiohttp import ClientSession
@@ -13,28 +12,35 @@ from tqdm import tqdm
 
 from consts.api_consts import AIO_POOL_SIZE
 from consts.data_consts import ID
-from consts.genius_consts import PATH, GENIUS_LYRICS_URL_FORMAT
+from consts.genius_consts import PATH, GENIUS_LYRICS_URL_FORMAT, DATA_LYRICS_CONTAINER
 from consts.path_consts import GENIUS_TRACKS_IDS_OUTPUT_PATH, GENIUS_LYRICS_OUTPUT_PATH
 from data_collection.genius.base_genius_collector import BaseGeniusCollector
+from tools.data_chunks_generator import DataChunksGenerator
 from utils.file_utils import read_json, append_dict_to_json
 from utils.general_utils import chain_dicts
 
-DATA_LYRICS_CONTAINER = 'data-lyrics-container'
-
 
 class GeniusLyricsCollector(BaseGeniusCollector):
-    def __init__(self, chunk_size: int, max_chunks_number: int):
-        super().__init__(chunk_size, max_chunks_number)
+    def __init__(self, chunk_size: int, max_chunks_number: int, session: Optional[ClientSession] = None):
+        super().__init__(chunk_size, max_chunks_number, session)
+        self._session = session
         self._lyrics_class_regex = re.compile("^lyrics$|Lyrics__Root")
+        self._chunks_generator = DataChunksGenerator()
 
-    async def fetch(self) -> None:
-        self._session = await ClientSession().__aenter__()
+    async def collect(self) -> None:
         chunks = self._chunks_generator.generate_data_chunks(
             lst=list(self._genius_ids_to_lyrics_paths.keys()),
             filtering_list=list(self._existing_songs_lyrics.keys())
         )
 
         await self._collect_multiple_chunks(chunks)
+
+    async def _collect_multiple_chunks(self, chunks: Generator[list, None, None]) -> None:
+        for chunk_number, chunk in enumerate(chunks):
+            if chunk_number + 1 < self._max_chunks_number:
+                await self._collect_single_chunk(chunk)
+            else:
+                break
 
     async def _collect_single_chunk(self, chunk: List[str]) -> None:
         pool = AioPool(AIO_POOL_SIZE)
@@ -69,15 +75,19 @@ class GeniusLyricsCollector(BaseGeniusCollector):
         raw_lyrics_path = self._genius_ids_to_lyrics_paths[song_id]
         return raw_lyrics_path[1:] if raw_lyrics_path.startswith('/') else raw_lyrics_path
 
-    def _serialize_response(self, song_id: str, response: str) -> Optional[Dict[str, List[str]]]:
+    def _serialize_response(self, song_id: str, response: str) -> Dict[str, List[str]]:
         soup = BeautifulSoup(response, "html.parser")
         div = soup.find("div", class_=self._lyrics_class_regex)
-        contents = [content for content in div.contents if content.attrs.get(DATA_LYRICS_CONTAINER) == 'true']
-        lyrics_components = [c.contents for c in contents]
+        contents = [content for content in div.contents if self._is_lyrics_container(content)]
+        lyrics_components = [component.contents for component in contents]
         flatten_lyrics_component = itertools.chain.from_iterable(lyrics_components)
         lyrics = [component.text for component in flatten_lyrics_component if component.text]
 
         return {song_id: lyrics}
+
+    @staticmethod
+    def _is_lyrics_container(content) -> bool:
+        return content.attrs.get(DATA_LYRICS_CONTAINER) == 'true'
 
     @property
     def _genius_ids_to_lyrics_paths(self) -> Dict[str, str]:
@@ -94,12 +104,10 @@ class GeniusLyricsCollector(BaseGeniusCollector):
 
         return read_json(path=GENIUS_LYRICS_OUTPUT_PATH)
 
+    async def __aenter__(self) -> 'GeniusLyricsCollector':
+        self._session = await ClientSession().__aenter__()
+        return self
 
-async def run_genius_search_fetcher(chunk_size: int = 50, max_chunks_number: int = 10) -> None:
-    async with GeniusLyricsCollector(chunk_size, max_chunks_number) as fetcher:
-        await fetcher.fetch()
-
-
-if __name__ == '__main__':
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(run_genius_search_fetcher(max_chunks_number=2))
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
+        if self._session:
+            await self._session.__aexit__(exc_type, exc_val, exc_tb)

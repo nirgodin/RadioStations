@@ -1,12 +1,11 @@
-import os
 from abc import abstractmethod, ABC
 from typing import Optional, Generator, List
 
 from aiohttp import ClientSession
 
-from consts.env_consts import GENIUS_CLIENT_ACCESS_TOKEN
 from consts.genius_consts import META, STATUS
 from tools.data_chunks_generator import DataChunksGenerator
+from utils.genius_utils import build_genius_headers
 
 
 class BaseGeniusCollector(ABC):
@@ -15,6 +14,10 @@ class BaseGeniusCollector(ABC):
         self._max_chunks_number = max_chunks_number
         self._session = session
         self._chunks_generator = DataChunksGenerator(chunk_size)
+
+    @abstractmethod
+    async def collect(self) -> None:
+        raise NotImplementedError
 
     async def _collect_multiple_chunks(self, chunks: Generator[list, None, None]) -> None:
         for chunk_number, chunk in enumerate(chunks):
@@ -32,13 +35,7 @@ class BaseGeniusCollector(ABC):
         return response.get(META, {}).get(STATUS) == 200
 
     async def __aenter__(self) -> 'BaseGeniusCollector':
-        bearer_token = os.environ[GENIUS_CLIENT_ACCESS_TOKEN]
-        headers = {
-            "Accept": "application/json",
-            "User-Agent": "CompuServe Classic/1.22",
-            "Host": "api.genius.com",
-            "Authorization": f"Bearer {bearer_token}"
-        }
+        headers = build_genius_headers()
         self._session = await ClientSession(headers=headers).__aenter__()
 
         return self

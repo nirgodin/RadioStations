@@ -1,8 +1,8 @@
-import asyncio
 from functools import partial
 from typing import List, Optional
 
 import pandas as pd
+from aiohttp import ClientSession
 from asyncio_pool import AioPool
 from pandas import DataFrame
 from tqdm import tqdm
@@ -18,10 +18,10 @@ from utils.file_utils import append_to_csv
 
 
 class GeniusSearchCollector(BaseGeniusCollector):
-    def __init__(self, chunk_size: int, max_chunks_number: int):
-        super().__init__(chunk_size, max_chunks_number)
+    def __init__(self, chunk_size: int, max_chunks_number: int, session: Optional[ClientSession] = None):
+        super().__init__(chunk_size, max_chunks_number, session)
 
-    async def fetch(self) -> None:
+    async def collect(self) -> None:
         data = self._load_data()
         chunks = self._chunks_generator.generate_data_chunks(
             lst=data[SONG].unique().tolist(),
@@ -85,13 +85,3 @@ class GeniusSearchCollector(BaseGeniusCollector):
     @staticmethod
     def _build_empty_result(song: str) -> DataFrame:
         return pd.DataFrame({SONG: [song]})
-
-
-async def run_genius_search_fetcher(chunk_size: int = 50, max_chunks_number: int = 10) -> None:
-    async with GeniusSearchCollector(chunk_size, max_chunks_number) as fetcher:
-        await fetcher.fetch()
-
-
-if __name__ == '__main__':
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(run_genius_search_fetcher(max_chunks_number=2))
