@@ -120,5 +120,7 @@ GLOW_PLAYLISTS = {
     'glow_polska': '37i9dQZF1DWUN8lkHHQsn9',
     'glow_espana': '37i9dQZF1DXckSQXNNdGD6',
     'glow_be_pride_be_proud': '37i9dQZF1DWTyA2hb8wxhj',
-    'glow_thailand': '37i9dQZF1DX5wAI1s8nC6X'
+    'glow_thailand': '37i9dQZF1DX5wAI1s8nC6X',
+    'pioneers': '37i9dQZF1DWZREeDGwM6aE',
+    'raise_our_voices': '37i9dQZF1DX2RuXZSUOOFb'
 }
