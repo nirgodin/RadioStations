@@ -59,3 +59,4 @@ PLAYLISTS_CREATOR_DATABASE_OUTPUT_PATH = rf'data/research/{PLAYLISTS_CREATOR_DAT
 GENIUS_TRACKS_IDS_OUTPUT_PATH = r'data/genius/genius_tracks_ids.csv'
 GENIUS_SONGS_OUTPUT_PATH = r'data/genius/genius_songs.json'
 GENIUS_LYRICS_OUTPUT_PATH = r'data/genius/genius_lyrics.json'
+SHAZAM_LYRICS_EMBEDDINGS_PATH = r'data/shazam/lyrics_embeddings.csv'

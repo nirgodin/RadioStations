@@ -11,6 +11,7 @@ from consts.path_consts import SHAZAM_TRACKS_LYRICS_PATH, SHAZAM_TRACKS_LANGUAGE
 from consts.shazam_consts import SHAZAM_TRACK_KEY
 from tools.data_chunks_generator import DataChunksGenerator
 from tools.language_detector import LanguageDetector
+from utils.data_utils import extract_column_existing_values
 from utils.file_utils import read_json, append_to_csv
 
 
@@ -36,11 +37,8 @@ class ShazamLyricsLanguageAnalyzer(IAnalyzer):
 
     @staticmethod
     def _get_existing_tracks_ids() -> List[str]:
-        if not os.path.exists(SHAZAM_TRACKS_LANGUAGES_PATH):
-            return []
-
-        tracks_languages_data = pd.read_csv(SHAZAM_TRACKS_LANGUAGES_PATH)
-        return [str(track_key) for track_key in tracks_languages_data[SHAZAM_TRACK_KEY]]
+        tracks_keys = extract_column_existing_values(SHAZAM_TRACKS_LANGUAGES_PATH, SHAZAM_TRACK_KEY)
+        return [str(track_key) for track_key in tracks_keys]
 
     def _extract_single_chunk_tracks_languages(self, chunk: List[str]):
         language_records = self._get_tracks_language_records(chunk)

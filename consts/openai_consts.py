@@ -6,3 +6,9 @@ GENDER_PROMPT_FORMAT = "Given the name of a music artist, determine his or her g
                        "one token only. The gender of {} is"
 OPENAI_MODEL = "text-davinci-003"
 ARTIST_GENDER = 'artist_gender'
+OPENAI_BASE_URL = 'https://api.openai.com/v1'
+OPENAI_EMBEDDINGS_URL = f'{OPENAI_BASE_URL}/embeddings'
+ADA_EMBEDDINGS_MODEL = 'text-embedding-ada-002'
+EMBEDDING = 'embedding'
+INPUT = 'input'
+MODEL = 'model'
