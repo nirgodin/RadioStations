@@ -30,4 +30,4 @@ async def run(chunk_size: int, max_chunks_number: int) -> None:
 
 if __name__ == '__main__':
     loop = asyncio.get_event_loop()
-    loop.run_until_complete(run(chunk_size=50, max_chunks_number=10))
+    loop.run_until_complete(run(chunk_size=50, max_chunks_number=5))

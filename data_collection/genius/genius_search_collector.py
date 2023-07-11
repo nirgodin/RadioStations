@@ -1,3 +1,4 @@
+import os.path
 from functools import partial
 from typing import List, Optional
 
@@ -48,7 +49,7 @@ class GeniusSearchCollector(BaseGeniusCollector):
 
         valid_records = [record for record in records if record is not None]
         data = pd.concat(valid_records).reset_index(drop=True)
-        append_to_csv(data, output_path=GENIUS_TRACKS_IDS_OUTPUT_PATH)
+        self._append_to_csv(data)
 
     async def _fetch_single_song(self, progress_bar: tqdm, song: str) -> Optional[DataFrame]:
         progress_bar.update(1)
@@ -80,8 +81,24 @@ class GeniusSearchCollector(BaseGeniusCollector):
             return self._build_empty_result(song)
 
         hit_result[SONG] = song
-        return pd.json_normalize(hit_result)
+        first_hit_data = pd.json_normalize(hit_result)
+
+        if 'featured_artists' in first_hit_data.columns:
+            return first_hit_data.drop('featured_artists', axis=1)
+        else:
+            return first_hit_data
 
     @staticmethod
     def _build_empty_result(song: str) -> DataFrame:
         return pd.DataFrame({SONG: [song]})
+
+    @staticmethod
+    def _append_to_csv(new_data: DataFrame) -> None:
+        if os.path.exists(GENIUS_TRACKS_IDS_OUTPUT_PATH):
+            existing_data = pd.read_csv(GENIUS_TRACKS_IDS_OUTPUT_PATH)
+        else:
+            existing_data = pd.DataFrame()
+
+        data = pd.concat([existing_data, new_data]).reset_index(drop=True)
+
+        data.to_csv(GENIUS_TRACKS_IDS_OUTPUT_PATH)
