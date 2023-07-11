@@ -60,24 +60,24 @@ class ShazamLyricsEmbeddingsFetcher:
 
         with tqdm(total=len(chunk)) as progress_bar:
             func = partial(self._extract_single_track_embeddings, progress_bar)
-            results = await pool.map(func, chunk)
+            records = await pool.map(func, chunk)
 
-        return results
+        return records
 
     async def _extract_single_track_embeddings(self, progress_bar: tqdm, track_id: str) -> dict:
         track_lyrics = self._shazam_tracks_lyrics[track_id]
+        record = {SHAZAM_TRACK_KEY: track_id}
 
         if not track_lyrics:
-            return {
-                SHAZAM_TRACK_KEY: track_id
-            }
+            return record
 
         track_concatenated_lyrics = '\n'.join(track_lyrics)
         embeddings = await self._openai_client.embeddings(track_concatenated_lyrics)
-        embeddings[SHAZAM_TRACK_KEY] = track_id
+        embeddings_record = {f'lyrics_embedding_{i+1}': embedding for i, embedding in enumerate(embeddings)}
+        record.update(embeddings_record)
         progress_bar.update(1)
 
-        return embeddings
+        return record
 
     async def __aenter__(self) -> 'ShazamLyricsEmbeddingsFetcher':
         self._openai_client = await OpenAIClient().__aenter__()
