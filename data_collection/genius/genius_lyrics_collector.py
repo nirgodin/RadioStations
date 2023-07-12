@@ -49,7 +49,7 @@ class GeniusLyricsCollector(BaseGeniusCollector):
             func = partial(self._fetch_single_song, progress_bar)
             results = await pool.map(func, chunk)
 
-        valid_results = [result for result in results if result is not None]
+        valid_results = [result for result in results if isinstance(result, dict)]
         data = chain_dicts(valid_results)
 
         append_dict_to_json(
