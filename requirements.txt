@@ -5,6 +5,7 @@ dacite==1.6.0
 dataclasses-json==0.5.7
 dvc==2.51.0
 en-core-web-sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.5.0/en_core_web_sm-3.5.0-py3-none-any.whl
+en-core-web-lg @ https://github.com/explosion/spacy-models/releases/download/en_core_web_lg-3.5.0/en_core_web_lg-3.5.0-py3-none-any.whl
 GitPython==3.1.31
 google-api-python-client==2.82.0
 html5lib==1.1
