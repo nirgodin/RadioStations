@@ -7,10 +7,11 @@ from tqdm import tqdm
 from consts.data_consts import SPOTIFY_ID, ID
 from consts.language_consts import LANGUAGE, SCORE
 from consts.path_consts import SHAZAM_TRACKS_IDS_PATH, SHAZAM_TRACKS_LANGUAGES_PATH, MERGED_DATA_PATH, \
-    MUSIXMATCH_TRACKS_LANGUAGES_PATH
+    MUSIXMATCH_TRACKS_LANGUAGES_PATH, LANGUAGES_ABBREVIATIONS_MAPPING_PATH
 from consts.shazam_consts import SHAZAM_TRACK_KEY, APPLE_MUSIC_ADAM_ID
 from data_processing.pre_processors.language.language_record import LanguageRecord
 from data_processing.pre_processors.pre_processor_interface import IPreProcessor
+from utils.file_utils import read_json
 
 SHAZAM_KEY = 'shazam_key'
 SHAZAM_ADAMID = 'shazam_adamid'
@@ -25,12 +26,17 @@ RAW_LANGUAGE_COLUMN_NAMES = [
 
 
 class LanguagePreProcessor(IPreProcessor):
+    def __init__(self):
+        self._languages_abbreviations_mapping = read_json(LANGUAGES_ABBREVIATIONS_MAPPING_PATH)
+
     def pre_process(self, data: DataFrame) -> DataFrame:
         data_with_shazam_ids = self._merge_shazam_tracks_ids_data(data)
         data_with_shazam_language = self._merge_lyrics_languages_data(data_with_shazam_ids)
         data_with_musixmatch_language = self._merge_musixmatch_language_data(data_with_shazam_language)
+        language_data = self._create_data_with_single_language_column(data_with_musixmatch_language)
+        language_data[LANGUAGE] = language_data[LANGUAGE].map(self._languages_abbreviations_mapping)
 
-        return self._create_data_with_single_language_column(data_with_musixmatch_language)
+        return language_data
 
     @staticmethod
     def _merge_shazam_tracks_ids_data(data: DataFrame) -> DataFrame:
