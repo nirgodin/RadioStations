@@ -24,8 +24,14 @@ class MusixmatchLyricsFetcher:
         existing_tracks_lyrics = list(self._tracks_lyrics.keys())
         tracks_without_lyrics = [track_id for track_id in tracks_ids if track_id not in existing_tracks_lyrics]
         daily_subset = tracks_without_lyrics[:self._request_limit]
-        valid_responses = await self._fetch_tracks_lyrics(daily_subset)
 
+        await self._fetch_daily_subset(daily_subset)
+
+    async def _fetch_daily_subset(self, spotify_track_ids: List[str]) -> None:
+        if not spotify_track_ids:
+            return
+
+        valid_responses = await self._fetch_tracks_lyrics(spotify_track_ids)
         append_dict_to_json(
             existing_data=self._tracks_lyrics,
             new_data=valid_responses,
