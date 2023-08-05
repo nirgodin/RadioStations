@@ -6,8 +6,8 @@ from tqdm import tqdm
 
 from consts.data_consts import SPOTIFY_ID, ID
 from consts.language_consts import LANGUAGE, SCORE
-from consts.path_consts import SHAZAM_TRACKS_IDS_PATH, SHAZAM_TRACKS_LANGUAGES_PATH, MERGED_DATA_PATH, \
-    MUSIXMATCH_TRACKS_LANGUAGES_PATH, LANGUAGES_ABBREVIATIONS_MAPPING_PATH
+from consts.path_consts import SHAZAM_TRACKS_IDS_PATH, SHAZAM_TRACKS_LANGUAGES_PATH, MUSIXMATCH_TRACKS_LANGUAGES_PATH, \
+    LANGUAGES_ABBREVIATIONS_MAPPING_PATH
 from consts.shazam_consts import SHAZAM_TRACK_KEY, APPLE_MUSIC_ADAM_ID
 from data_processing.pre_processors.language.language_record import LanguageRecord
 from data_processing.pre_processors.pre_processor_interface import IPreProcessor

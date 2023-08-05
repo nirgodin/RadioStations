@@ -29,6 +29,7 @@ class MusixmatchLyricsFetcher:
 
     async def _fetch_daily_subset(self, spotify_track_ids: List[str]) -> None:
         if not spotify_track_ids:
+            print('Did not find any relevant track id. Quiting job.')
             return
 
         valid_responses = await self._fetch_tracks_lyrics(spotify_track_ids)
