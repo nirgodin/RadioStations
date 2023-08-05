@@ -141,6 +141,7 @@ vcs.xml
 /run_data_pre_processor.bat
 /run_mako_hit_list.bat
 /genius_scraping.bat
+/embeddings_collection.bat
 
 # Data
 /shazam_creds.json
