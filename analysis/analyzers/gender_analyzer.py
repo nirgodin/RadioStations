@@ -6,19 +6,20 @@ from tqdm import tqdm
 from analysis.analyzer_interface import IAnalyzer
 from consts.data_consts import ARTIST_NAME, PREDICTION_SHARE
 from consts.gender_consts import SOURCE, ISRAELI_WIKIPEDIA, OPENAI, GENERAL_WIKIPEDIA, SPOTIFY_EQUAL_PLAYLISTS, \
-    GOOGLE_IMAGES
-from consts.miscellaneous_consts import UTF_8_ENCODING
+    GOOGLE_IMAGES, MANUAL_TAGGING
 from consts.openai_consts import ARTIST_GENDER
 from consts.path_consts import WIKIPEDIA_ISRAELI_ARTISTS_GENDER_PATH, OPENAI_GENDERS_PATH, \
     WIKIPEDIA_OPENAI_UNKNOWN_GENDERS_PATH, MAPPED_GENDERS_OUTPUT_PATH, SPOTIFY_EQUAL_PLAYLISTS_OUTPUT_PATH, \
-    GOOGLE_IMAGES_GENDER_PATH
+    GOOGLE_IMAGES_GENDER_PATH, MANUAL_GENDERS_TAGGING_PATH
 from data_collection.wikipedia.gender.genders import Genders
 from utils.data_utils import map_df_columns, groupby_artists_by_desc_popularity
+from utils.file_utils import to_csv
 
 
 class GenderAnalyzer(IAnalyzer):
     def __init__(self):
-        self._sources = {
+        self._prioritized_sources = {
+            MANUAL_TAGGING: self._read_and_map_df_columns(MANUAL_GENDERS_TAGGING_PATH),
             SPOTIFY_EQUAL_PLAYLISTS: self._read_and_map_df_columns(SPOTIFY_EQUAL_PLAYLISTS_OUTPUT_PATH),
             ISRAELI_WIKIPEDIA: self._read_and_map_df_columns(WIKIPEDIA_ISRAELI_ARTISTS_GENDER_PATH),
             OPENAI: self._read_and_map_df_columns(OPENAI_GENDERS_PATH),
@@ -31,7 +32,7 @@ class GenderAnalyzer(IAnalyzer):
         records = self._get_artists_genders_records(artists)
         data = pd.DataFrame.from_records(records)
 
-        data.to_csv(MAPPED_GENDERS_OUTPUT_PATH, index=False, encoding=UTF_8_ENCODING)
+        to_csv(data, MAPPED_GENDERS_OUTPUT_PATH)
 
     @staticmethod
     def _get_unique_artists_names() -> List[str]:
@@ -50,7 +51,7 @@ class GenderAnalyzer(IAnalyzer):
         return records
 
     def _extract_single_artist_gender(self, artist: str) -> Dict[str, str]:
-        for source_name, source_mapping in self._sources.items():
+        for source_name, source_mapping in self._prioritized_sources.items():
             mapped_gender = source_mapping.get(artist)
 
             if mapped_gender is not None:
@@ -84,7 +85,3 @@ class GenderAnalyzer(IAnalyzer):
     @property
     def name(self) -> str:
         return 'gender analyzer'
-
-
-if __name__ == '__main__':
-    GenderAnalyzer().analyze()
