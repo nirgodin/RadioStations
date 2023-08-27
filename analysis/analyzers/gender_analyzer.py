@@ -9,8 +9,8 @@ from consts.gender_consts import SOURCE, ISRAELI_WIKIPEDIA, OPENAI, GENERAL_WIKI
     GOOGLE_IMAGES, MANUAL_TAGGING
 from consts.openai_consts import ARTIST_GENDER
 from consts.path_consts import WIKIPEDIA_ISRAELI_ARTISTS_GENDER_PATH, OPENAI_GENDERS_PATH, \
-    WIKIPEDIA_OPENAI_UNKNOWN_GENDERS_PATH, MAPPED_GENDERS_OUTPUT_PATH, SPOTIFY_EQUAL_PLAYLISTS_OUTPUT_PATH, \
-    GOOGLE_IMAGES_GENDER_PATH, MANUAL_GENDERS_TAGGING_PATH
+    WIKIPEDIA_OPENAI_UNKNOWN_GENDERS_PATH, MAPPED_GENDERS_OUTPUT_PATH, GOOGLE_IMAGES_GENDER_PATH, \
+    MANUAL_GENDERS_TAGGING_PATH, SPOTIFY_ISRAEL_GLOBAL_EQUAL_PLAYLISTS_OUTPUT_PATH
 from data_collection.wikipedia.gender.genders import Genders
 from utils.data_utils import map_df_columns, groupby_artists_by_desc_popularity
 from utils.file_utils import to_csv
@@ -20,7 +20,7 @@ class GenderAnalyzer(IAnalyzer):
     def __init__(self):
         self._prioritized_sources = {
             MANUAL_TAGGING: self._read_and_map_df_columns(MANUAL_GENDERS_TAGGING_PATH),
-            SPOTIFY_EQUAL_PLAYLISTS: self._read_and_map_df_columns(SPOTIFY_EQUAL_PLAYLISTS_OUTPUT_PATH),
+            SPOTIFY_EQUAL_PLAYLISTS: self._read_and_map_df_columns(SPOTIFY_ISRAEL_GLOBAL_EQUAL_PLAYLISTS_OUTPUT_PATH),
             ISRAELI_WIKIPEDIA: self._read_and_map_df_columns(WIKIPEDIA_ISRAELI_ARTISTS_GENDER_PATH),
             OPENAI: self._read_and_map_df_columns(OPENAI_GENDERS_PATH),
             GENERAL_WIKIPEDIA: self._read_and_map_df_columns(WIKIPEDIA_OPENAI_UNKNOWN_GENDERS_PATH),

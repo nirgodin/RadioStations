@@ -28,10 +28,11 @@ from data_processing.pre_processors.year_pre_processor import YearPreProcessor
 class DataPreProcessor:
     def __init__(self, max_year: int):
         self._max_year = max_year
+        self._data_merger = DataMerger()
 
     def pre_process(self, output_path: Optional[str] = None):
         print(f'Starting to merge data to single data frame')
-        data = DataMerger.merge(dir_path=RADIO_STATIONS_SNAPSHOTS_DIR, output_path=MERGED_DATA_PATH)
+        data = self._data_merger.merge(dir_path=RADIO_STATIONS_SNAPSHOTS_DIR, output_path=MERGED_DATA_PATH)
         self._run_pre_script_analyzers()
         pre_processed_data = self._pre_process_data(data)
 

@@ -19,10 +19,12 @@ AUDIO_FEATURES_DROP_COLUMNS = [
 
 
 class AudioFeaturesPreProcessor(IPreProcessor):
+    def __init__(self):
+        self._data_merger = DataMerger(drop_duplicates_on=[NAME, ARTIST_NAME])
+
     def pre_process(self, data: DataFrame) -> DataFrame:
-        audio_features = DataMerger.merge(
+        audio_features = self._data_merger.merge(
             dir_path=AUDIO_FEATURES_BASE_DIR,
-            drop_duplicates_on=[NAME, ARTIST_NAME],
             output_path=AUDIO_FEATURES_DATA_PATH
         )
         audio_features.drop([DURATION_MS, SCRAPED_AT], axis=1, inplace=True)
