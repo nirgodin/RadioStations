@@ -26,3 +26,4 @@ spacy-langdetect==0.1.2
 spotipy==2.19.0
 tqdm==4.65.0
 wikipedia-api==0.5.8
+notebook==7.0.2
