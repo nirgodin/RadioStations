@@ -50,13 +50,14 @@ class GeniusLyricsCollector(BaseGeniusCollector):
             results = await pool.map(func, chunk)
 
         valid_results = [result for result in results if isinstance(result, dict)]
-        data = chain_dicts(valid_results)
 
-        append_dict_to_json(
-            existing_data=self._existing_songs_lyrics,
-            new_data=data,
-            path=GENIUS_LYRICS_OUTPUT_PATH
-        )
+        if valid_results:
+            data = chain_dicts(valid_results)
+            append_dict_to_json(
+                existing_data=self._existing_songs_lyrics,
+                new_data=data,
+                path=GENIUS_LYRICS_OUTPUT_PATH
+            )
 
     async def _fetch_single_song(self, progress_bar: tqdm, song_id: str) -> Optional[Dict[str, List[str]]]:
         progress_bar.update(1)
@@ -78,6 +79,10 @@ class GeniusLyricsCollector(BaseGeniusCollector):
     def _serialize_response(self, song_id: str, response: str) -> Dict[str, List[str]]:
         soup = BeautifulSoup(response, "html.parser")
         div = soup.find("div", class_=self._lyrics_class_regex)
+
+        if div is None:
+            return {song_id: []}
+
         contents = [content for content in div.contents if self._is_lyrics_container(content)]
         lyrics_components = [component.contents for component in contents]
         flatten_lyrics_component = itertools.chain.from_iterable(lyrics_components)
