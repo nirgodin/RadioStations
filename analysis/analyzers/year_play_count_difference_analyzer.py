@@ -1,10 +1,10 @@
-import pandas as pd
 from pandas import DataFrame
 
 from analysis.analyzer_interface import IAnalyzer
-from consts.data_consts import BROADCASTING_YEAR, ARTIST_NAME, NAME, COUNT, DIFFERENCE
-from consts.path_consts import MERGED_DATA_PATH, YEAR_PLAY_COUNT_DIFFERENCE_PATH
+from consts.data_consts import BROADCASTING_YEAR, ARTIST_NAME, COUNT, DIFFERENCE
+from consts.path_consts import YEAR_PLAY_COUNT_DIFFERENCE_PATH
 from utils.analsis_utils import get_artists_play_count
+from utils.data_utils import read_merged_data
 from utils.file_utils import to_csv
 
 
@@ -15,7 +15,7 @@ class YearPlayCountDifferenceAnalyzer(IAnalyzer):
         self._use_percentage = use_percentage
 
     def analyze(self) -> None:
-        data = pd.read_csv(MERGED_DATA_PATH)
+        data = read_merged_data()
         baseline_play_count = self._count_songs_plays(data, self._baseline_year)
         alternative_play_count = self._count_songs_plays(data, self._alternative_year)
         comparison = self._create_comparison_data(baseline_play_count, alternative_play_count)

@@ -22,23 +22,7 @@ class GenderResearcherLinearModel:
 
         return model.fit()
 
-    def compare_coefficients(self) -> DataFrame:
-        return self._compare(parameter=COEFFICIENT)
-
-    def compare_p_values(self) -> DataFrame:
-        return self._compare(parameter=P_VALUE)
-
-    @staticmethod
-    def plot(comparison_data: DataFrame, order_by: str = PLAY_COUNT):
-        non_const_data = comparison_data[comparison_data[VARIABLE] != CONST]
-        order = non_const_data.sort_values(by=order_by)[VARIABLE]
-        melted_data = non_const_data.melt(id_vars=[VARIABLE], var_name=Y)
-        g = sns.FacetGrid(melted_data, col=Y, sharex=False, height=5, aspect=1, col_wrap=3, hue=Y)
-        g.map(sns.barplot, VALUE, VARIABLE, order=order)
-
-        return g
-
-    def _compare(self, parameter: str) -> DataFrame:
+    def compare(self, parameter: str) -> DataFrame:
         data = []
 
         for y in DEPENDENT_VARIABLES:
@@ -47,6 +31,16 @@ class GenderResearcherLinearModel:
             data.append(model_parameter)
 
         return reduce(lambda df1, df2: df1.merge(right=df2, on=VARIABLE, how="left"), data)
+
+    @staticmethod
+    def plot(comparison_data: DataFrame, order_by: str = PLAY_COUNT):
+        non_const_data = comparison_data[comparison_data[VARIABLE] != CONST]
+        order = non_const_data.sort_values(by=order_by)[VARIABLE]
+        melted_data = non_const_data.melt(id_vars=[VARIABLE], var_name=Y)
+        g = sns.FacetGrid(melted_data, col=Y, sharex=False, height=6, aspect=1, col_wrap=3, hue=Y)
+        g.map(sns.barplot, VALUE, VARIABLE, order=order)
+
+        return g
 
     def _get_model_parameter(self, summary: Summary, y: str, parameter: str) -> DataFrame:
         data = self._to_dataframe(summary.tables[1])

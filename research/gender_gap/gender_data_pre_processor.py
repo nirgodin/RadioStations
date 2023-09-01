@@ -3,24 +3,25 @@ from pandas import DataFrame
 from sklearn.impute import SimpleImputer
 
 from consts.aggregation_consts import MEDIAN
-from consts.data_consts import ARTIST_NAME, PLAY_COUNT, COUNT
+from consts.data_consts import ARTIST_NAME, PLAY_COUNT, COUNT, DURATION_MS
 from consts.gender_researcher_consts import AGGREGATION_MAPPING, GENDERS_MAPPING, MAIN_LANGUAGES, CATEGORICAL_COLUMNS, \
-    COLINEAR_COLUMNS
+    COLINEAR_COLUMNS, SQUARED_DURATION_MS
 from consts.language_consts import LANGUAGE
 from consts.openai_consts import ARTIST_GENDER
-from consts.path_consts import MERGED_DATA_PATH
 from data_processing.pre_processors.genre.main_genre_mapper import OTHER
 from utils.analsis_utils import get_artists_play_count
+from utils.data_utils import read_merged_data
 
 
 class GenderDataPreProcessor:
     def pre_process(self):
-        data = pd.read_csv(MERGED_DATA_PATH)
+        data = read_merged_data()
         groupbyed_data = self._groupby_data(data)
         groupbyed_data[LANGUAGE] = groupbyed_data[LANGUAGE].apply(lambda x: x if x in MAIN_LANGUAGES else OTHER)
         dummies_data = pd.get_dummies(groupbyed_data, columns=CATEGORICAL_COLUMNS)
         dummies_data.drop(COLINEAR_COLUMNS, axis=1, inplace=True)
         imputed_data = self._pre_process_data(dummies_data)
+        imputed_data[SQUARED_DURATION_MS] = imputed_data[DURATION_MS].apply(lambda x: int(x) ^ 2)
 
         return self._add_play_count_to_data(data, imputed_data)
 
@@ -58,7 +59,3 @@ class GenderDataPreProcessor:
         merged_data.rename(columns={COUNT: PLAY_COUNT}, inplace=True)
 
         return merged_data
-
-
-if __name__ == '__main__':
-    GenderDataPreProcessor().pre_process()

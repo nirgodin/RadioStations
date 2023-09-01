@@ -13,12 +13,12 @@ from consts.api_consts import AIO_POOL_SIZE, SEARCH_URL
 from consts.data_consts import ARTIST_NAME, NAME, TRACK, TYPE, TRACKS, ITEMS, URI, SONG
 from consts.data_consts import ID
 from consts.env_consts import SPOTIFY_TRACKS_IDS_DRIVE_ID
-from consts.path_consts import MERGED_DATA_PATH, TRACKS_IDS_OUTPUT_PATH
+from consts.path_consts import TRACKS_IDS_OUTPUT_PATH
 from data_collection.spotify.base_spotify_collector import BaseSpotifyCollector
 from tools.data_chunks_generator import DataChunksGenerator
 from tools.environment_manager import EnvironmentManager
 from tools.google_drive.google_drive_upload_metadata import GoogleDriveUploadMetadata
-from utils.data_utils import extract_column_existing_values
+from utils.data_utils import extract_column_existing_values, read_merged_data
 from utils.drive_utils import upload_files_to_drive
 from utils.file_utils import append_to_csv
 from utils.spotify_utils import build_spotify_headers, build_spotify_query
@@ -31,7 +31,7 @@ class TracksIDsCollector(BaseSpotifyCollector):
 
     async def collect(self, **kwargs):
         EnvironmentManager().set_env_variables()
-        data = pd.read_csv(MERGED_DATA_PATH)
+        data = read_merged_data()
         missing_ids_data = data[data[ID].isna()]
         missing_ids_data.drop_duplicates(subset=[SONG], inplace=True)
         artists_and_tracks_names = self._extract_artists_and_tracks_names(missing_ids_data)

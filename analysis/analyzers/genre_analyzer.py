@@ -64,11 +64,3 @@ class GenreAnalyzer(IAnalyzer):
     @property
     def name(self) -> str:
         return 'genre analyzer'
-
-
-if __name__ == '__main__':
-    analyzer = GenreAnalyzer(
-        data_path=MERGED_DATA_PATH,
-        output_path=GENRES_MAPPING_PATH
-    )
-    analyzer.analyze()

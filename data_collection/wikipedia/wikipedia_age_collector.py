@@ -12,9 +12,10 @@ from wikipediaapi import Wikipedia
 
 from consts.api_consts import AIO_POOL_SIZE
 from consts.data_consts import ARTIST_NAME, ARTIST_POPULARITY
-from consts.path_consts import WIKIPEDIA_AGE_OUTPUT_PATH, MERGED_DATA_PATH
+from consts.path_consts import WIKIPEDIA_AGE_OUTPUT_PATH
 from tools.data_chunks_generator import DataChunksGenerator
 from utils.callable_utils import run_async
+from utils.data_utils import read_merged_data
 from utils.datetime_utils import DATETIME_FORMAT
 from utils.file_utils import append_to_csv
 from utils.regex_utils import search_between_two_characters
@@ -44,7 +45,7 @@ class WikipediaAgeCollector:
 
     @staticmethod
     def _get_contender_artists() -> List[str]:
-        data = pd.read_csv(MERGED_DATA_PATH)
+        data = read_merged_data()
         data.dropna(subset=[ARTIST_NAME], inplace=True)
         data.drop_duplicates(subset=[ARTIST_NAME], inplace=True)
         data.sort_values(by=[ARTIST_POPULARITY], ascending=False, inplace=True)

@@ -1,24 +1,18 @@
 from typing import List, Dict
 
-import kneed
-import numpy as np
 import pandas as pd
 from kneed import KneeLocator
-from matplotlib import pyplot as plt
 from pandas import DataFrame
+from sklearn.cluster import KMeans
 from sklearn.impute import SimpleImputer
-from sklearn.neighbors import NearestNeighbors
-from sklearn.preprocessing import StandardScaler, MinMaxScaler
+from sklearn.preprocessing import MinMaxScaler
 from tqdm import tqdm
 
 from consts.aggregation_consts import FIRST, MEDIAN, MAX, MIN
 from consts.clustering_consts import DROPPABLE_COLUMNS, CATEGORICAL_COLUMNS, GROUPBY_FIRST_COLUMNS, \
     GROUPBY_MIN_MAX_MEDIAN_COLUMNS, CATEGORICAL_COLUMNS_AGGREGATION_MAPPING
 from consts.data_consts import SONG
-from consts.path_consts import MERGED_DATA_PATH
 from utils.general_utils import chain_dicts
-from sklearn.cluster import DBSCAN, KMeans
-from collections import Counter
 
 
 class ClusteringDataPreProcessor:
@@ -84,8 +78,3 @@ class ClusteringDataPreProcessor:
     @property
     def name(self) -> str:
         return 'clustering data pre processor'
-
-
-if __name__ == '__main__':
-    data = pd.read_csv(MERGED_DATA_PATH)
-    ClusteringDataPreProcessor().pre_process(data)

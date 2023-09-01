@@ -1,5 +1,4 @@
 import json
-from functools import lru_cache
 from typing import List, Dict, Union
 
 import numpy as np
@@ -7,8 +6,8 @@ import pandas as pd
 from pandas import DataFrame, Series
 from tqdm import tqdm
 
-from consts.data_consts import IS_ISRAELI, ARTIST_NAME, NAME, MAIN_ALBUM, GENRES, ARTISTS, POPULARITY
-from consts.path_consts import KAN_GIMEL_ANALYZER_OUTPUT_PATH, MERGED_DATA_PATH, SPOTIFY_ISRAELI_PLAYLISTS_OUTPUT_PATH
+from consts.data_consts import IS_ISRAELI, ARTIST_NAME, NAME, MAIN_ALBUM, GENRES, ARTISTS
+from consts.path_consts import KAN_GIMEL_ANALYZER_OUTPUT_PATH, SPOTIFY_ISRAELI_PLAYLISTS_OUTPUT_PATH
 from data_processing.pre_processors.pre_processor_interface import IPreProcessor
 from utils.general_utils import binary_search
 
@@ -98,8 +97,3 @@ class IsraeliPreProcessor(IPreProcessor):
     @property
     def name(self) -> str:
         return 'israeli pre processor'
-
-
-if __name__ == '__main__':
-    d = IsraeliPreProcessor().pre_process(pd.read_csv(MERGED_DATA_PATH))
-    d.to_csv(r'C:\Users\nirgo\Documents\R\israeli_pre_processor_validation.csv', index=False)

@@ -1,4 +1,3 @@
-import asyncio
 import os
 import uuid
 from functools import partial
@@ -16,10 +15,11 @@ from consts.language_consts import HEBREW_LANGUAGE_ABBREVIATION, ENGLISH_LANGUAG
 from consts.microsoft_translator_consts import MICROSOFT_SUBSCRIPTION_KEY, MICROSOFT_SUBSCRIPTION_REGION, \
     MICROSOFT_TRANSLATION_LOCATION, CLIENT_TRACE_ID, TRANSLATION
 from consts.miscellaneous_consts import UTF_8_ENCODING
-from consts.path_consts import MERGED_DATA_PATH, TRANSLATIONS_PATH
+from consts.path_consts import TRANSLATIONS_PATH
 from consts.rapid_api_consts import CONTENT_TYPE
 from data_collection.translation.translators.microsoft_translator import MicrosoftTranslator
 from tools.data_chunks_generator import DataChunksGenerator
+from utils.data_utils import read_merged_data
 from utils.file_utils import append_to_csv
 from utils.general_utils import chain_dicts, is_in_hebrew
 
@@ -52,7 +52,7 @@ class TranslationsCollector:
 
     @staticmethod
     def _load_artists_names() -> List[str]:
-        data = pd.read_csv(MERGED_DATA_PATH)
+        data = read_merged_data()
         israeli_data = data[data[IS_ISRAELI] == True]
         israeli_data.dropna(subset=[ARTIST_NAME], inplace=True)
         israeli_artists = israeli_data[ARTIST_NAME].unique().tolist()
@@ -100,9 +100,3 @@ class TranslationsCollector:
         data.columns = [ARTIST_NAME, TRANSLATION]
 
         return data
-
-
-if __name__ == '__main__':
-    collector = TranslationsCollector()
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(collector.collect())

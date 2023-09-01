@@ -5,7 +5,8 @@ from pandas import DataFrame
 
 from analysis.analyzer_interface import IAnalyzer
 from consts.data_consts import STATION, ARTIST_NAME, SONG
-from consts.path_consts import MERGED_DATA_PATH, UNIQUE_ANALYZER_OUTPUT_PATH_FORMAT
+from consts.path_consts import UNIQUE_ANALYZER_OUTPUT_PATH_FORMAT
+from utils.data_utils import read_merged_data
 
 
 class UniqueAnalyzer(IAnalyzer):
@@ -13,7 +14,7 @@ class UniqueAnalyzer(IAnalyzer):
         self._columns = columns
 
     def analyze(self) -> None:
-        data = pd.read_csv(MERGED_DATA_PATH)
+        data = read_merged_data()
 
         for column in self._columns:
             records = list(self._generate_records(data, column))

@@ -1,20 +1,20 @@
 import os
 from typing import List, Dict, Optional
 
-import pandas as pd
 from pandas import DataFrame
 from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import FunctionTransformer
 
-from consts.aggregation_consts import FIRST, MEDIAN, COUNT
+from consts.aggregation_consts import FIRST, COUNT
 from consts.data_consts import SONG, URI, DURATION_MINUTES, DURATION_MS, MAJOR, MINOR, IS_REMASTERED, REMASTER
 from consts.env_consts import PLAYLISTS_CREATOR_DATABASE_DRIVE_ID, PLAYLISTS_CREATOR_EMBEDDINGS_DRIVE_ID
-from consts.path_consts import MERGED_DATA_PATH, PLAYLISTS_CREATOR_DATABASE_OUTPUT_PATH, \
+from consts.path_consts import PLAYLISTS_CREATOR_DATABASE_OUTPUT_PATH, \
     PLAYLISTS_CREATOR_DATABASE_FILE_NAME, TRACK_NAMES_EMBEDDINGS_FILE_NAME, TRACK_NAMES_EMBEDDINGS_PATH
 from research.playlists_creator_database.playlists_creator_database_consts import DROPPABLE_COLUMNS, \
     GROUPBY_FIRST_COLUMNS, GROUPBY_MIN_MAX_MEDIAN_COLUMNS, LINEAR_TRANSFORMED_COLUMNS
 from tools.google_drive.google_drive_adapter import GoogleDriveAdapter
 from tools.google_drive.google_drive_upload_metadata import GoogleDriveUploadMetadata
+from utils.data_utils import read_merged_data
 from utils.general_utils import chain_dicts
 
 ISRAELI_RADIO_PLAY_COUNT = 'israeli_radio_play_count'
@@ -27,7 +27,7 @@ class PlaylistsCreatorDatabaseGenerator:
 
     def generate_database(self) -> None:
         print('Starting to create PlaylistsCreator database file')
-        data = pd.read_csv(MERGED_DATA_PATH)
+        data = read_merged_data()
         data[SONG] = data[[SONG, IS_REMASTERED]].apply(lambda x: self._reformat_remaster_title(*x), axis=1)
         groubyed_data = self._groupby_data(data)
         groubyed_data.dropna(subset=[URI], inplace=True)
@@ -116,7 +116,3 @@ class PlaylistsCreatorDatabaseGenerator:
             self._google_drive_adapter.clean_folder(metadata.drive_folder_id)
 
         self._google_drive_adapter.upload(upload_metadata)
-
-
-if __name__ == '__main__':
-    PlaylistsCreatorDatabaseGenerator().generate_database()

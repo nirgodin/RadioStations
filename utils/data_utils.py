@@ -4,7 +4,7 @@ from typing import Union, List
 import pandas as pd
 from pandas import DataFrame
 
-from consts.data_consts import ARTIST_NAME, POPULARITY
+from consts.data_consts import ARTIST_NAME, POPULARITY, MERGED_DATA_DTYPES
 from consts.path_consts import MERGED_DATA_PATH
 
 
@@ -34,3 +34,7 @@ def extract_column_existing_values(path: str, column_name: Union[str, List[str]]
         return existing_data[column_name].tolist()
     else:
         return list(existing_data[column_name].itertuples(index=False, name=None))
+
+
+def read_merged_data() -> DataFrame:
+    return pd.read_csv(MERGED_DATA_PATH, dtype=MERGED_DATA_DTYPES)

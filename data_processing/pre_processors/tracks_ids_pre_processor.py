@@ -2,7 +2,7 @@ import pandas as pd
 from pandas import DataFrame
 
 from consts.data_consts import ARTIST_NAME, NAME, ID, URI
-from consts.path_consts import MERGED_DATA_PATH, TRACKS_IDS_OUTPUT_PATH
+from consts.path_consts import TRACKS_IDS_OUTPUT_PATH
 from data_processing.pre_processors.pre_processor_interface import IPreProcessor
 
 

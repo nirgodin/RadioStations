@@ -1,9 +1,7 @@
-import asyncio
 import os
 from functools import partial
 from typing import Tuple, List, Dict
 
-import pandas as pd
 from aiohttp import ClientSession
 from asyncio_pool import AioPool
 from pandas import DataFrame
@@ -13,7 +11,7 @@ from consts.api_consts import AIO_POOL_SIZE
 from consts.data_consts import ARTIST_NAME, NAME, ID, POPULARITY
 from consts.musixmatch_consts import MUSIXMATCH_TRACK_SEARCH_URL_FORMAT, MUSIXMATCH_API_KEY, DAILY_REQUESTS_LIMIT, \
     MUSIXMATCH_HEADERS, MUSIXMATCH_RELEVANT_COLUMNS
-from consts.path_consts import MUSIXMATCH_TRACK_IDS_PATH, MERGED_DATA_PATH
+from consts.path_consts import MUSIXMATCH_TRACK_IDS_PATH
 from data_collection.musixmatch.track_serach_response_reader import TrackSearchResponseReader
 from utils.file_utils import read_json, append_dict_to_json
 
@@ -96,10 +94,3 @@ class MusixmatchSearchFetcher:
             return {}
 
         return read_json(path=MUSIXMATCH_TRACK_IDS_PATH)
-
-
-if __name__ == '__main__':
-    data = pd.read_csv(MERGED_DATA_PATH)
-    fetcher = MusixmatchSearchFetcher(request_limit=1)
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(fetcher.fetch_tracks_ids(data))

@@ -13,11 +13,11 @@ from consts.api_consts import AIO_POOL_SIZE, TRACKS_URL_FORMAT
 from consts.data_consts import ARTIST_NAME, ARTISTS, ARTIST_ID
 from consts.data_consts import ID
 from consts.env_consts import SPOTIFY_ARTISTS_IDS_DRIVE_ID
-from consts.path_consts import MERGED_DATA_PATH, ARTISTS_IDS_OUTPUT_PATH
+from consts.path_consts import ARTISTS_IDS_OUTPUT_PATH
 from data_collection.spotify.base_spotify_collector import BaseSpotifyCollector
 from tools.data_chunks_generator import DataChunksGenerator
 from tools.google_drive.google_drive_upload_metadata import GoogleDriveUploadMetadata
-from utils.data_utils import extract_column_existing_values
+from utils.data_utils import extract_column_existing_values, read_merged_data
 from utils.drive_utils import upload_files_to_drive
 from utils.file_utils import append_to_csv
 from utils.spotify_utils import build_spotify_headers
@@ -29,7 +29,7 @@ class ArtistsIDsCollector(BaseSpotifyCollector):
         self._chunks_generator = DataChunksGenerator(chunk_size)
 
     async def collect(self, **kwargs):
-        data = pd.read_csv(MERGED_DATA_PATH)
+        data = read_merged_data()
         data.dropna(subset=[ID], inplace=True)
         data.drop_duplicates(subset=[ARTIST_NAME], inplace=True)
         artists_and_track_ids = [(artist, track_id) for artist, track_id in zip(data[ARTIST_NAME], data[ID])]
@@ -103,11 +103,3 @@ class ArtistsIDsCollector(BaseSpotifyCollector):
             drive_folder_id=os.environ[SPOTIFY_ARTISTS_IDS_DRIVE_ID]
         )
         upload_files_to_drive(file_metadata)
-
-
-if __name__ == '__main__':
-    session = ClientSession(headers=build_spotify_headers())
-    collector = ArtistsIDsCollector(session, 100, 2)
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(collector.collect())
-    session.close()

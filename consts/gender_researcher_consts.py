@@ -73,3 +73,4 @@ P_VALUE = 'P>|t|'
 CONST = "const"
 Y = "y"
 VALUE = "value"
+SQUARED_DURATION_MS = "squared_duration_ms"

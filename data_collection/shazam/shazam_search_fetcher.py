@@ -1,5 +1,3 @@
-import asyncio
-import os.path
 from functools import partial
 from typing import Dict, List
 
@@ -11,7 +9,7 @@ from tqdm import tqdm
 
 from consts.api_consts import AIO_POOL_SIZE
 from consts.data_consts import ID, SONG, SPOTIFY_ID
-from consts.path_consts import MERGED_DATA_PATH, SHAZAM_TRACKS_IDS_PATH
+from consts.path_consts import SHAZAM_TRACKS_IDS_PATH
 from consts.shazam_consts import SHAZAM_TRACK_KEY, HITS, TRACKS, TITLE, HEADING, SUBTITLE, APPLE_MUSIC_ADAM_ID, ARTISTS
 from utils.data_utils import extract_column_existing_values
 from utils.file_utils import append_to_csv
@@ -99,10 +97,3 @@ class ShazamSearchFetcher:
             how='left',
             on=[SONG]
         )
-
-
-if __name__ == '__main__':
-    data = pd.read_csv(MERGED_DATA_PATH)
-    fetcher = ShazamSearchFetcher()
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(fetcher.search_tracks(data))

@@ -8,7 +8,8 @@ from consts.audio_features_consts import AUDIO_FEATURES, DUMMY_COLUMNS, PLAYS_CO
     CORRELATION, X, Y
 from consts.data_consts import POPULARITY, ID, \
     RELEASE_DATE, RELEASE_YEAR
-from consts.path_consts import MERGED_DATA_PATH, CORRELATIONS_DATA_PATH
+from consts.path_consts import CORRELATIONS_DATA_PATH
+from utils.data_utils import read_merged_data
 from utils.regex_utils import extract_year
 
 
@@ -24,10 +25,8 @@ class AudioFeaturesCorrelationsAnalyzer(IAnalyzer):
 
     @staticmethod
     def _get_clean_data() -> DataFrame:
-        merged_data = pd.read_csv(MERGED_DATA_PATH)
-        merged_data.dropna(subset=AUDIO_FEATURES, inplace=True)
-
-        return merged_data
+        merged_data = read_merged_data()
+        return merged_data.dropna(subset=AUDIO_FEATURES)
 
     def _build_features(self, data: DataFrame) -> DataFrame:
         data[RELEASE_YEAR] = [extract_year(date) for date in data[RELEASE_DATE]]

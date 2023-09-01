@@ -1,13 +1,11 @@
 from typing import Tuple, Generator, Optional, List
 
-import pandas as pd
 from tqdm import tqdm
 
 from consts.data_consts import NAME, ID, URI
-from consts.path_consts import MERGED_DATA_PATH, \
-    TRACK_NAMES_EMBEDDINGS_PATH
+from consts.path_consts import TRACK_NAMES_EMBEDDINGS_PATH
 from data_collection.openai.embeddings.base_embeddings_collector import BaseEmbeddingsCollector
-from utils.data_utils import extract_column_existing_values
+from utils.data_utils import extract_column_existing_values, read_merged_data
 
 
 class TrackNamesEmbeddingsCollector(BaseEmbeddingsCollector):
@@ -25,7 +23,7 @@ class TrackNamesEmbeddingsCollector(BaseEmbeddingsCollector):
 
     @staticmethod
     def _get_track_names_for_unique_ids() -> List[Tuple[str, str, str]]:
-        data = pd.read_csv(MERGED_DATA_PATH)
+        data = read_merged_data()
         data.drop_duplicates(subset=[ID], inplace=True)
 
         return list(data[[ID, NAME, URI]].itertuples(index=False, name=None))

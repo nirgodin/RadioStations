@@ -11,11 +11,10 @@ from tqdm import tqdm
 from consts.api_consts import AIO_POOL_SIZE
 from consts.data_consts import SONG
 from consts.genius_consts import GENIUS_API_SEARCH_URL, RESPONSE, RESULT
-from consts.path_consts import MERGED_DATA_PATH, GENIUS_TRACKS_IDS_OUTPUT_PATH
+from consts.path_consts import GENIUS_TRACKS_IDS_OUTPUT_PATH
 from consts.shazam_consts import HITS
 from data_collection.genius.base_genius_collector import BaseGeniusCollector
-from utils.data_utils import extract_column_existing_values
-from utils.file_utils import append_to_csv
+from utils.data_utils import extract_column_existing_values, read_merged_data
 
 
 class GeniusSearchCollector(BaseGeniusCollector):
@@ -33,12 +32,11 @@ class GeniusSearchCollector(BaseGeniusCollector):
 
     @staticmethod
     def _load_data() -> DataFrame:
-        data = pd.read_csv(MERGED_DATA_PATH)
+        data = read_merged_data()
         data.dropna(subset=[SONG], inplace=True)
         data.drop_duplicates(subset=[SONG], inplace=True)
-        data.reset_index(drop=True, inplace=True)
 
-        return data
+        return data.reset_index(drop=True)
 
     async def _collect_single_chunk(self, chunk: List[str]) -> None:
         pool = AioPool(AIO_POOL_SIZE)
