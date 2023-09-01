@@ -55,3 +55,5 @@ ALBUM_ID = 'album_id'
 REMASTER = 'remaster'
 IS_REMASTERED = 'is_remastered'
 DIFFERENCE = 'difference'
+AGE = "age"
+IS_DEAD = "is_dead"
