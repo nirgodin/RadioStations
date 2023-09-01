@@ -1,4 +1,5 @@
-from consts.data_consts import MAIN_GENRE, POPULARITY, EXPLICIT, DURATION_MS, IS_ISRAELI, TRACK_NUMBER, RELEASE_DATE, ID
+from consts.data_consts import MAIN_GENRE, POPULARITY, EXPLICIT, DURATION_MS, IS_ISRAELI, TRACK_NUMBER, RELEASE_DATE, \
+    ID, TYPE, TRACK_HREF, ANALYSIS_URL, ERROR
 
 DANCEABILITY = 'danceability'
 ENERGY = 'energy'
@@ -58,3 +59,11 @@ CORRELATION_COLUMNS_SUBSET = AUDIO_FEATURES + [
 CORRELATION = 'correlation'
 X = 'x'
 Y = 'y'
+
+MERGED_DATA_DTYPES = {
+    KEY: str,
+    TYPE: str,
+    TRACK_HREF: str,
+    ANALYSIS_URL: str,
+    ERROR: str
+}

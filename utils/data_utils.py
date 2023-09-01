@@ -4,7 +4,8 @@ from typing import Union, List
 import pandas as pd
 from pandas import DataFrame
 
-from consts.data_consts import ARTIST_NAME, POPULARITY, MERGED_DATA_DTYPES
+from consts.audio_features_consts import MERGED_DATA_DTYPES
+from consts.data_consts import ARTIST_NAME, POPULARITY
 from consts.path_consts import MERGED_DATA_PATH
 
 

@@ -1,5 +1,3 @@
-from consts.audio_features_consts import KEY
-
 NAME = 'name'
 ARTIST_NAME = 'artist_name'
 ADDED_AT = 'added_at'
@@ -57,11 +55,3 @@ ALBUM_ID = 'album_id'
 REMASTER = 'remaster'
 IS_REMASTERED = 'is_remastered'
 DIFFERENCE = 'difference'
-
-MERGED_DATA_DTYPES = {
-    KEY: str,
-    TYPE: str,
-    TRACK_HREF: str,
-    ANALYSIS_URL: str,
-    ERROR: str
-}
