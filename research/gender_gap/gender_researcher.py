@@ -1,20 +1,15 @@
-import pandas as pd
-from pandas import DataFrame
 from psmpy import PsmPy
-from sklearn.impute import SimpleImputer
 
-from consts.aggregation_consts import MEDIAN
-from consts.data_consts import ARTIST_NAME, COUNT, PLAY_COUNT
+from consts.data_consts import ARTIST_NAME
 from consts.openai_consts import ARTIST_GENDER
-from consts.path_consts import MERGED_DATA_PATH
 from research.gender_gap.gender_data_pre_processor import GenderDataPreProcessor
-from utils.analsis_utils import get_artists_play_count
-import statsmodels.api as sm
+from research.gender_gap.gender_researcher_linear_model import GenderResearcherLinearModel
 
 
 class GenderResearcher:
     def __init__(self):
         self.data = GenderDataPreProcessor().pre_process()
+        self.linear = GenderResearcherLinearModel(self.data)
 
     def propensity_score_matching(self) -> PsmPy:
         psm = PsmPy(self.data, treatment=ARTIST_GENDER, indx=ARTIST_NAME, exclude=[])
@@ -23,14 +18,8 @@ class GenderResearcher:
 
         return psm
 
-    def linear_regression(self):
-        x_columns = [col for col in self.data.columns if col not in [ARTIST_NAME, PLAY_COUNT]]
-        y = self.data[PLAY_COUNT]
-        x = sm.add_constant(self.data[x_columns])
-        model = sm.OLS(y, x)
-
-        return model.fit()
-
 
 if __name__ == '__main__':
-    GenderResearcher().propensity_score_matching()
+    researcher = GenderResearcher()
+    comparison = researcher.linear.compare_coefficients()
+    researcher.linear.plot(comparison)

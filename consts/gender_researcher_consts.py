@@ -1,0 +1,75 @@
+from consts.aggregation_consts import MEAN, MEDIAN, mode, FIRST
+from consts.audio_features_consts import ACOUSTICNESS, DANCEABILITY, ENERGY, INSTRUMENTALNESS, LIVENESS, LOUDNESS, MODE, \
+    SPEECHINESS, TEMPO, VALENCE
+from consts.data_consts import EXPLICIT, DURATION_MS, ARTIST_POPULARITY, ARTIST_FOLLOWERS, N_GENRES, POPULARITY, \
+    FOLLOWERS, IS_ISRAELI, MAIN_GENRE, TIME_SIGNATURE, PLAY_COUNT
+from consts.language_consts import LANGUAGE
+from consts.openai_consts import ARTIST_GENDER
+from consts.spotify_albums_details_consts import YEARS_ACTIVE, SINGLES_COUNT, ALBUMS_COUNT, FIRST_ALBUM_RELEASE_YEAR, \
+    LAST_ALBUM_RELEASE_YEAR
+from data_collection.wikipedia.gender.genders import Genders
+
+AGGREGATION_MAPPING = {
+    EXPLICIT: MEAN,
+    DURATION_MS: MEDIAN,
+    ARTIST_POPULARITY: MEDIAN,
+    ARTIST_FOLLOWERS: MEDIAN,
+    N_GENRES: mode,
+    POPULARITY: MEDIAN,
+    YEARS_ACTIVE: FIRST,
+    SINGLES_COUNT: FIRST,
+    ALBUMS_COUNT: FIRST,
+    FIRST_ALBUM_RELEASE_YEAR: FIRST,
+    LAST_ALBUM_RELEASE_YEAR: FIRST,
+    ARTIST_GENDER: FIRST,
+    FOLLOWERS: MEDIAN,
+    IS_ISRAELI: FIRST,
+    LANGUAGE: mode,
+    MAIN_GENRE: mode,
+    ACOUSTICNESS: MEDIAN,
+    DANCEABILITY: MEDIAN,
+    ENERGY: MEDIAN,
+    INSTRUMENTALNESS: MEDIAN,
+    LIVENESS: MEDIAN,
+    LOUDNESS: MEDIAN,
+    MODE: MEDIAN,
+    SPEECHINESS: MEDIAN,
+    TEMPO: MEDIAN,
+    VALENCE: MEDIAN,
+    TIME_SIGNATURE: mode,
+
+}
+GENDERS_MAPPING = {
+    Genders.MALE.value: 1,
+    Genders.FEMALE.value: 0
+}
+MAIN_LANGUAGES = [
+    "Hebrew",
+    "English",
+    "French",
+    "Spanish",
+    "Arabic"
+]
+CATEGORICAL_COLUMNS = [
+    LANGUAGE,
+    MAIN_GENRE
+]
+
+DEPENDENT_VARIABLES = [
+    PLAY_COUNT,
+    POPULARITY,
+    FOLLOWERS,
+    ARTIST_POPULARITY,
+    ARTIST_FOLLOWERS,
+]
+
+COLINEAR_COLUMNS = [
+    "language_other",
+    "main_genre_other"
+]
+VARIABLE = "variable"
+COEFFICIENT = "coef"
+P_VALUE = 'P>|t|'
+CONST = "const"
+Y = "y"
+VALUE = "value"
