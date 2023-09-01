@@ -4,7 +4,7 @@ from sklearn.impute import SimpleImputer
 
 from consts.aggregation_consts import MEDIAN
 from consts.data_consts import ARTIST_NAME, PLAY_COUNT, COUNT, DURATION_MS
-from consts.gender_researcher_consts import AGGREGATION_MAPPING, GENDERS_MAPPING, MAIN_LANGUAGES, CATEGORICAL_COLUMNS, \
+from consts.gender_researcher_consts import AGGREGATION_MAPPING, MAIN_LANGUAGES, CATEGORICAL_COLUMNS, \
     COLINEAR_COLUMNS, SQUARED_DURATION_MS
 from consts.language_consts import LANGUAGE
 from consts.openai_consts import ARTIST_GENDER
@@ -29,14 +29,13 @@ class GenderDataPreProcessor:
     def _groupby_data(data: DataFrame) -> DataFrame:
         relevant_columns = list(AGGREGATION_MAPPING.keys()) + [ARTIST_NAME]
         relevant_data = data[relevant_columns]
-        relevant_data = relevant_data[relevant_data[ARTIST_GENDER].isin(GENDERS_MAPPING.keys())]
+        relevant_data.dropna(subset=[ARTIST_GENDER], inplace=True)
         groupbyed_data = relevant_data.groupby(ARTIST_NAME).agg(AGGREGATION_MAPPING)
 
         return groupbyed_data.reset_index(level=0)
 
     @staticmethod
     def _pre_process_data(groupbyed_data: DataFrame) -> DataFrame:
-        groupbyed_data[ARTIST_GENDER] = groupbyed_data[ARTIST_GENDER].map(GENDERS_MAPPING)
         non_artist_columns = [col for col in groupbyed_data.columns if col != ARTIST_NAME]
         non_artist_data = groupbyed_data[non_artist_columns]
         imputed_array = SimpleImputer(strategy=MEDIAN).fit_transform(non_artist_data)
