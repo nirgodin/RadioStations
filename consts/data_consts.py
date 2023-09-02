@@ -57,3 +57,4 @@ IS_REMASTERED = 'is_remastered'
 DIFFERENCE = 'difference'
 AGE = "age"
 IS_DEAD = "is_dead"
+DATE_ADDED = "date_added"

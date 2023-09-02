@@ -5,7 +5,8 @@ from aiohttp import ClientSession
 
 from consts.path_consts import SPOTIFY_WEEKLY_RUN_LATEST_EXECUTIONS
 from data_collection.spotify.weekly_run.spotify_collector_config import SpotifyCollectorConfig
-from utils.datetime_utils import now_israel_timezone, DATETIME_FORMAT
+from utils.datetime_utils import now_israel_timezone
+from consts.datetime_consts import DATETIME_FORMAT
 from utils.file_utils import read_json, to_json
 from utils.spotify_utils import build_spotify_headers
 from utils.vcs_utils import commit_and_push

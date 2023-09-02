@@ -8,6 +8,7 @@ from analysis.analyzers.gender_analyzer import GenderAnalyzer
 from analysis.analyzers.genre_analyzer import GenreAnalyzer
 from analysis.analyzers.kan_gimel_analyzer import KanGimelAnalyzer
 from analysis.analyzers.lyrics_language.shazam_lyrics_language_analyzer import ShazamLyricsLanguageAnalyzer
+from analysis.analyzers.shazam_analyzer import ShazamAnalyzer
 from consts.miscellaneous_consts import UTF_8_ENCODING
 from consts.path_consts import MERGED_DATA_PATH, RADIO_STATIONS_SNAPSHOTS_DIR
 from data_processing.data_merger import DataMerger
@@ -22,6 +23,7 @@ from data_processing.pre_processors.israeli_pre_processor import IsraeliPreProce
 from data_processing.pre_processors.language.language_pre_processor import LanguagePreProcessor
 from data_processing.pre_processors.pre_processor_interface import IPreProcessor
 from data_processing.pre_processors.remastered_pre_processor import RemasteredPreProcessor
+from data_processing.pre_processors.shazam_pre_processor import ShazamPreProcessor
 from data_processing.pre_processors.tracks_ids_pre_processor import TracksIDSPreProcessor
 from data_processing.pre_processors.year_pre_processor import YearPreProcessor
 
@@ -70,6 +72,7 @@ class DataPreProcessor:
             AlbumsDetailsPreProcessor(),
             RemasteredPreProcessor(),
             AgePreProcessor(),
+            ShazamPreProcessor(),
             FormatterPreProcessor()
         ]
 
@@ -80,5 +83,6 @@ class DataPreProcessor:
             GenreAnalyzer(),
             ShazamLyricsLanguageAnalyzer(),
             GenderAnalyzer(),
-            AlbumsDetailsAnalyzer()
+            AlbumsDetailsAnalyzer(),
+            ShazamAnalyzer()
         ]

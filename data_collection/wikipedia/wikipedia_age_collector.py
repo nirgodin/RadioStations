@@ -16,7 +16,7 @@ from consts.path_consts import WIKIPEDIA_AGE_OUTPUT_PATH
 from tools.data_chunks_generator import DataChunksGenerator
 from utils.callable_utils import run_async
 from utils.data_utils import read_merged_data
-from utils.datetime_utils import DATETIME_FORMAT
+from consts.datetime_consts import DATETIME_FORMAT
 from utils.file_utils import append_to_csv
 from utils.regex_utils import search_between_two_characters
 

@@ -14,6 +14,7 @@ SHAZAM_TRACKS_ABOUT_PATH = rf'{SHAZAM_DIR_PATH}/tracks_about.csv'
 SHAZAM_TRACKS_LYRICS_PATH = rf'{SHAZAM_DIR_PATH}/tracks_lyrics.json'
 SHAZAM_TRACKS_LANGUAGES_PATH = rf'{SHAZAM_DIR_PATH}/tracks_languages.csv'
 SHAZAM_LYRICS_EMBEDDINGS_PATH = rf'{SHAZAM_DIR_PATH}/lyrics_embeddings.csv'
+SHAZAM_ISRAEL_MERGED_DATA = rf'{SHAZAM_DIR_PATH}/israel_merged_data.csv'
 
 MERGED_DATA_PATH = r'data/merged_data.csv'
 KAN_GIMEL_ANALYZER_OUTPUT_PATH = r'data/resources/kan_gimel_tracks_artists_and_albums.json'

@@ -47,7 +47,6 @@ class DataMerger:
     def _generate_single_file_data(self, dir_path: str, file_name: str) -> DataFrame:
         file_path = os.path.join(dir_path, file_name)
         file_data = pd.read_csv(file_path)
-        file_data.drop_duplicates(subset=self._drop_duplicates_on, inplace=True)
         file_data[SCRAPED_AT] = file_name.replace(CSV_FILE_SUFFIX, '')
 
         return file_data

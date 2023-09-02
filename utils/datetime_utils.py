@@ -2,8 +2,7 @@ from datetime import datetime, timedelta
 
 import pytz
 
-DATETIME_FORMAT = '%Y_%m_%d %H_%M_%S_%f'
-DAYS_IN_YEAR = 365.25
+from consts.datetime_consts import DATETIME_FORMAT, DAYS_IN_YEAR
 
 
 def get_current_datetime() -> str:

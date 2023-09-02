@@ -36,3 +36,5 @@ COMMON_TRACK_ID = 'commontrackid'
 LYRICS_PROVIDER_TRACK_ID = 'lyrics_provider_track_id'
 LYRICS_TEXT = 'lyrics_text'
 LYRICS_FOOTER = 'footer'
+SHAZAM_RANK = "shazam_rank"
+IS_IN_SHAZAM_200 = "is_in_shazam_200"
