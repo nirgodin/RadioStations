@@ -5,6 +5,7 @@ from shazamio import Shazam
 from tqdm import tqdm
 
 from consts.data_consts import ID, NAME
+from consts.media_forest_consts import RANK
 from consts.path_consts import SHAZAM_CHARTS_METADATA_PATH, SHAZAM_CITIES_PATH_FORMAT
 from consts.shazam_consts import ISRAEL_COUNTRY_CODE, COUNTRIES, CITIES
 from data_collection.shazam.shazam_utils import extract_tracks_data, to_csv
@@ -58,6 +59,7 @@ class ShazamCitiesFetcher:
 
         for city_name, tracks_data in cities_top_tracks.items():
             city_data = extract_tracks_data(tracks_data=tracks_data, location=city_name)
+            city_data[RANK] = city_data.index + 1
             cities_data.append(city_data)
 
         return pd.concat(cities_data).reset_index(drop=True)
