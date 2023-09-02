@@ -9,7 +9,7 @@ from consts.gender_researcher_consts import AGGREGATION_MAPPING, MAIN_LANGUAGES,
 from consts.language_consts import LANGUAGE
 from consts.openai_consts import ARTIST_GENDER
 from data_processing.pre_processors.genre.main_genre_mapper import OTHER
-from utils.analsis_utils import get_artists_play_count
+from utils.analysis_utils import get_artists_play_count
 from utils.data_utils import read_merged_data
 
 

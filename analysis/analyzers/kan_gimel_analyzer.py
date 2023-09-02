@@ -8,7 +8,7 @@ from analysis.analyzer_interface import IAnalyzer
 from consts.data_consts import NAME, ARTIST_NAME, MAIN_ALBUM, STATION, COUNT, TRACKS, ARTISTS, ALBUMS
 from consts.path_consts import KAN_GIMEL_ANALYZER_OUTPUT_PATH, MERGED_DATA_PATH
 from consts.playlists_consts import KAN_GIMEL
-from utils.analsis_utils import get_artists_play_count
+from utils.analysis_utils import get_artists_play_count
 
 COUNT_THRESHOLD = 8
 EXCLUDED_ARTISTS = [

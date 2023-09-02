@@ -3,7 +3,7 @@ from pandas import DataFrame
 from analysis.analyzer_interface import IAnalyzer
 from consts.data_consts import BROADCASTING_YEAR, ARTIST_NAME, COUNT, DIFFERENCE
 from consts.path_consts import YEAR_PLAY_COUNT_DIFFERENCE_PATH
-from utils.analsis_utils import get_artists_play_count
+from utils.analysis_utils import get_artists_play_count
 from utils.data_utils import read_merged_data
 from utils.file_utils import to_csv
 
