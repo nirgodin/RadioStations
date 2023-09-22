@@ -1,6 +1,6 @@
-from consts.html_consts import DIV, HEADER_3, HEADER_4, PARAGRAPH
-from data_collection.mako_hit_list.web_element import WebElement
 from consts.data_consts import NAME, ARTIST_NAME
+from tools.website_crawling.html_element import HTMLElement
+from tools.website_crawling.web_element import WebElement
 
 MAKO_HIT_LIST_URL_FORMAT = 'https://hitlist.mako.co.il/{}'
 CURRENT_RANK = 'current_rank'
@@ -19,37 +19,51 @@ MAKO_HIT_LIST_ROUTES = {
 MAKO_HIT_LIST_WEB_ELEMENTS = [
     WebElement(
         name=CURRENT_RANK,
-        element_type=DIV,
-        class_name='number--y7e0a'
+        type=HTMLElement.DIV,
+        class_='number--y7e0a',
+        multiple=True,
+        enumerate=False
     ),
     WebElement(
         name=NAME,
-        element_type=HEADER_3,
-        class_name='title--cUGHa'
+        type=HTMLElement.H3,
+        class_='title--cUGHa',
+        multiple=True,
+        enumerate=False
     ),
     WebElement(
         name=ARTIST_NAME,
-        element_type=HEADER_4,
-        class_name='artist--W6fVp'
+        type=HTMLElement.H4,
+        class_='artist--W6fVp',
+        multiple=True,
+        enumerate=False
     ),
     WebElement(
         name=PREVIOUS_WEEK_RANK,
-        element_type=DIV,
-        class_name='prev-week--P8CJ7',
+        type=HTMLElement.DIV,
+        class_='prev-week--P8CJ7',
+        multiple=True,
+        enumerate=False,
         child_element=WebElement(
             name=PREVIOUS_WEEK_RANK,
-            element_type=PARAGRAPH,
-            class_name='position-stats-value--Yg5e2'
+            type=HTMLElement.P,
+            class_='position-stats-value--Yg5e2',
+            multiple=True,
+            enumerate=False
         )
     ),
     WebElement(
         name=ALL_TIME_RECORD_RANK,
-        element_type=DIV,
-        class_name='all-time-record--rM8ja',
+        type=HTMLElement.DIV,
+        class_='all-time-record--rM8ja',
+        multiple=True,
+        enumerate=False,
         child_element=WebElement(
             name=ALL_TIME_RECORD_RANK,
-            element_type=PARAGRAPH,
-            class_name='position-stats-value--Yg5e2'
+            type=HTMLElement.P,
+            class_='position-stats-value--Yg5e2',
+            multiple=True,
+            enumerate=False
         )
     )
 ]
