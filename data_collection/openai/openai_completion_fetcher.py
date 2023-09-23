@@ -19,6 +19,7 @@ from utils.file_utils import append_to_csv
 class OpenAIGenderCompletionFetcher:
     def __init__(self,
                  chunk_size: int = 50,
+                 max_chunks_numer: int = 5,
                  sleep_between_completions: float = 4,
                  n_retries: int = 3,
                  model: str = OPENAI_MODEL):
@@ -26,7 +27,7 @@ class OpenAIGenderCompletionFetcher:
         self._sleep_between_completions = sleep_between_completions
         self._n_retries = n_retries
         self._model = model
-        self._data_chunks_generator = DataChunksGenerator(chunk_size)
+        self._data_chunks_generator = DataChunksGenerator(chunk_size, max_chunks_numer)
 
     def fetch_artists_genders(self) -> None:
         chunks = self._data_chunks_generator.generate_data_chunks(

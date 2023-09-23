@@ -25,22 +25,14 @@ class GeniusLyricsCollector(BaseGeniusCollector):
         super().__init__(chunk_size, max_chunks_number, session)
         self._session = session
         self._lyrics_class_regex = re.compile("^lyrics$|Lyrics__Root")
-        self._chunks_generator = DataChunksGenerator()
+        self._chunks_generator = DataChunksGenerator(chunk_size, max_chunks_number)
 
     async def collect(self) -> None:
-        chunks = self._chunks_generator.generate_data_chunks(
+        await self._chunks_generator.execute_by_chunk(
             lst=list(self._genius_ids_to_lyrics_paths.keys()),
-            filtering_list=list(self._existing_songs_lyrics.keys())
+            filtering_list=list(self._existing_songs_lyrics.keys()),
+            func=self._collect_single_chunk
         )
-
-        await self._collect_multiple_chunks(chunks)
-
-    async def _collect_multiple_chunks(self, chunks: Generator[list, None, None]) -> None:
-        for chunk_number, chunk in enumerate(chunks):
-            if chunk_number + 1 < self._max_chunks_number:
-                await self._collect_single_chunk(chunk)
-            else:
-                break
 
     async def _collect_single_chunk(self, chunk: List[str]) -> None:
         pool = AioPool(AIO_POOL_SIZE)

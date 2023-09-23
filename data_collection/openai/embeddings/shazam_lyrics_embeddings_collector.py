@@ -17,10 +17,11 @@ class ShazamLyricsEmbeddingsCollector(BaseEmbeddingsCollector):
         super().__init__(output_path, chunk_size, chunks_limit)
         self._shazam_tracks_lyrics: Dict[str, List[str]] = read_json(SHAZAM_TRACKS_LYRICS_PATH)
 
-    def _generate_chunks(self) -> Generator[list, None, None]:
-        return self._data_chunks_generator.generate_data_chunks(
+    async def collect(self) -> None:
+        await self._data_chunks_generator.execute_by_chunk(
             lst=list(self._shazam_tracks_lyrics.keys()),
-            filtering_list=self._get_existing_tracks_ids()
+            filtering_list=self._get_existing_tracks_ids(),
+            func=self._extract_single_chunk_embeddings
         )
 
     @staticmethod

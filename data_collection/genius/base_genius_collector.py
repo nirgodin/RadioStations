@@ -13,18 +13,11 @@ class BaseGeniusCollector(ABC):
         self._chunk_size = chunk_size
         self._max_chunks_number = max_chunks_number
         self._session = session
-        self._chunks_generator = DataChunksGenerator(chunk_size)
+        self._chunks_generator = DataChunksGenerator(chunk_size, max_chunks_number)
 
     @abstractmethod
     async def collect(self) -> None:
         raise NotImplementedError
-
-    async def _collect_multiple_chunks(self, chunks: Generator[list, None, None]) -> None:
-        for chunk_number, chunk in enumerate(chunks):
-            if chunk_number + 1 < self._max_chunks_number:
-                await self._collect_single_chunk(chunk)
-            else:
-                break
 
     @abstractmethod
     async def _collect_single_chunk(self, chunk: List[str]) -> None:

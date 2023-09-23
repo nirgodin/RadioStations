@@ -25,21 +25,15 @@ from utils.general_utils import chain_dicts, is_in_hebrew
 
 
 class TranslationsCollector:
-    def __init__(self, chunk_size: int = 50):
-        self._data_chunks_generator = DataChunksGenerator(chunk_size)
+    def __init__(self, chunk_size: int = 50, max_chunks_number: int = 5):
+        self._data_chunks_generator = DataChunksGenerator(chunk_size, max_chunks_number)
 
     async def collect(self):
-        chunks = self._data_chunks_generator.generate_data_chunks(
+        await self._data_chunks_generator.execute_by_chunk(
             lst=self._load_artists_names(),
-            filtering_list=self._get_existing_artists()
+            filtering_list=self._get_existing_artists(),
+            func=self._collect_single_chunk
         )
-
-        for chunk in chunks:
-            translations = await self._collect_translations(chunk)
-            valid_translations = [translation for translation in translations if isinstance(translation, dict)]
-            data = self._to_dataframe(valid_translations)
-
-            append_to_csv(data=data, output_path=TRANSLATIONS_PATH)
 
     @staticmethod
     def _get_existing_artists() -> List[str]:
@@ -58,6 +52,13 @@ class TranslationsCollector:
         israeli_artists = israeli_data[ARTIST_NAME].unique().tolist()
 
         return israeli_artists
+
+    async def _collect_single_chunk(self, chunk: List[str]) -> None:
+        translations = await self._collect_translations(chunk)
+        valid_translations = [translation for translation in translations if isinstance(translation, dict)]
+        data = self._to_dataframe(valid_translations)
+
+        append_to_csv(data=data, output_path=TRANSLATIONS_PATH)
 
     async def _collect_translations(self, israeli_artists: List[str]) -> List[dict]:
         pool = AioPool(AIO_POOL_SIZE)

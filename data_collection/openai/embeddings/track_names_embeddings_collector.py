@@ -15,10 +15,11 @@ class TrackNamesEmbeddingsCollector(BaseEmbeddingsCollector):
                  output_path: str = TRACK_NAMES_EMBEDDINGS_PATH):
         super().__init__(output_path, chunk_size, chunks_limit)
 
-    def _generate_chunks(self) -> Generator[list, None, None]:
-        return self._data_chunks_generator.generate_data_chunks(
+    async def collect(self) -> None:
+        await self._data_chunks_generator.execute_by_chunk(
             lst=self._get_track_names_for_unique_ids(),
-            filtering_list=extract_column_existing_values(TRACK_NAMES_EMBEDDINGS_PATH, [ID, NAME, URI])
+            filtering_list=extract_column_existing_values(TRACK_NAMES_EMBEDDINGS_PATH, [ID, NAME, URI]),
+            func=self._extract_single_chunk_embeddings
         )
 
     @staticmethod

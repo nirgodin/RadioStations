@@ -22,19 +22,10 @@ class BaseEmbeddingsCollector(ABC):
         self._chunk_size = chunk_size
         self._chunks_limit = chunks_limit
         self._openai_client = openai_client
-        self._data_chunks_generator = DataChunksGenerator(self._chunk_size)
-
-    async def collect(self) -> None:
-        chunks = self._generate_chunks()
-
-        for i, chunk in enumerate(chunks):
-            if i == self._chunks_limit:
-                break
-            else:
-                await self._extract_single_chunk_embeddings(chunk)
+        self._data_chunks_generator = DataChunksGenerator(self._chunk_size, self._chunks_limit)
 
     @abstractmethod
-    def _generate_chunks(self) -> Generator[list, None, None]:
+    async def collect(self) -> None:
         raise NotImplementedError
 
     async def _extract_single_chunk_embeddings(self, chunk: list) -> None:

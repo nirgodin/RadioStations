@@ -1,4 +1,3 @@
-import asyncio
 import os.path
 from functools import partial
 from typing import List, Dict, Tuple
@@ -20,13 +19,11 @@ from tools.google_drive.google_drive_upload_metadata import GoogleDriveUploadMet
 from utils.data_utils import extract_column_existing_values, read_merged_data
 from utils.drive_utils import upload_files_to_drive
 from utils.file_utils import append_to_csv
-from utils.spotify_utils import build_spotify_headers
 
 
 class ArtistsIDsCollector(BaseSpotifyCollector):
     def __init__(self, session: ClientSession, chunk_size: int, max_chunks_number: int):
         super().__init__(session, chunk_size, max_chunks_number)
-        self._chunks_generator = DataChunksGenerator(chunk_size)
 
     async def collect(self, **kwargs):
         data = read_merged_data()
@@ -34,9 +31,8 @@ class ArtistsIDsCollector(BaseSpotifyCollector):
         data.drop_duplicates(subset=[ARTIST_NAME], inplace=True)
         artists_and_track_ids = [(artist, track_id) for artist, track_id in zip(data[ARTIST_NAME], data[ID])]
         existing_artists_and_tracks_ids = extract_column_existing_values(ARTISTS_IDS_OUTPUT_PATH, [ARTIST_NAME, ID])
-        chunks = self._chunks_generator.generate_data_chunks(artists_and_track_ids, existing_artists_and_tracks_ids)
 
-        await self._collect_multiple_chunks(chunks)
+        await self._collect_multiple_chunks(artists_and_track_ids, existing_artists_and_tracks_ids)
 
     async def _collect_single_chunk(self, chunk: List[Tuple[str, str]]) -> None:
         records = await self._get_artists_ids(chunk)

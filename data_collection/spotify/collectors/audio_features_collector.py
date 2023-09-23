@@ -13,7 +13,6 @@ from consts.data_consts import NAME, ARTIST_NAME, TRACKS, ITEMS, URI, TRACK
 from consts.env_consts import SPOTIFY_AUDIO_FEATURES_DRIVE_ID
 from consts.path_consts import AUDIO_FEATURES_CHUNK_OUTPUT_PATH_FORMAT, AUDIO_FEATURES_DATA_PATH
 from data_collection.spotify.base_spotify_collector import BaseSpotifyCollector
-from tools.data_chunks_generator import DataChunksGenerator
 from tools.google_drive.google_drive_upload_metadata import GoogleDriveUploadMetadata
 from utils.data_utils import extract_column_existing_values, read_merged_data
 from utils.datetime_utils import get_current_datetime
@@ -26,19 +25,14 @@ class AudioFeaturesCollector(BaseSpotifyCollector):
     def __init__(self, session: ClientSession, chunk_size: int, max_chunks_number: int):
         super().__init__(session, chunk_size, max_chunks_number)
         self._sp = get_spotipy()
-        self._chunks_generator = DataChunksGenerator(chunk_size)
 
     async def collect(self, **kwargs) -> None:
         data = read_merged_data()
         data.drop_duplicates(subset=[NAME, ARTIST_NAME], inplace=True)
         artists_and_tracks = [(artist, track) for artist, track in zip(data[ARTIST_NAME], data[NAME])]
         existing_artists_and_tracks = extract_column_existing_values(AUDIO_FEATURES_DATA_PATH, [ARTIST_NAME, NAME])
-        chunks = self._chunks_generator.generate_data_chunks(
-            lst=artists_and_tracks,
-            filtering_list=existing_artists_and_tracks
-        )
 
-        await self._collect_multiple_chunks(chunks)
+        await self._collect_multiple_chunks(artists_and_tracks, existing_artists_and_tracks)
 
     @staticmethod
     def _get_existing_tracks_and_artists() -> List[Tuple[str, str]]:

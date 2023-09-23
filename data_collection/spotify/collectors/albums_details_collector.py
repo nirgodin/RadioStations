@@ -14,7 +14,6 @@ from consts.data_consts import ARTIST_ID, ITEMS, NEXT
 from consts.env_consts import SPOTIFY_ALBUMS_DETAILS_DRIVE_ID
 from consts.path_consts import ARTISTS_IDS_OUTPUT_PATH, ALBUMS_DETAILS_OUTPUT_PATH
 from data_collection.spotify.base_spotify_collector import BaseSpotifyCollector
-from tools.data_chunks_generator import DataChunksGenerator
 from tools.google_drive.google_drive_upload_metadata import GoogleDriveUploadMetadata
 from utils.data_utils import extract_column_existing_values
 from utils.drive_utils import upload_files_to_drive
@@ -25,16 +24,14 @@ from utils.spotify_utils import build_spotify_headers
 class AlbumsDetailsCollector(BaseSpotifyCollector):
     def __init__(self, session: ClientSession, chunk_size: int, max_chunks_number: int):
         super().__init__(session, chunk_size, max_chunks_number)
-        self._chunks_generator = DataChunksGenerator(chunk_size)
 
     async def collect(self, **kwargs):
         data = pd.read_csv(ARTISTS_IDS_OUTPUT_PATH)
         data.dropna(subset=[ARTIST_ID], inplace=True)
         artists_ids = data[ARTIST_ID].unique().tolist()
         existing_artists_ids = extract_column_existing_values(path=ALBUMS_DETAILS_OUTPUT_PATH, column_name=ARTIST_ID)
-        chunks = self._chunks_generator.generate_data_chunks(artists_ids, existing_artists_ids)
 
-        await self._collect_multiple_chunks(chunks)
+        await self._collect_multiple_chunks(artists_ids, existing_artists_ids)
 
     async def _collect_single_chunk(self, chunk: List[str]) -> None:
         artists_dfs = await self._get_artists_albums(chunk)

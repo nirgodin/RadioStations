@@ -1,3 +1,4 @@
+import math
 import os
 from typing import Dict, Union, List, Optional
 
@@ -16,12 +17,12 @@ from utils.file_utils import read_json, append_to_csv
 
 
 class MusixmatchLyricsLanguageAnalyzer(IAnalyzer):
-    def __init__(self, chunk_size: int = 50, chunks_limit: Optional[int] = None):
+    def __init__(self, chunk_size: int = 50, chunks_limit: int = math.inf):
         self._chunk_size = chunk_size
         self._chunks_limit = chunks_limit
         self._tracks_lyrics = read_json(MUSIXMATCH_TRACKS_LYRICS_PATH)
         self._language_detector = LanguageDetector()
-        self._data_chunks_generator = DataChunksGenerator(self._chunk_size)
+        self._data_chunks_generator = DataChunksGenerator(self._chunk_size, self._chunks_limit)
 
     def analyze(self) -> None:
         chunks = self._data_chunks_generator.generate_data_chunks(

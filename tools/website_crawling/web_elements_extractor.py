@@ -7,11 +7,14 @@ from tools.website_crawling.web_element import WebElement
 
 
 class WebElementsExtractor:
-    def extract(self, soup: BeautifulSoup, web_element: WebElement) -> List[Tag]:
+    def extract(self, soup: BeautifulSoup, web_element: WebElement) -> List[Optional[Dict[str, str]]]:
         if web_element.multiple:
             return self._extract_multiple_details(soup, web_element)
 
-    def _extract_multiple_details(self, soup: BeautifulSoup, web_element: WebElement) -> List[Tag]:
+        tag = soup.find(web_element.type.value, class_=web_element.class_)
+        return [self._extract_single_detail(tag, web_element)]
+
+    def _extract_multiple_details(self, soup: BeautifulSoup, web_element: WebElement) -> List[Optional[Dict[str, str]]]:
         tags = soup.find_all(web_element.type.value, class_=web_element.class_)
         if web_element.child_element is not None:
             tags = [self._extract_child_elements_tags(tag, web_element.child_element) for tag in tags]

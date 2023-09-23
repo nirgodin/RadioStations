@@ -35,13 +35,11 @@ class WikipediaAgeCollector:
         self._data_chunks_generator = DataChunksGenerator()
 
     async def collect(self):
-        chunks = self._data_chunks_generator.generate_data_chunks(
+        await self._data_chunks_generator.execute_by_chunk(
             lst=self._get_contender_artists(),
-            filtering_list=self._get_existing_artists()
+            filtering_list=self._get_existing_artists(),
+            func=self._collect_single_chunk
         )
-
-        for chunk in chunks:
-            await self._collect_single_chunk(chunk)
 
     @staticmethod
     def _get_contender_artists() -> List[str]:
