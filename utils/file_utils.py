@@ -6,6 +6,7 @@ from typing import Union, List
 from pandas import DataFrame
 
 from consts.miscellaneous_consts import JSON_ENCODING, UTF_8_ENCODING
+from tools.csv_appender import CSVAppender
 
 
 def to_json(d: Union[dict, list], path: str) -> None:
@@ -29,7 +30,7 @@ def to_csv(data: DataFrame, output_path: str, header: bool = True, mode: str = '
 
 def append_to_csv(data: DataFrame, output_path: str) -> None:
     if os.path.exists(output_path):
-        to_csv(data=data, output_path=output_path, header=False, mode='a')
+        CSVAppender.append(data=data, output_path=output_path)
     else:
         to_csv(data=data, output_path=output_path)
 
