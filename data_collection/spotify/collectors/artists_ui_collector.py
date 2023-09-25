@@ -24,7 +24,7 @@ from utils.selenium_utils import open_window, driver_session, switch_window
 
 
 class SpotifyArtistUICollector:
-    def __init__(self, sleep_time: int = 5, chunk_size: int = 10, max_chunks_number: int = 70):
+    def __init__(self, sleep_time: int = 5, chunk_size: int = 10, max_chunks_number: int = 20):
         self._sleep_time = sleep_time
         self._max_chunks_number = max_chunks_number
         self._date = get_current_datetime()
