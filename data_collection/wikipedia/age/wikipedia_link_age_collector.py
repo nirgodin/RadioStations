@@ -1,14 +1,12 @@
-import asyncio
-from typing import List, Dict
+from typing import List
 from urllib.parse import unquote
 
 import pandas as pd
 
-from consts.data_consts import ARTIST_NAME, ARTIST_POPULARITY, ARTIST_ID
+from consts.data_consts import ARTIST_NAME, ARTIST_ID
 from consts.path_consts import ARTISTS_UI_DETAILS_OUTPUT_PATH, ARTISTS_IDS_OUTPUT_PATH, WIKIPEDIA_AGE_OUTPUT_PATH
 from consts.wikipedia_consts import WIKIPEDIA
 from data_collection.wikipedia.age.base_wikipedia_age_collector import BaseWikipediaAgeCollector
-from utils.data_utils import read_merged_data
 from utils.regex_utils import search_between_two_characters
 
 
@@ -51,9 +49,3 @@ class WikipediaAgeLinkCollector(BaseWikipediaAgeCollector):
             text=artist_detail
         )
         return matches[0]
-
-
-if __name__ == '__main__':
-    collector = WikipediaAgeLinkCollector()
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(collector.collect())

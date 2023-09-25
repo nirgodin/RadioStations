@@ -1,4 +1,3 @@
-import asyncio
 import copy
 import re
 from abc import abstractmethod, ABC
@@ -9,7 +8,6 @@ from typing import List, Dict, Tuple
 import pandas as pd
 from asyncio_pool import AioPool
 from tqdm import tqdm
-from wikipediaapi import Wikipedia
 
 from component_factory import ComponentFactory
 from consts.api_consts import AIO_POOL_SIZE

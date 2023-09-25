@@ -142,6 +142,8 @@ vcs.xml
 /run_mako_hit_list.bat
 /genius_scraping.bat
 /embeddings_collection.bat
+/spotify_ui_scraping.bat
+/wikipedia_age_scraping.bat
 
 # Data
 /shazam_creds.json
