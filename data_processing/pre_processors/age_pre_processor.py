@@ -7,7 +7,7 @@ from pandas import DataFrame
 
 from consts.data_consts import AGE, IS_DEAD, ARTIST_NAME
 from consts.path_consts import WIKIPEDIA_AGE_OUTPUT_PATH
-from data_collection.wikipedia.wikipedia_age_collector import BIRTH_DATE, DEATH_DATE
+from consts.wikipedia_consts import BIRTH_DATE, DEATH_DATE
 from data_processing.pre_processors.pre_processor_interface import IPreProcessor
 from utils.datetime_utils import convert_timedelta_to_years
 from consts.datetime_consts import DATETIME_FORMAT

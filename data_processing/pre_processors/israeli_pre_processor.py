@@ -10,6 +10,7 @@ from consts.data_consts import IS_ISRAELI, ARTIST_NAME, NAME, MAIN_ALBUM, GENRES
 from consts.path_consts import KAN_GIMEL_ANALYZER_OUTPUT_PATH, SPOTIFY_ISRAELI_PLAYLISTS_OUTPUT_PATH
 from data_processing.pre_processors.pre_processor_interface import IPreProcessor
 from utils.general_utils import binary_search
+from utils.regex_utils import contains_any_hebrew_character
 
 ISRAELI = 'israeli'
 
@@ -74,7 +75,7 @@ class IsraeliPreProcessor(IPreProcessor):
     @staticmethod
     def _contains_any_hebrew_character(*track_metadata: str) -> bool:
         for datapoint in track_metadata:
-            if any("\u0590" <= char <= "\u05EA" for char in str(datapoint)):
+            if contains_any_hebrew_character(str(datapoint)):
                 return True
 
         return False
