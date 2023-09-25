@@ -16,6 +16,7 @@ class WikipediaAgeLinkCollector(BaseWikipediaAgeCollector):
         super().__init__()
         self._artists_ui_details_data = pd.read_csv(ARTISTS_UI_DETAILS_OUTPUT_PATH)
         self._artists_wikipedia_to_ids_mapping = map_df_columns(self._artists_ui_details_data, WIKIPEDIA, ARTIST_ID)
+        self._artists_ids_to_wikipedia_mapping = map_df_columns(self._artists_ui_details_data, ARTIST_ID, WIKIPEDIA)
         self._artists_ids_data = pd.read_csv(ARTISTS_IDS_OUTPUT_PATH)
         self._artists_ids_to_names_mapping = map_df_columns(self._artists_ids_data, ARTIST_ID, ARTIST_NAME)
 
@@ -30,8 +31,15 @@ class WikipediaAgeLinkCollector(BaseWikipediaAgeCollector):
             how='left',
             on=ARTIST_NAME
         )
+        existing_wikipedia_pages = []
 
-        return merged_data[ARTIST_ID].tolist()
+        for artist_id in merged_data[ARTIST_ID].tolist():
+            mapped_wikipedia_page = self._artists_ids_to_wikipedia_mapping.get(artist_id)
+
+            if isinstance(mapped_wikipedia_page, str):
+                existing_wikipedia_pages.append(mapped_wikipedia_page)
+
+        return existing_wikipedia_pages
 
     def _get_artist_wikipedia_name(self, artist_detail: str) -> str:
         split_url = artist_detail.split('/')
