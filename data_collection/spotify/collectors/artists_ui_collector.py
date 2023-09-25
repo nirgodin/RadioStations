@@ -24,7 +24,7 @@ from utils.selenium_utils import open_window, driver_session, switch_window
 
 
 class SpotifyArtistUICollector:
-    def __init__(self, sleep_time: int = 5, chunk_size: int = 10, max_chunks_number: int = 20):
+    def __init__(self, chunk_size: int, max_chunks_number: int, sleep_time: int = 5):
         self._sleep_time = sleep_time
         self._max_chunks_number = max_chunks_number
         self._date = get_current_datetime()
@@ -132,9 +132,3 @@ class SpotifyArtistUICollector:
                 enumerate=True
             )
         ]
-
-
-if __name__ == '__main__':
-    collector = SpotifyArtistUICollector()
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(collector.collect())
