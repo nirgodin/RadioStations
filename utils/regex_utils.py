@@ -17,3 +17,7 @@ def extract_year(date: str) -> int:
         return int(match.group(1))
 
     return np.nan
+
+
+def contains_any_hebrew_character(s: str) -> bool:
+    return any("\u0590" <= char <= "\u05EA" for char in s)
