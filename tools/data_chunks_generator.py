@@ -11,8 +11,12 @@ class DataChunksGenerator:
         self._max_chunks_number = max_chunks_number
 
     async def execute_by_chunk(self, lst: list, filtering_list: Optional[list], func: Union[F, AF]) -> None:
-        for chunk in self.generate_data_chunks(lst, filtering_list):
-            if iscoroutinefunction:
+        chunks = self.generate_data_chunks(lst, filtering_list)
+
+        for i, chunk in enumerate(chunks):
+            if i + 1 == self._max_chunks_number:
+                break
+            elif iscoroutinefunction:
                 await func(chunk)
             else:
                 func(chunk)
