@@ -23,12 +23,11 @@ class GeniusSongsCollector(BaseGeniusCollector):
 
     async def collect(self) -> None:
         data = self._load_data()
-        chunks = self._chunks_generator.generate_data_chunks(
+        await self._chunks_generator.execute_by_chunk(
             lst=data[ID].unique().tolist(),
-            filtering_list=list(self._existing_songs.keys())
+            filtering_list=list(self._existing_songs.keys()),
+            func=self._collect_single_chunk
         )
-
-        await self._collect_multiple_chunks(chunks)
 
     @staticmethod
     def _load_data() -> DataFrame:
