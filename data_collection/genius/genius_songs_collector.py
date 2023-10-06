@@ -44,7 +44,7 @@ class GeniusSongsCollector(BaseGeniusCollector):
             func = partial(self._collect_single_song, progress_bar)
             results = await pool.map(func, chunk)
 
-        valid_results = [result for result in results if result is not None]
+        valid_results = [result for result in results if isinstance(result, dict)]
         data = chain_dicts(valid_results)
 
         append_dict_to_json(
@@ -53,7 +53,7 @@ class GeniusSongsCollector(BaseGeniusCollector):
             path=GENIUS_SONGS_OUTPUT_PATH
         )
 
-    async def _collect_single_song(self, progress_bar: tqdm, song_id: str) -> Optional[DataFrame]:
+    async def _collect_single_song(self, progress_bar: tqdm, song_id: str) -> Optional[Dict[str, dict]]:
         progress_bar.update(1)
         url = GENIUS_API_SONG_URL_FORMAT.format(song_id)
 
