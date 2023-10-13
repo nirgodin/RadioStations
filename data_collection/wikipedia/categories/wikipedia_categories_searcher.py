@@ -9,7 +9,7 @@ from consts.microsoft_translator_consts import TRANSLATION
 from consts.openai_consts import ARTIST_GENDER
 from consts.path_consts import WIKIPEDIA_ISRAELI_ARTISTS_GENDER_PATH, TRANSLATIONS_PATH, \
     WIKIPEDIA_RELEVANT_CATEGORIES_PATH, WIKIPEDIA_CATEGORIES_PATH
-from data_collection.wikipedia.gender.genders import Genders
+from models.gender import Gender
 from data_collection.wikipedia.wikipedia_manager import WikipediaManager
 from utils.file_utils import load_txt_file_lines, to_json
 
@@ -33,7 +33,7 @@ class WikipediaCategoriesSearcher:
     @staticmethod
     def _get_relevant_artists() -> List[str]:
         data = pd.read_csv(WIKIPEDIA_ISRAELI_ARTISTS_GENDER_PATH)
-        valid_values = [elem.value for elem in Genders if elem != Genders.UNKNOWN]
+        valid_values = [elem.value for elem in Gender if elem != Gender.UNKNOWN]
         relevant_data = data[data[ARTIST_GENDER].isin(valid_values)]
 
         return relevant_data[ARTIST_NAME].unique().tolist()

@@ -6,12 +6,12 @@ from psmpy import PsmPy
 
 from consts.data_consts import ARTIST_NAME
 from consts.openai_consts import ARTIST_GENDER
-from data_collection.wikipedia.gender.genders import Genders
+from models.gender import Gender
 from research.gender_gap.gender_researcher_model_interface import IGenderResearcherModel
 
 ARTIST_GENDER_COLUMNS = [
-    f"{ARTIST_GENDER}_{Genders.BAND.value}",
-    f"{ARTIST_GENDER}_{Genders.MALE.value}",
+    f"{ARTIST_GENDER}_{Gender.BAND.value}",
+    f"{ARTIST_GENDER}_{Gender.MALE.value}",
 ]
 
 

@@ -7,7 +7,7 @@ from consts.language_consts import LANGUAGE
 from consts.openai_consts import ARTIST_GENDER
 from consts.spotify_albums_details_consts import YEARS_ACTIVE, SINGLES_COUNT, ALBUMS_COUNT, FIRST_ALBUM_RELEASE_YEAR, \
     LAST_ALBUM_RELEASE_YEAR
-from data_collection.wikipedia.gender.genders import Genders
+from models.gender import Gender
 
 AGGREGATION_MAPPING = {
     EXPLICIT: MEAN,
@@ -39,8 +39,8 @@ AGGREGATION_MAPPING = {
     TIME_SIGNATURE: mode,
 }
 GENDERS_MAPPING = {
-    Genders.MALE.value: 1,
-    Genders.FEMALE.value: 0
+    Gender.MALE.value: 1,
+    Gender.FEMALE.value: 0
 }
 MAIN_LANGUAGES = [
     "Hebrew",

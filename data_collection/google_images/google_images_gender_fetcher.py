@@ -14,7 +14,7 @@ from consts.data_consts import ARTIST_NAME, NAME, CONFIDENCE, PLAY_COUNT, PREDIC
 from consts.openai_consts import ARTIST_GENDER
 from consts.path_consts import GOOGLE_IMAGES_GENDER_PATH, MAPPED_GENDERS_OUTPUT_PATH
 from data_collection.google_images.google_images_downloader import GoogleImagesDownloader
-from data_collection.wikipedia.gender.genders import Genders
+from models.gender import Gender
 from tools.data_chunks_generator import DataChunksGenerator
 from tools.image_detection.gender_image_detector import GenderImageDetector
 from utils.data_utils import read_merged_data
@@ -84,7 +84,7 @@ class GoogleImagesGenderFetcher:
             artist_gender, confidence = predictions[0].values()
 
         else:
-            artist_gender = Genders.BAND.value
+            artist_gender = Gender.BAND.value
             confidence = mean([prediction[CONFIDENCE] for prediction in predictions])
 
         return {

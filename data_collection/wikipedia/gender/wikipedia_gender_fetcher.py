@@ -8,7 +8,7 @@ from tqdm import tqdm
 from consts.data_consts import ARTIST_NAME
 from consts.openai_consts import ARTIST_GENDER
 from consts.path_consts import HEBREW_WORDS_TXT_FILE_PATH_FORMAT
-from data_collection.wikipedia.gender.genders import Genders
+from models.gender import Gender
 from data_collection.wikipedia.wikipedia_manager import WikipediaManager
 from utils.file_utils import load_txt_file_lines
 
@@ -17,9 +17,9 @@ class WikipediaGenderFetcher:
     def __init__(self):
         self._wikipedia_manager = WikipediaManager()
         self._gender_words_mapping = {
-            Genders.FEMALE: self._get_words(Genders.FEMALE),
-            Genders.MALE: self._get_words(Genders.MALE),
-            Genders.BAND: self._get_words(Genders.BAND)
+            Gender.FEMALE: self._get_words(Gender.FEMALE),
+            Gender.MALE: self._get_words(Gender.MALE),
+            Gender.BAND: self._get_words(Gender.BAND)
         }
         self._numeric_spaces_punctuation_regex = re.compile(r'[^\w\s]')
 
@@ -56,7 +56,7 @@ class WikipediaGenderFetcher:
             if token_gender is not None:
                 return token_gender
 
-        return Genders.UNKNOWN.value
+        return Gender.UNKNOWN.value
 
     def _extract_single_token_associated_gender(self, raw_token: str) -> Optional[str]:
         stripped_token = raw_token.strip()
@@ -69,6 +69,6 @@ class WikipediaGenderFetcher:
                 return gender.value
 
     @staticmethod
-    def _get_words(gender: Genders) -> List[str]:
+    def _get_words(gender: Gender) -> List[str]:
         path = HEBREW_WORDS_TXT_FILE_PATH_FORMAT.format(gender.value)
         return load_txt_file_lines(path)

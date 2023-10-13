@@ -9,7 +9,7 @@ from statsmodels.iolib.summary import Summary
 from consts.data_consts import ARTIST_NAME, PLAY_COUNT
 from consts.gender_researcher_consts import DEPENDENT_VARIABLES, VARIABLE, CONST, Y, VALUE
 from consts.openai_consts import ARTIST_GENDER
-from data_collection.wikipedia.gender.genders import Genders
+from models.gender import Gender
 from research.gender_gap.gender_researcher_model_interface import IGenderResearcherModel
 
 
@@ -62,4 +62,4 @@ class GenderResearcherLinearModel(IGenderResearcherModel):
         return df.reset_index(drop=True)
 
     def _pre_process_data(self, data: DataFrame) -> DataFrame:
-        return data.drop(f"{ARTIST_GENDER}_{Genders.FEMALE.value}", axis=1)
+        return data.drop(f"{ARTIST_GENDER}_{Gender.FEMALE.value}", axis=1)

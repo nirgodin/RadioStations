@@ -11,7 +11,7 @@ from consts.openai_consts import ARTIST_GENDER
 from consts.path_consts import WIKIPEDIA_ISRAELI_ARTISTS_GENDER_PATH, OPENAI_GENDERS_PATH, \
     WIKIPEDIA_OPENAI_UNKNOWN_GENDERS_PATH, MAPPED_GENDERS_OUTPUT_PATH, GOOGLE_IMAGES_GENDER_PATH, \
     MANUAL_GENDERS_TAGGING_PATH, SPOTIFY_ISRAEL_GLOBAL_EQUAL_PLAYLISTS_OUTPUT_PATH
-from data_collection.wikipedia.gender.genders import Genders
+from models.gender import Gender
 from utils.data_utils import map_df_columns, groupby_artists_by_desc_popularity
 from utils.file_utils import to_csv
 
@@ -78,7 +78,7 @@ class GenderAnalyzer(IAnalyzer):
     def _read_and_map_df_columns(path: str) -> Dict[str, str]:
         data = pd.read_csv(path).dropna()
         data[ARTIST_GENDER] = data[ARTIST_GENDER].str.lower()
-        known_data = data[~data[ARTIST_GENDER].str.contains(Genders.UNKNOWN.value)]
+        known_data = data[~data[ARTIST_GENDER].str.contains(Gender.UNKNOWN.value)]
 
         return map_df_columns(known_data, ARTIST_NAME, ARTIST_GENDER)
 
