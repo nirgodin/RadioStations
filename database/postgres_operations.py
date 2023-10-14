@@ -20,3 +20,15 @@ async def execute_query(engine: AsyncEngine, query: Union[Select, Update]) -> Re
     async with async_session() as session:
         async with session.begin():
             return await session.execute(query)
+
+
+async def create_all_tables(engine: AsyncEngine) -> None:
+    print("Starting to create all schema tables")
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+
+
+async def drop_all_tables(engine: AsyncEngine) -> None:
+    print("Starting to drop all schema tables")
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.drop_all)

@@ -58,3 +58,5 @@ DIFFERENCE = 'difference'
 AGE = "age"
 IS_DEAD = "is_dead"
 DATE_ADDED = "date_added"
+RELEASE_DATE_PRECISION = "release_date_precision"
+ALBUM_RELEASE_DATE = "album_release_date"

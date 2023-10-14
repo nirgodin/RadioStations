@@ -1,18 +1,11 @@
 import pandas as pd
 from pandas import DataFrame
 
-from consts.data_consts import ARTIST_NAME, ID, ARTIST_ID, ALBUM_GROUP, ALBUM_TYPE, NAME, MAIN_ALBUM, ALBUM_ID
+from consts.data_consts import ARTIST_NAME, ID, ARTIST_ID
 from consts.path_consts import ARTISTS_IDS_OUTPUT_PATH, ALBUMS_DETAILS_ANALYZER_OUTPUT_PATH, ALBUMS_DETAILS_OUTPUT_PATH
+from consts.spotify_albums_details_consts import RAW_ALBUMS_DETAILS_RELEVANT_COLUMNS, ALBUMS_COLUMNS_RENAME_MAPPING, \
+    RAW_ALBUMS_DETAILS_MERGE_COLUMNS
 from data_processing.pre_processors.pre_processor_interface import IPreProcessor
-
-RAW_ALBUMS_DETAILS_RELEVANT_COLUMNS = [
-    ALBUM_GROUP,
-    ALBUM_TYPE,
-    ID,
-    ARTIST_ID,
-    NAME
-]
-RAW_ALBUMS_DETAILS_MERGE_COLUMNS = [ARTIST_ID, MAIN_ALBUM]
 
 
 class AlbumsDetailsPreProcessor(IPreProcessor):
@@ -35,7 +28,7 @@ class AlbumsDetailsPreProcessor(IPreProcessor):
     def _merge_raw_albums_details(data_with_artists_ids: DataFrame) -> DataFrame:
         albums_details_raw_data = pd.read_csv(ALBUMS_DETAILS_OUTPUT_PATH)
         albums_details_relevant_data = albums_details_raw_data[RAW_ALBUMS_DETAILS_RELEVANT_COLUMNS]
-        albums_details_relevant_data.rename(columns={NAME: MAIN_ALBUM, ID: ALBUM_ID}, inplace=True)
+        albums_details_relevant_data.rename(columns=ALBUMS_COLUMNS_RENAME_MAPPING, inplace=True)
         albums_details_relevant_data.drop_duplicates(subset=RAW_ALBUMS_DETAILS_MERGE_COLUMNS, inplace=True)
 
         return data_with_artists_ids.merge(

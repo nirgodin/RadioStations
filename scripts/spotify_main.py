@@ -8,7 +8,7 @@ from consts.openai_consts import ARTIST_GENDER
 from consts.path_consts import SPOTIFY_EQUAL_PLAYLISTS_OUTPUT_PATH, SPOTIFY_ISRAELI_PLAYLISTS_OUTPUT_PATH, \
     SPOTIFY_LGBTQ_PLAYLISTS_OUTPUT_PATH
 from consts.playlists_consts import EQUAL_PLAYLISTS, ISRAELI_PLAYLISTS, GLOW_PLAYLISTS
-from data_collection.spotify.collectors.albums_details_collector import AlbumsDetailsCollector
+from data_collection.spotify.collectors.artists_albums_details_collector import ArtistsAlbumsDetailsCollector
 from data_collection.spotify.collectors.artists_ids_collector import ArtistsIDsCollector
 from data_collection.spotify.collectors.audio_features_collector import AudioFeaturesCollector
 from data_collection.spotify.collectors.playlists_artists_collector import PlaylistsArtistsCollector
@@ -17,7 +17,7 @@ from data_collection.spotify.collectors.radio_stations_snapshots.radio_stations_
 from data_collection.spotify.collectors.tracks_ids_collector import TracksIDsCollector
 from data_collection.spotify.weekly_run.spotify_collector_config import SpotifyCollectorConfig
 from data_collection.spotify.weekly_run.spotify_weekly_runner import SpotifyWeeklyRunner
-from data_collection.wikipedia.gender.genders import Genders
+from models.gender import Gender
 from tools.environment_manager import EnvironmentManager
 from utils.general_utils import is_remote_run
 from utils.spotify_utils import build_spotify_headers
@@ -42,7 +42,7 @@ async def run() -> None:
             SpotifyCollectorConfig(
                 name='albums details collector',
                 weekday=3,
-                collector=AlbumsDetailsCollector,
+                collector=ArtistsAlbumsDetailsCollector,
                 chunk_size=50,
                 max_chunks_number=10
             ),
@@ -69,7 +69,7 @@ async def run() -> None:
                 kwargs={
                     NAMED_PLAYLISTS: EQUAL_PLAYLISTS,
                     RECORD_KEY: ARTIST_GENDER,
-                    RECORD_VALUE: Genders.FEMALE.value,
+                    RECORD_VALUE: Gender.FEMALE.value,
                     OUTPUT_PATH: SPOTIFY_EQUAL_PLAYLISTS_OUTPUT_PATH
                 }
             ),

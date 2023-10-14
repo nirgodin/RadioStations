@@ -12,7 +12,7 @@ class BaseSpotifyCollector(ABC):
         self._session = session
         self._chunk_size = chunk_size
         self._max_chunks_number = max_chunks_number
-        self._chunks_generator = DataChunksGenerator(chunk_size)
+        self._chunks_generator = DataChunksGenerator(chunk_size, max_chunks_number)
 
     @abstractmethod
     async def collect(self, **kwargs) -> None:

@@ -41,6 +41,7 @@ KEY_NAMES_MAPPING = {
     10: 'A#',
     11: 'B'
 }
+REVERSED_KEYS_MAPPING = {v: k for k, v in KEY_NAMES_MAPPING.items()}
 DUMMY_COLUMNS = [
     KEY,
     MAIN_GENRE

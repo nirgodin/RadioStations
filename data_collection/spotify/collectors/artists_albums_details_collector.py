@@ -21,7 +21,7 @@ from utils.file_utils import append_to_csv
 from utils.spotify_utils import build_spotify_headers
 
 
-class AlbumsDetailsCollector(BaseSpotifyCollector):
+class ArtistsAlbumsDetailsCollector(BaseSpotifyCollector):
     def __init__(self, session: ClientSession, chunk_size: int, max_chunks_number: int):
         super().__init__(session, chunk_size, max_chunks_number)
 
@@ -110,6 +110,6 @@ class AlbumsDetailsCollector(BaseSpotifyCollector):
 
 
 if __name__ == '__main__':
-    collector = AlbumsDetailsCollector(session=ClientSession(headers=build_spotify_headers()), chunk_size=50)
+    collector = ArtistsAlbumsDetailsCollector(session=ClientSession(headers=build_spotify_headers()), chunk_size=50)
     loop = asyncio.get_event_loop()
     loop.run_until_complete(collector.collect())

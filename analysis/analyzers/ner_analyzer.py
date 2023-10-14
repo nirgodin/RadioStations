@@ -1,4 +1,5 @@
-from typing import Dict, List, Generator, Union
+import math
+from typing import Dict, List, Union
 
 import pandas as pd
 import spacy
@@ -16,9 +17,9 @@ NER_LABELS = 'ner_labels'
 
 
 class NERAnalyzer(IAnalyzer):
-    def __init__(self, max_chunks_number: int = 10):
+    def __init__(self, chunk_size: int = 50, max_chunks_number: int = math.inf):
         self._max_chunks_number = max_chunks_number
-        self._nlp = spacy.load('en_core_web_lg')
+        self._nlp = spacy.load('en_core_web_lg')  # TODO: Add support for different languages
         self._chunks_generator = DataChunksGenerator()
         self._data = self._load_lyrics_data()
 
@@ -27,9 +28,7 @@ class NERAnalyzer(IAnalyzer):
             lst=list(self._data.keys()),
             filtering_list=extract_column_existing_values(LYRICS_NERS_PATH, SHAZAM_TRACK_KEY)
         )
-        self._analyze_multiple_chunks(chunks)
 
-    def _analyze_multiple_chunks(self, chunks: Generator[list, None, None]) -> None:
         for chunk_number, chunk in enumerate(chunks):
             if chunk_number + 1 < self._max_chunks_number:
                 self._analyze_single_chunk(chunk)
@@ -55,16 +54,17 @@ class NERAnalyzer(IAnalyzer):
         return records
 
     def _get_single_ner_record(self, track_id: str, track_lyrics: List[str]) -> Dict[str, Union[str, List[str]]]:
-        if not track_lyrics:
-            return {
-                SHAZAM_TRACK_KEY: track_id
-            }
-        else:
+        if track_lyrics:
             concatenated_lyrics = '\n'.join(track_lyrics)
             return self._extract_text_ners(track_id, concatenated_lyrics)
 
+        return {
+            SHAZAM_TRACK_KEY: track_id
+        }
+
     def _extract_text_ners(self, track_id: str, text: str):
         doc = self._nlp(text)
+        lowercased_texts = []
         record = {
             SHAZAM_TRACK_KEY: track_id,
             NER_TEXTS: [],
@@ -72,8 +72,12 @@ class NERAnalyzer(IAnalyzer):
         }
 
         for entity in doc.ents:
-            record[NER_TEXTS].append(entity.text)
-            record[NER_LABELS].append(entity.label_)
+            lowercased_entity_text = entity.text.lower()
+
+            if lowercased_entity_text not in lowercased_texts:
+                record[NER_TEXTS].append(entity.text)
+                record[NER_LABELS].append(entity.label_)
+                lowercased_texts.append(lowercased_entity_text)
 
         return record
 

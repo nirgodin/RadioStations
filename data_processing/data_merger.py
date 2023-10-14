@@ -9,10 +9,11 @@ from tqdm import tqdm
 
 from consts.data_consts import NAME, ADDED_AT, STATION, SCRAPED_AT
 from consts.miscellaneous_consts import CSV_FILE_SUFFIX
+from consts.spotify_consts import RADIO_SNAPSHOTS_DUPLICATE_COLUMNS
 
 
 class DataMerger:
-    def __init__(self, drop_duplicates_on: Iterable[str] = (NAME, ADDED_AT, STATION)):
+    def __init__(self, drop_duplicates_on: Iterable[str] = RADIO_SNAPSHOTS_DUPLICATE_COLUMNS):
         self._drop_duplicates_on = drop_duplicates_on
 
     def merge(self, dir_path: str, output_path: Optional[str] = None) -> DataFrame:

@@ -1,15 +1,13 @@
 import asyncio
 import os
-from functools import partial
-from typing import List, Tuple, Optional
+from typing import List, Optional
 
 import pandas as pd
 from aiohttp import ClientSession
 from asyncio_pool import AioPool
 from pandas import DataFrame
-from tqdm import tqdm
 
-from consts.api_consts import PLAYLIST_URL_FORMAT, AIO_POOL_SIZE, ARTISTS_URL_FORMAT
+from consts.api_consts import AIO_POOL_SIZE, ARTISTS_URL_FORMAT
 from consts.data_consts import TRACK, ARTISTS, ID
 from consts.env_consts import RADIO_STATIONS_SNAPSHOTS_DRIVE_ID
 from consts.path_consts import RADIO_STATIONS_PLAYLIST_SNAPSHOT_PATH_FORMAT

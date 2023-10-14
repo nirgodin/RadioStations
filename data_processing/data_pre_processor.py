@@ -11,6 +11,7 @@ from analysis.analyzers.lyrics_language.shazam_lyrics_language_analyzer import S
 from analysis.analyzers.shazam_analyzer import ShazamAnalyzer
 from consts.miscellaneous_consts import UTF_8_ENCODING
 from consts.path_consts import MERGED_DATA_PATH, RADIO_STATIONS_SNAPSHOTS_DIR
+from consts.spotify_consts import RADIO_SNAPSHOTS_DUPLICATE_COLUMNS
 from data_processing.data_merger import DataMerger
 from data_processing.pre_processors.age_pre_processor import AgePreProcessor
 from data_processing.pre_processors.albums_details_pre_processor import AlbumsDetailsPreProcessor
@@ -56,7 +57,7 @@ class DataPreProcessor:
             print(f'Starting to apply {pre_processor.name}')
             pre_processed_data = pre_processor.pre_process(pre_processed_data)
 
-        return pre_processed_data
+        return pre_processed_data.drop_duplicates(subset=RADIO_SNAPSHOTS_DUPLICATE_COLUMNS)
 
     @property
     def _sorted_pre_processors(self) -> List[IPreProcessor]:

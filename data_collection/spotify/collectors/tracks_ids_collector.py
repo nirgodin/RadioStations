@@ -43,9 +43,11 @@ class TracksIDsCollector(BaseSpotifyCollector):
         tracks_ids_data = pd.DataFrame.from_records(valid_records)
 
         if not tracks_ids_data.empty:
-            tracks_ids_data.dropna(subset=[NAME, ARTIST_NAME], inplace=True)
+            tracks_ids_data.dropna(inplace=True)
 
-        self._output_results(tracks_ids_data)
+        if not tracks_ids_data.empty:
+            print(f"Found {len(tracks_ids_data)} non empty results. Appending to existing data")
+            self._output_results(tracks_ids_data)
 
     async def _get_tracks_ids(self, artists_and_tracks_names: List[Tuple[str, str]]) -> List[dict]:
         pool = AioPool(AIO_POOL_SIZE)

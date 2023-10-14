@@ -24,6 +24,7 @@ SHAZAM_ISRAEL_MERGED_DATA = rf'{SHAZAM_DIR_PATH}/israel_merged_data.csv'
 # Spotify
 ARTISTS_IDS_OUTPUT_PATH = rf'{SPOTIFY_DIR_PATH}/spotify_artists_ids.csv'
 ALBUMS_DETAILS_OUTPUT_PATH = rf'{SPOTIFY_DIR_PATH}/spotify_albums_details.csv'
+TRACKS_ALBUMS_DETAILS_OUTPUT_PATH = rf'{SPOTIFY_DIR_PATH}/spotify_tracks_albums_details.csv'
 RADIO_STATIONS_PLAYLIST_SNAPSHOT_PATH_FORMAT = rf'{SPOTIFY_DIR_PATH}/radio_stations_snapshots/{{}}.csv'
 SPOTIFY_ISRAELI_PLAYLISTS_OUTPUT_PATH = rf'{SPOTIFY_DIR_PATH}/israeli_playlists_artists.csv'
 SPOTIFY_LGBTQ_PLAYLISTS_OUTPUT_PATH = rf'{SPOTIFY_DIR_PATH}/lgbtq_playlists_artists.csv'
