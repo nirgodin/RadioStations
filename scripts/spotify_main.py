@@ -14,6 +14,7 @@ from data_collection.spotify.collectors.audio_features_collector import AudioFea
 from data_collection.spotify.collectors.playlists_artists_collector import PlaylistsArtistsCollector
 from data_collection.spotify.collectors.radio_stations_snapshots.radio_stations_snapshots_collector import \
     RadioStationsSnapshotsCollector
+from data_collection.spotify.collectors.tracks_albums_details_collector import TracksAlbumsDetailsCollector
 from data_collection.spotify.collectors.tracks_ids_collector import TracksIDsCollector
 from data_collection.spotify.weekly_run.spotify_collector_config import SpotifyCollectorConfig
 from data_collection.spotify.weekly_run.spotify_weekly_runner import SpotifyWeeklyRunner
@@ -44,6 +45,13 @@ async def run() -> None:
                 weekday=3,
                 collector=ArtistsAlbumsDetailsCollector,
                 chunk_size=50,
+                max_chunks_number=10
+            ),
+            SpotifyCollectorConfig(
+                name='tracks albums details collector',
+                weekday=3,
+                collector=TracksAlbumsDetailsCollector,
+                chunk_size=100,
                 max_chunks_number=10
             ),
             SpotifyCollectorConfig(
