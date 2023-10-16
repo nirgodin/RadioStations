@@ -27,8 +27,10 @@ from utils.data_utils import read_merged_data
 # TODO:
 #  1. Add LGBTQ pre processor
 #  2. Add spotify UI pre processor
-#  3. Fill all possible primary keys
-#  2. Add error logging
+#  3. Add genius pre processor
+#  4. Add lyrics ids mapping pre processor
+#  5. Fill all possible primary keys
+#  6. Add error logging
 
 
 class DatabaseMigrator:
