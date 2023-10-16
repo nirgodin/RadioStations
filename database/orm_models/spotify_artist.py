@@ -23,6 +23,7 @@ class SpotifyArtist(BaseORMModel):
     instagram_name = Column(String)
     is_israeli = Column(Boolean)
     is_lgbtq = Column(Boolean)
+    primary_genre = Column(String)
     twitter_name = Column(String)
     wikipedia_language = Column(String)
     wikipedia_name = Column(String)

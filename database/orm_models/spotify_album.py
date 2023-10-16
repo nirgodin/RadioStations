@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import Optional
 
 import pandas as pd
-from sqlalchemy import String, Column, SmallInteger, ForeignKey, Enum, TIMESTAMP
+from sqlalchemy import String, Column, SmallInteger, ForeignKey, Enum, TIMESTAMP, ARRAY
 
 from consts.data_consts import ID, ALBUM_ID, ALBUM_GROUP, NAME, MAIN_ALBUM, RELEASE_DATE_PRECISION, ALBUM_RELEASE_DATE, \
     RELEASE_DATE, ALBUM_TYPE, TYPE
@@ -19,10 +19,12 @@ class SpotifyAlbum(BaseORMModel):
     id = Column(String, primary_key=True, nullable=False)
     artist_id = Column(String, ForeignKey("spotify_artists.id"), nullable=False)
     group = Column(Enum(SpotifyAlbumType))
+    label = Column(String)
     name = Column(String, nullable=False)
     release_date = Column(TIMESTAMP)
     total_tracks = Column(SmallInteger, nullable=False)
     type = Column(Enum(SpotifyAlbumType))
+    writers = Column(ARRAY(String))
 
     @staticmethod
     def _pre_process_record_items(record_items: dict) -> dict:
