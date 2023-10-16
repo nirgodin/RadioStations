@@ -1,6 +1,6 @@
 import os.path
 from functools import partial
-from typing import Union, Tuple, List
+from typing import Union, Tuple, List, Optional
 
 import pandas as pd
 from aiohttp import ClientSession
@@ -22,7 +22,7 @@ from utils.spotify_utils import get_spotipy, build_spotify_query
 
 
 class AudioFeaturesCollector(BaseSpotifyCollector):
-    def __init__(self, session: ClientSession, chunk_size: int, max_chunks_number: int):
+    def __init__(self, session: ClientSession, chunk_size: int, max_chunks_number: Optional[int]):
         super().__init__(session, chunk_size, max_chunks_number)
         self._sp = get_spotipy()
 

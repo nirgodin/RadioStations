@@ -66,7 +66,7 @@ async def run() -> None:
                 weekday=5,
                 collector=TracksIDsCollector,
                 chunk_size=300,
-                max_chunks_number=5
+                max_chunks_number=None
             ),
             SpotifyCollectorConfig(
                 name='equal playlists collector',

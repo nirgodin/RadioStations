@@ -22,7 +22,7 @@ from utils.spotify_utils import build_spotify_headers
 
 
 class ArtistsAlbumsDetailsCollector(BaseSpotifyCollector):
-    def __init__(self, session: ClientSession, chunk_size: int, max_chunks_number: int):
+    def __init__(self, session: ClientSession, chunk_size: int, max_chunks_number: Optional[int]):
         super().__init__(session, chunk_size, max_chunks_number)
 
     async def collect(self, **kwargs):

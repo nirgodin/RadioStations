@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Generator
+from typing import Generator, Optional
 
 from aiohttp import ClientSession
 
@@ -8,7 +8,7 @@ from utils.spotify_utils import build_spotify_headers
 
 
 class BaseSpotifyCollector(ABC):
-    def __init__(self, session: ClientSession, chunk_size: int, max_chunks_number: int):
+    def __init__(self, session: ClientSession, chunk_size: int, max_chunks_number: Optional[int]):
         self._session = session
         self._chunk_size = chunk_size
         self._max_chunks_number = max_chunks_number

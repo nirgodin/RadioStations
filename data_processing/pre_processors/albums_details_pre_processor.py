@@ -11,7 +11,7 @@ from data_processing.pre_processors.pre_processor_interface import IPreProcessor
 
 class AlbumsDetailsPreProcessor(IPreProcessor):
     def pre_process(self, data: DataFrame) -> DataFrame:
-        # data_with_artists_ids = self._merge_artists_ids(data)
+        data_with_artists_ids = self._merge_artists_ids(data)
         albums_details_raw_data = self._read_albums_details_data()
         data_with_raw_albums_details = self._merge_raw_albums_details(data_with_artists_ids, albums_details_raw_data)
 
@@ -59,7 +59,3 @@ class AlbumsDetailsPreProcessor(IPreProcessor):
     @property
     def name(self) -> str:
         return 'albums details pre processor'
-
-
-if __name__ == '__main__':
-    AlbumsDetailsPreProcessor().pre_process('vxz')

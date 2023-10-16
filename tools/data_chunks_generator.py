@@ -6,7 +6,7 @@ from consts.typing_consts import AF, F
 
 
 class DataChunksGenerator:
-    def __init__(self, chunk_size: int = 50, max_chunks_number: int = 5):
+    def __init__(self, chunk_size: int = 50, max_chunks_number: Optional[int] = 5):
         self._chunk_size = chunk_size
         self._max_chunks_number = max_chunks_number
 
