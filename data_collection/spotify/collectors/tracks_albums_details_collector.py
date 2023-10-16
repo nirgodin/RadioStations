@@ -108,7 +108,7 @@ class TracksAlbumsDetailsCollector(BaseSpotifyCollector):
 
 if __name__ == '__main__':
     session = ClientSession(headers=build_spotify_headers())
-    collector = TracksAlbumsDetailsCollector(session, 50, 2)
+    collector = TracksAlbumsDetailsCollector(session, 100, 10)
     loop = asyncio.get_event_loop()
     loop.run_until_complete(collector.collect())
     asyncio.run(session.close())

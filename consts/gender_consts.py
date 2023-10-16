@@ -1,7 +1,1 @@
 SOURCE = 'source'
-ISRAELI_WIKIPEDIA = 'israeli_wikipedia'
-OPENAI = 'openai'
-GENERAL_WIKIPEDIA = 'general_wikipedia'
-SPOTIFY_EQUAL_PLAYLISTS = 'spotify_equal_playlists'
-GOOGLE_IMAGES = 'google_images'
-MANUAL_TAGGING = 'manual_tagging'

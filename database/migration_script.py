@@ -26,6 +26,7 @@ from utils.data_utils import read_merged_data
 
 # TODO:
 #  1. Fill all possible primary keys
+#  2. Add error logging
 
 
 class DatabaseMigrator:
@@ -35,7 +36,7 @@ class DatabaseMigrator:
 
     async def migrate(self):
         data = pd.read_csv(MERGED_DATA_PATH, nrows=20)  # read_merged_data()
-        rows = self._load_rows(data)
+        rows = [row for i, row in data.iterrows()]  # self._load_rows(data)
         pool = AioPool(5)
 
         with tqdm(total=len(data)) as progress_bar:
@@ -53,19 +54,19 @@ class DatabaseMigrator:
 
         print(f"Success: {success_count}. Errors: {error_count}")
 
-    @staticmethod
-    def _load_rows(data: DataFrame) -> Generator[Series, None, None]:
-        albums_data = pd.read_csv(ALBUMS_DETAILS_OUTPUT_PATH)
-        albums_data.rename(columns={RELEASE_DATE: ALBUM_RELEASE_DATE, ID: ALBUM_ID}, inplace=True)
-        merged_data = data.merge(
-            right=albums_data[[ALBUM_ID, ALBUM_RELEASE_DATE, RELEASE_DATE_PRECISION, "total_tracks"]],
-            how='left',
-            on=ALBUM_ID
-        )
-        merged_data.drop_duplicates(subset=[NAME, ADDED_AT, STATION], inplace=True)
-
-        for i, row in merged_data.iterrows():
-            yield row
+    # @staticmethod
+    # def _load_rows(data: DataFrame) -> Generator[Series, None, None]:
+    #     albums_data = pd.read_csv(ALBUMS_DETAILS_OUTPUT_PATH)
+    #     albums_data.rename(columns={RELEASE_DATE: ALBUM_RELEASE_DATE, ID: ALBUM_ID}, inplace=True)
+    #     merged_data = data.merge(
+    #         right=albums_data[[ALBUM_ID, ALBUM_RELEASE_DATE, RELEASE_DATE_PRECISION, "total_tracks"]],
+    #         how='left',
+    #         on=ALBUM_ID
+    #     )
+    #     merged_data.drop_duplicates(subset=[NAME, ADDED_AT, STATION], inplace=True)
+    #
+    #     for i, row in merged_data.iterrows():
+    #         yield row
 
     async def _insert_single_row_records(self, progress_bar: tqdm, row: Series) -> None:
         for orm in self._ordered_orms:

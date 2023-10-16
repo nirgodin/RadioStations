@@ -38,21 +38,21 @@ async def run() -> None:
                 weekday=2,
                 collector=ArtistsIDsCollector,
                 chunk_size=100,
-                max_chunks_number=10
+                max_chunks_number=None
             ),
             SpotifyCollectorConfig(
                 name='albums details collector',
                 weekday=3,
                 collector=ArtistsAlbumsDetailsCollector,
                 chunk_size=50,
-                max_chunks_number=10
+                max_chunks_number=None
             ),
             SpotifyCollectorConfig(
                 name='tracks albums details collector',
                 weekday=3,
                 collector=TracksAlbumsDetailsCollector,
                 chunk_size=100,
-                max_chunks_number=10
+                max_chunks_number=None
             ),
             SpotifyCollectorConfig(
                 name='audio features collector',
