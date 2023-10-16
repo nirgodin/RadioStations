@@ -16,7 +16,7 @@ class DataChunksGenerator:
         for i, chunk in enumerate(chunks):
             if i + 1 == self._max_chunks_number:
                 break
-            elif iscoroutinefunction:
+            elif iscoroutinefunction(func):
                 await func(chunk)
             else:
                 func(chunk)
