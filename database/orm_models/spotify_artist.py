@@ -1,8 +1,14 @@
+from datetime import datetime
+from typing import Union, Optional
+
 import pandas as pd
 from sqlalchemy import Column, String, ARRAY, Enum, TIMESTAMP, Boolean
 
-from consts.data_consts import GENRES, ID, ARTIST_ID, NAME, ARTIST_NAME
+from consts.data_consts import GENRES, ID, ARTIST_ID, NAME, ARTIST_NAME, IS_ISRAELI
+from consts.datetime_consts import DATETIME_FORMAT
+from consts.gender_consts import SOURCE
 from consts.openai_consts import ARTIST_GENDER
+from consts.wikipedia_consts import BIRTH_DATE, DEATH_DATE
 from database.orm_models.base_orm_model import BaseORMModel
 from models.data_source import DataSource
 from models.gender import Gender
@@ -38,5 +44,17 @@ class SpotifyArtist(BaseORMModel):
         record_items[ID] = record_items[ARTIST_ID]
         raw_gender = record_items[ARTIST_GENDER]
         record_items["gender"] = Gender(raw_gender) if not pd.isna(raw_gender) else None
+        gender_source = record_items[SOURCE]
+        record_items["gender_source"] = DataSource(gender_source) if not pd.isna(gender_source) else None
+        record_items[BIRTH_DATE] = SpotifyArtist._parse_date(record_items[BIRTH_DATE])
+        record_items[DEATH_DATE] = SpotifyArtist._parse_date(record_items[DEATH_DATE])
+        record_items[IS_ISRAELI] = None if pd.isna(record_items[IS_ISRAELI]) else record_items[IS_ISRAELI]
 
         return record_items
+
+    @staticmethod
+    def _parse_date(raw_date: Union[str, float]) -> Optional[datetime]:
+        if pd.isna(raw_date):
+            return None
+
+        return datetime.strptime(raw_date, DATETIME_FORMAT)

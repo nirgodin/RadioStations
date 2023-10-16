@@ -25,7 +25,9 @@ from tools.environment_manager import EnvironmentManager
 from utils.data_utils import read_merged_data
 
 # TODO:
-#  1. Fill all possible primary keys
+#  1. Add LGBTQ pre processor
+#  2. Add spotify UI pre processor
+#  3. Fill all possible primary keys
 #  2. Add error logging
 
 
