@@ -28,7 +28,7 @@ class ShazamTrackAboutFetcher:
         data = pd.DataFrame.from_records(records)
 
         non_lyrics_data = data.drop(LYRICS_TEXT, axis=1)
-        append_to_csv(data=non_lyrics_data, output_path=SHAZAM_TRACKS_ABOUT_PATH)
+        append_to_csv(data=non_lyrics_data, output_path=SHAZAM_TRACKS_ABOUT_PATH, escapechar=r"|")
 
         lyrics_data = {str(track[SHAZAM_TRACK_KEY]): track[LYRICS_TEXT] for track in records}
         self._to_json(lyrics_data)
@@ -141,4 +141,4 @@ class ShazamTrackAboutFetcher:
 if __name__ == '__main__':
     fetcher = ShazamTrackAboutFetcher()
     loop = asyncio.get_event_loop()
-    loop.run_until_complete(fetcher.fetch_tracks_about(max_tracks=300))
+    loop.run_until_complete(fetcher.fetch_tracks_about(max_tracks=200))

@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 import pandas as pd
 from pandas import DataFrame
@@ -8,7 +8,7 @@ from consts.miscellaneous_consts import UTF_8_ENCODING
 
 class CSVAppender:
     @staticmethod
-    def append(data: DataFrame, output_path: str) -> None:
+    def append(data: DataFrame, output_path: str, escapechar: Optional[str]) -> None:
         new_columns = data.columns.tolist()
         columns = CSVAppender._get_column_names(new_columns, output_path)
         missing_new_columns = [col for col in columns if col not in new_columns]
@@ -17,7 +17,7 @@ class CSVAppender:
             data[missing_new_columns] = ''
 
         ordered_data = data[columns]
-        ordered_data.to_csv(output_path, index=False, encoding=UTF_8_ENCODING, header=False, mode='a')
+        ordered_data.to_csv(output_path, index=False, encoding=UTF_8_ENCODING, header=False, mode='a', escapechar=escapechar)
 
     @staticmethod
     def _get_column_names(new_columns: List[str], output_path: str) -> List[str]:

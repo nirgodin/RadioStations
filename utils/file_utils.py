@@ -1,7 +1,7 @@
 import json
 import os
 from pathlib import Path
-from typing import Union, List
+from typing import Union, List, Optional
 
 from pandas import DataFrame
 
@@ -28,9 +28,9 @@ def to_csv(data: DataFrame, output_path: str, header: bool = True, mode: str = '
     data.to_csv(output_path, index=False, encoding=UTF_8_ENCODING, header=header, mode=mode)
 
 
-def append_to_csv(data: DataFrame, output_path: str) -> None:
+def append_to_csv(data: DataFrame, output_path: str, escapechar: Optional[str] = None) -> None:
     if os.path.exists(output_path):
-        CSVAppender.append(data=data, output_path=output_path)
+        CSVAppender.append(data=data, output_path=output_path, escapechar=escapechar)
     else:
         to_csv(data=data, output_path=output_path)
 
