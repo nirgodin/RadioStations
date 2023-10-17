@@ -10,6 +10,7 @@ from analysis.analyzers.genre_analyzer import GenreAnalyzer
 from analysis.analyzers.kan_gimel_analyzer import KanGimelAnalyzer
 from analysis.analyzers.lyrics_language.shazam_lyrics_language_analyzer import ShazamLyricsLanguageAnalyzer
 from analysis.analyzers.shazam_analyzer import ShazamAnalyzer
+from analysis.analyzers.tracks_ids_mapping_analyzer import TracksIDsMappingAnalyzer
 from consts.miscellaneous_consts import UTF_8_ENCODING
 from consts.path_consts import MERGED_DATA_PATH, RADIO_STATIONS_SNAPSHOTS_DIR
 from consts.spotify_consts import RADIO_SNAPSHOTS_DUPLICATE_COLUMNS
@@ -27,6 +28,7 @@ from data_processing.pre_processors.lgbtq_pre_processor import LGBTQPreProcessor
 from data_processing.pre_processors.pre_processor_interface import IPreProcessor
 from data_processing.pre_processors.remastered_pre_processor import RemasteredPreProcessor
 from data_processing.pre_processors.shazam_pre_processor import ShazamPreProcessor
+from data_processing.pre_processors.tracks_ids_mapper_pre_processor import TracksIDSMapperPreProcessor
 from data_processing.pre_processors.tracks_ids_pre_processor import TracksIDSPreProcessor
 from data_processing.pre_processors.year_pre_processor import YearPreProcessor
 
@@ -77,6 +79,7 @@ class DataPreProcessor:
             AgePreProcessor(),
             ShazamPreProcessor(),
             LGBTQPreProcessor(),
+            TracksIDSMapperPreProcessor(),
             FormatterPreProcessor()
         ]
 
@@ -89,5 +92,6 @@ class DataPreProcessor:
             GenderAnalyzer(),
             AlbumsDetailsAnalyzer(),
             ShazamAnalyzer(),
-            SpotifyArtistsUIAnalyzer()
+            SpotifyArtistsUIAnalyzer(),
+            TracksIDsMappingAnalyzer()
         ]

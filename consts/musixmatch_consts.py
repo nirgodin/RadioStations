@@ -19,6 +19,7 @@ LYRICS = 'lyrics'
 LYRICS_BODY = 'lyrics_body'
 TRACK_NAME = 'track_name'
 TRACK_RATING = 'track_rating'
+MUSIXMATCH_ID = "musixmatch_id"
 
 MUSIXMATCH_RELEVANT_COLUMNS = [
     ARTIST_NAME,

@@ -39,6 +39,8 @@ KAN_GIMEL_ANALYZER_OUTPUT_PATH = r'data/resources/kan_gimel_tracks_artists_and_a
 UNIQUE_ANALYZER_OUTPUT_PATH_FORMAT = r'data\unique_{}_share.csv'
 ALBUMS_DETAILS_ANALYZER_OUTPUT_PATH = rf'{ANALYSIS_OUTPUTS_DIR_PATH}/albums_details_analysis_output.csv'
 SPOTIFY_ARTISTS_UI_ANALYZER_OUTPUT_PATH = rf'{ANALYSIS_OUTPUTS_DIR_PATH}/artists_ui_analysis_output.csv'
+TRACK_IDS_MAPPING_ANALYZER_OUTPUT_PATH = rf'{ANALYSIS_OUTPUTS_DIR_PATH}/tracks_ids_mapping.csv'
+
 
 MERGED_DATA_PATH = r'data/merged_data.csv'
 AUDIO_FEATURES_CHUNK_OUTPUT_PATH_FORMAT = r'data/audio_features/audio_features_chunks/{}.csv'
