@@ -8,6 +8,9 @@ SHAZAM_WORLD_DIR_PATH = rf'{SHAZAM_DIR_PATH}/world'
 SPOTIFY_DIR_PATH = r'data/spotify'
 RADIO_STATIONS_SNAPSHOTS_DIR = rf'{SPOTIFY_DIR_PATH}/radio_stations_snapshots'
 
+# Analyzers
+ANALYSIS_OUTPUTS_DIR_PATH = r'analysis/analysis_outputs'
+
 # Files
 # Shazam
 SHAZAM_CITIES_PATH_FORMAT = rf'{SHAZAM_DIR_PATH}/cities/{{}}.csv'
@@ -31,16 +34,19 @@ SPOTIFY_LGBTQ_PLAYLISTS_OUTPUT_PATH = rf'{SPOTIFY_DIR_PATH}/lgbtq_playlists_arti
 TRACKS_IDS_OUTPUT_PATH = rf'{SPOTIFY_DIR_PATH}/spotify_tracks_ids.csv'
 ARTISTS_UI_DETAILS_OUTPUT_PATH = rf'{SPOTIFY_DIR_PATH}/spotify_artists_ui_details.csv'
 
+# Analyzers
+KAN_GIMEL_ANALYZER_OUTPUT_PATH = r'data/resources/kan_gimel_tracks_artists_and_albums.json'
+UNIQUE_ANALYZER_OUTPUT_PATH_FORMAT = r'data\unique_{}_share.csv'
+ALBUMS_DETAILS_ANALYZER_OUTPUT_PATH = rf'{ANALYSIS_OUTPUTS_DIR_PATH}/albums_details_analysis_output.csv'
+SPOTIFY_ARTISTS_UI_ANALYZER_OUTPUT_PATH = rf'{ANALYSIS_OUTPUTS_DIR_PATH}/artists_ui_analysis_output.csv'
 
 MERGED_DATA_PATH = r'data/merged_data.csv'
-KAN_GIMEL_ANALYZER_OUTPUT_PATH = r'data/resources/kan_gimel_tracks_artists_and_albums.json'
 AUDIO_FEATURES_CHUNK_OUTPUT_PATH_FORMAT = r'data/audio_features/audio_features_chunks/{}.csv'
 AUDIO_FEATURES_BASE_DIR = r'data/audio_features/audio_features_chunks'
 AUDIO_FEATURES_DATA_PATH = r'data/audio_features/audio_features_merged_data.csv'
 CORRELATIONS_DATA_PATH = r'data/popularity_play_count_correlations_data.csv'
 GENRES_LABELS_PATH = r'data\resources\genres_labels.csv'
 GENRES_MAPPING_PATH = r'data/resources/genres_mapping.csv'
-UNIQUE_ANALYZER_OUTPUT_PATH_FORMAT = r'data\unique_{}_share.csv'
 MUSIXMATCH_TRACK_IDS_PATH = r'data/musixmatch/track_ids.json'
 MUSIXMATCH_TRACKS_LYRICS_PATH = r'data/musixmatch/tracks_lyrics.json'
 MUSIXMATCH_TRACKS_LANGUAGES_PATH = r'data/musixmatch/tracks_languages.csv'
@@ -65,7 +71,6 @@ ARTISTS_PHOTOS_DIR_PATH = r'data_collection/google_images/resources/artists_phot
 MEDIAFOREST_PATH_FORMAT = r'data/mediaforest/{}/{}.csv'
 MAPPED_GENDERS_OUTPUT_PATH = r'data/genders/mapped_genders.csv'
 SPOTIFY_WEEKLY_RUN_LATEST_EXECUTIONS = r'data_collection/spotify/weekly_run/resources/weekly_run_latest_executions.json'
-ALBUMS_DETAILS_ANALYZER_OUTPUT_PATH = r'analysis/analysis_outputs/albums_details_analysis_output.csv'
 MAKO_HIT_LIST_OUTPUT_PATH_FORMAT = r'data/mako_hit_list/{}.csv'
 MAIN_DATA_DIR_PATH = r'data'
 DATA_DVC_PATH = r'data.dvc'

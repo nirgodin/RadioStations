@@ -4,6 +4,7 @@ from pandas import DataFrame
 
 from analysis.analyzer_interface import IAnalyzer
 from analysis.analyzers.albums_details_analyzer import AlbumsDetailsAnalyzer
+from analysis.analyzers.artists_ui_details.spotify_artists_ui_analyzer import SpotifyArtistsUIAnalyzer
 from analysis.analyzers.gender_analyzer import GenderAnalyzer
 from analysis.analyzers.genre_analyzer import GenreAnalyzer
 from analysis.analyzers.kan_gimel_analyzer import KanGimelAnalyzer
@@ -85,5 +86,6 @@ class DataPreProcessor:
             ShazamLyricsLanguageAnalyzer(),
             GenderAnalyzer(),
             AlbumsDetailsAnalyzer(),
-            ShazamAnalyzer()
+            ShazamAnalyzer(),
+            SpotifyArtistsUIAnalyzer()
         ]
