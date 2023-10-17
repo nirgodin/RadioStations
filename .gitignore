@@ -144,6 +144,7 @@ vcs.xml
 /embeddings_collection.bat
 /spotify_ui_scraping.bat
 /wikipedia_age_scraping.bat
+/run_spotify_tracks_albums.bat
 
 # Data
 /shazam_creds.json
