@@ -7,13 +7,15 @@ from aiohttp import ClientSession
 from pandas import DataFrame
 from tqdm import tqdm
 
-from consts.data_consts import TRACK, ARTISTS, ARTIST_ID, ID, ARTIST_NAME, NAME, STATION
+from consts.data_consts import TRACK, ARTISTS, ARTIST_ID, ID, ARTIST_NAME, NAME, STATION, IS_LGBTQ
 from consts.miscellaneous_consts import NAMED_PLAYLISTS, OUTPUT_PATH, RECORD_KEY, RECORD_VALUE
+from consts.path_consts import SPOTIFY_LGBTQ_PLAYLISTS_OUTPUT_PATH
+from consts.playlists_consts import GLOW_PLAYLISTS
 from data_collection.spotify.base_spotify_collector import BaseSpotifyCollector
 from data_collection.spotify.collectors.playlists_collector import PlaylistsCollector
 from data_collection.spotify.collectors.radio_stations_snapshots.data_classes.playlist import Playlist
 from tools.environment_manager import EnvironmentManager
-from utils.file_utils import append_to_csv
+from utils.file_utils import append_to_csv, to_csv
 from utils.general_utils import chain_lists, binary_search
 from utils.spotify_utils import build_spotify_headers
 
@@ -36,7 +38,7 @@ class PlaylistsArtistsCollector(BaseSpotifyCollector):
         output_path = kwargs[OUTPUT_PATH]
         data = self._add_non_existing_artists(records, output_path)
 
-        append_to_csv(data, output_path)
+        to_csv(data, output_path)
 
     def _generate_playlists_main_artists(self,
                                          playlists: List[Playlist],
@@ -128,4 +130,9 @@ if __name__ == '__main__':
     client_session = ClientSession(headers=build_spotify_headers())
     loop = asyncio.get_event_loop()
     collector = PlaylistsArtistsCollector(client_session, 5, 5)
-    loop.run_until_complete(collector.collect())
+    loop.run_until_complete(collector.collect(**{
+                    NAMED_PLAYLISTS: {    'glow_israel': '37i9dQZF1DXdO2G4AsEU5v'},
+                    RECORD_KEY: IS_LGBTQ,
+                    RECORD_VALUE: True,
+                    OUTPUT_PATH: SPOTIFY_LGBTQ_PLAYLISTS_OUTPUT_PATH
+                }))
