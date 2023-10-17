@@ -1,8 +1,8 @@
 import pandas as pd
 from pandas import DataFrame
 
-from consts.data_consts import ARTIST_ID, IS_LGBTQ, STATION
-from consts.path_consts import SPOTIFY_LGBTQ_PLAYLISTS_OUTPUT_PATH, MERGED_DATA_PATH
+from consts.data_consts import ARTIST_ID, IS_LGBTQ
+from consts.path_consts import SPOTIFY_LGBTQ_PLAYLISTS_OUTPUT_PATH
 from data_processing.pre_processors.pre_processor_interface import IPreProcessor
 
 
@@ -21,8 +21,3 @@ class LGBTQPreProcessor(IPreProcessor):
     @property
     def name(self) -> str:
         return "lgbtq pre processor"
-
-
-if __name__ == '__main__':
-    data = pd.read_csv(MERGED_DATA_PATH)
-    LGBTQPreProcessor().pre_process(data)
