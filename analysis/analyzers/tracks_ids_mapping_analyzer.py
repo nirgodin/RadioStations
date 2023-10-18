@@ -75,3 +75,7 @@ class TracksIDsMappingAnalyzer(IAnalyzer):
     @property
     def name(self) -> str:
         return "tracks ids mapping analyzer"
+
+
+if __name__ == '__main__':
+    TracksIDsMappingAnalyzer().analyze()

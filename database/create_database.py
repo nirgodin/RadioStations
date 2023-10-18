@@ -7,6 +7,8 @@ from database.orm_models.spotify_artist import SpotifyArtist
 from database.orm_models.spotify_track import SpotifyTrack
 from database.orm_models.audio_features import AudioFeatures
 from database.orm_models.radio_track import RadioTrack
+from database.orm_models.track_id_mapping import TrackIDMapping
+
 # TODO: Import dynamically all BaseORMModel sub classes to make sure they are created
 
 from tools.environment_manager import EnvironmentManager

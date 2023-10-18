@@ -94,3 +94,7 @@ class SpotifyArtistsUIAnalyzer(IAnalyzer):
     @property
     def name(self) -> str:
         return "artists ui analyzer"
+
+
+if __name__ == '__main__':
+    SpotifyArtistsUIAnalyzer().analyze()
