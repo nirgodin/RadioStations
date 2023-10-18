@@ -38,3 +38,5 @@ LYRICS_TEXT = 'lyrics_text'
 LYRICS_FOOTER = 'footer'
 SHAZAM_RANK = "shazam_rank"
 IS_IN_SHAZAM_200 = "is_in_shazam_200"
+FOOTER = "footer"
+WRITERS = "writers"

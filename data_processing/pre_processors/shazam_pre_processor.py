@@ -8,7 +8,7 @@ from pandas import DataFrame
 from consts.audio_features_consts import KEY
 from consts.data_consts import SCRAPED_AT, ADDED_AT, DATE_ADDED
 from consts.datetime_consts import DATETIME_FORMAT, DATE_FORMAT, SPOTIFY_DATETIME_FORMAT
-from consts.path_consts import SHAZAM_ISRAEL_MERGED_DATA
+from consts.path_consts import SHAZAM_ISRAEL_MERGED_DATA, SHAZAM_TRACKS_ABOUT_ANALYZER_OUTPUT_PATH
 from consts.shazam_consts import SHAZAM_RANK, IS_IN_SHAZAM_200
 from data_processing.data_merger import DataMerger
 from data_processing.pre_processors.language.language_pre_processor import SHAZAM_KEY
@@ -20,6 +20,10 @@ class ShazamPreProcessor(IPreProcessor):
         self._data_merger = DataMerger(drop_duplicates_on=[KEY, SCRAPED_AT])
 
     def pre_process(self, data: DataFrame) -> DataFrame:
+        shazam_200_merged_data = self._merge_shazam_200_data(data)
+        return self._merge_shazam_tracks_about_data(shazam_200_merged_data)
+
+    def _merge_shazam_200_data(self, data: DataFrame) -> DataFrame:
         data[DATE_ADDED] = data[ADDED_AT].apply(lambda x: self._to_date(x, SPOTIFY_DATETIME_FORMAT))
         shazam_data = self._load_shazam_data()
         merged_data = data.merge(
@@ -44,6 +48,15 @@ class ShazamPreProcessor(IPreProcessor):
 
         date_time = datetime.strptime(date, datetime_format)
         return date_time.strftime(DATE_FORMAT)
+
+    @staticmethod
+    def _merge_shazam_tracks_about_data(data: DataFrame) -> DataFrame:
+        shazam_tracks_about_data = pd.read_csv(SHAZAM_TRACKS_ABOUT_ANALYZER_OUTPUT_PATH)
+        return data.merge(
+            right=shazam_tracks_about_data,
+            on=SHAZAM_KEY,
+            how="left"
+        )
 
     @property
     def name(self) -> str:

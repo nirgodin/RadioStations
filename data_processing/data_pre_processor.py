@@ -10,6 +10,7 @@ from analysis.analyzers.genre_analyzer import GenreAnalyzer
 from analysis.analyzers.kan_gimel_analyzer import KanGimelAnalyzer
 from analysis.analyzers.lyrics_language.shazam_lyrics_language_analyzer import ShazamLyricsLanguageAnalyzer
 from analysis.analyzers.shazam_analyzer import ShazamAnalyzer
+from analysis.analyzers.shazam_tracks_about_analyzer import ShazamTracksAboutAnalyzer
 from analysis.analyzers.tracks_ids_mapping_analyzer import TracksIDsMappingAnalyzer
 from consts.miscellaneous_consts import UTF_8_ENCODING
 from consts.path_consts import MERGED_DATA_PATH, RADIO_STATIONS_SNAPSHOTS_DIR
@@ -77,9 +78,9 @@ class DataPreProcessor:
             AlbumsDetailsPreProcessor(),
             RemasteredPreProcessor(),
             AgePreProcessor(),
+            TracksIDSMapperPreProcessor(),
             ShazamPreProcessor(),
             LGBTQPreProcessor(),
-            TracksIDSMapperPreProcessor(),
             FormatterPreProcessor()
         ]
 
@@ -93,5 +94,6 @@ class DataPreProcessor:
             AlbumsDetailsAnalyzer(),
             ShazamAnalyzer(),
             SpotifyArtistsUIAnalyzer(),
-            TracksIDsMappingAnalyzer()
+            TracksIDsMappingAnalyzer(),
+            ShazamTracksAboutAnalyzer()
         ]
