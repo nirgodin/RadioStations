@@ -4,7 +4,7 @@ import pandas as pd
 from pandas import DataFrame
 
 from consts.data_consts import ID, ARTISTS
-from consts.shazam_consts import SHAZAM_TRACK_KEY, TITLE, SUBTITLE, HUB, ACTIONS, APPLE_MUSIC_ID, EXPLICIT, \
+from consts.shazam_consts import SHAZAM_TRACK_KEY, TITLE, SUBTITLE, HUB, ACTIONS, APPLE_MUSIC_TRACK_ID, EXPLICIT, \
     APPLE_MUSIC_ADAM_ID
 
 
@@ -23,7 +23,7 @@ class ShazamTrackResponseExtractor:
             SHAZAM_TRACK_KEY: track[SHAZAM_TRACK_KEY],
             TITLE: track[TITLE],
             SUBTITLE: track[SUBTITLE],
-            APPLE_MUSIC_ID: self._extract_apple_music_track_id(track),
+            APPLE_MUSIC_TRACK_ID: self._extract_apple_music_track_id(track),
             EXPLICIT: self._is_explicit_track(track),
             APPLE_MUSIC_ADAM_ID: self._extract_track_adam_id(track),
         }

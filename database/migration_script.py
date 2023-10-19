@@ -40,7 +40,7 @@ class DatabaseMigrator:
         self._db_engine = ComponentFactory.get_database_engine()
 
     async def migrate(self):
-        data = pd.read_csv(MERGED_DATA_PATH, nrows=100)  # read_merged_data()
+        data = pd.read_csv(MERGED_DATA_PATH, nrows=1000)  # read_merged_data()
         rows = self._load_rows(data)
         pool = AioPool(5)
 

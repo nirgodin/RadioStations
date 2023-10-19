@@ -3,6 +3,7 @@
 SHAZAM_DIR_PATH = r'data/shazam'
 SHAZAM_ISRAEL_DIR_PATH = rf'{SHAZAM_DIR_PATH}/israel'
 SHAZAM_WORLD_DIR_PATH = rf'{SHAZAM_DIR_PATH}/world'
+SHAZAM_CITIES_DIR_PATH = rf'{SHAZAM_DIR_PATH}/cities'
 
 # Spotify
 SPOTIFY_DIR_PATH = r'data/spotify'
@@ -13,7 +14,7 @@ ANALYSIS_OUTPUTS_DIR_PATH = r'analysis/analysis_outputs'
 
 # Files
 # Shazam
-SHAZAM_CITIES_PATH_FORMAT = rf'{SHAZAM_DIR_PATH}/cities/{{}}.csv'
+SHAZAM_CITIES_PATH_FORMAT = rf'{SHAZAM_CITIES_DIR_PATH}/{{}}.csv'
 SHAZAM_ISRAEL_PATH_FORMAT = rf'{SHAZAM_ISRAEL_DIR_PATH}/{{}}.csv'
 SHAZAM_WORLD_PATH_FORMAT = rf'{SHAZAM_WORLD_DIR_PATH}/{{}}.csv'
 SHAZAM_TRACKS_IDS_PATH = rf'{SHAZAM_DIR_PATH}/tracks_ids.csv'
@@ -41,6 +42,7 @@ ALBUMS_DETAILS_ANALYZER_OUTPUT_PATH = rf'{ANALYSIS_OUTPUTS_DIR_PATH}/albums_deta
 SPOTIFY_ARTISTS_UI_ANALYZER_OUTPUT_PATH = rf'{ANALYSIS_OUTPUTS_DIR_PATH}/artists_ui_analysis_output.csv'
 TRACK_IDS_MAPPING_ANALYZER_OUTPUT_PATH = rf'{ANALYSIS_OUTPUTS_DIR_PATH}/tracks_ids_mapping.csv'
 SHAZAM_TRACKS_ABOUT_ANALYZER_OUTPUT_PATH = rf'{ANALYSIS_OUTPUTS_DIR_PATH}/shazam_tracks_about_analysis_output.csv'
+SHAZAM_APPLE_TRACKS_IDS_MAPPING_OUTPUT_PATH = rf'{ANALYSIS_OUTPUTS_DIR_PATH}/shazam_apple_tracks_ids_mapping.csv'
 
 MERGED_DATA_PATH = r'data/merged_data.csv'
 AUDIO_FEATURES_CHUNK_OUTPUT_PATH_FORMAT = r'data/audio_features/audio_features_chunks/{}.csv'

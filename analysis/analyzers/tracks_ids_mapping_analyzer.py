@@ -9,8 +9,8 @@ from consts.audio_features_consts import KEY
 from consts.data_consts import ID, SPOTIFY_ID, GENIUS_ID, SONG
 from consts.musixmatch_consts import MUSIXMATCH_ID, MUSIXMATCH_TRACK_ID
 from consts.path_consts import SHAZAM_TRACKS_IDS_PATH, MUSIXMATCH_TRACK_IDS_PATH, GENIUS_TRACKS_IDS_OUTPUT_PATH, \
-    TRACK_IDS_MAPPING_ANALYZER_OUTPUT_PATH
-from consts.shazam_consts import APPLE_MUSIC_ADAM_ID
+    TRACK_IDS_MAPPING_ANALYZER_OUTPUT_PATH, SHAZAM_APPLE_TRACKS_IDS_MAPPING_OUTPUT_PATH
+from consts.shazam_consts import APPLE_MUSIC_ADAM_ID, APPLE_MUSIC_TRACK_ID, APPLE_MUSIC_ID
 from data_processing.pre_processors.language.language_pre_processor import SHAZAM_KEY
 from utils.data_utils import read_merged_data
 from utils.file_utils import read_json, to_csv
@@ -40,11 +40,26 @@ class TracksIDsMappingAnalyzer(IAnalyzer):
         shazam_data.drop_duplicates(subset=[SPOTIFY_ID], inplace=True)
         shazam_data[SHAZAM_ID_COLUMNS] = shazam_data[SHAZAM_ID_COLUMNS].applymap(self._stringify_float)
         shazam_data.rename(columns={KEY: SHAZAM_KEY, SPOTIFY_ID: ID}, inplace=True)
+        shazam_data_with_apple_ids = self._merge_apple_ids(shazam_data)
 
         return data.merge(
-            right=shazam_data[[ID, SHAZAM_KEY, APPLE_MUSIC_ADAM_ID]],
+            right=shazam_data_with_apple_ids[[ID, SHAZAM_KEY, APPLE_MUSIC_ADAM_ID, APPLE_MUSIC_ID]],
             on=ID,
             how="left"
+        )
+
+    @staticmethod
+    def _merge_apple_ids(data: DataFrame) -> DataFrame:
+        data.dropna(subset=[SHAZAM_KEY], inplace=True)
+        data[SHAZAM_KEY] = data[SHAZAM_KEY].astype(str)
+        shazam_apple_mapping = pd.read_csv(SHAZAM_APPLE_TRACKS_IDS_MAPPING_OUTPUT_PATH)
+        shazam_apple_mapping.rename(columns={APPLE_MUSIC_TRACK_ID: APPLE_MUSIC_ID}, inplace=True)
+        shazam_apple_mapping[SHAZAM_KEY] = shazam_apple_mapping[SHAZAM_KEY].astype(str)
+
+        return data.merge(
+            right=shazam_apple_mapping,
+            how='left',
+            on=SHAZAM_KEY
         )
 
     def _merge_musixmatch_ids(self, data: DataFrame) -> DataFrame:
