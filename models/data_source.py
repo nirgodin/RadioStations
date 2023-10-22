@@ -9,3 +9,6 @@ class DataSource(Enum):
     GENERAL_WIKIPEDIA = "general_wikipedia"
     SPOTIFY_EQUAL_PLAYLISTS = "spotify_equal_playlists"
     GOOGLE_IMAGES = "google_images"
+    SHAZAM = "shazam"
+    MUSIXMATCH = "musixmatch"
+    GENIUS = "genius"

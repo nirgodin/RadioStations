@@ -8,9 +8,6 @@ from consts.shazam_consts import WRITERS
 from database.orm_models.base_orm_model import BaseORMModel
 
 
-# TODO: Complete relevant fields
-
-
 class SpotifyTrack(BaseORMModel):
     __tablename__ = "spotify_tracks"
 

@@ -1,6 +1,7 @@
-from sqlalchemy import Column, String, ForeignKey, ARRAY, SmallInteger, JSON
+from sqlalchemy import Column, String, ForeignKey, ARRAY, SmallInteger, JSON, Enum
 
 from database.orm_models.base_orm_model import BaseORMModel
+from models.data_source import DataSource
 
 
 class TrackLyrics(BaseORMModel):
@@ -8,6 +9,7 @@ class TrackLyrics(BaseORMModel):
 
     id = Column(String, ForeignKey("spotify_tracks.id"), primary_key=True, nullable=False)
     lyrics = Column(ARRAY(String))
+    lyrics_source = Column(Enum(DataSource))
     language = Column(String)
     number_of_words = Column(SmallInteger)
     words_count = Column(JSON)

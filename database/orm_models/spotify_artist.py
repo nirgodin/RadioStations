@@ -1,19 +1,16 @@
 from datetime import datetime
-from typing import Union, Optional
+from typing import Optional
 
-import pandas as pd
 from sqlalchemy import Column, String, ARRAY, Enum, TIMESTAMP, Boolean
 
-from consts.data_consts import GENRES, ID, ARTIST_ID, NAME, ARTIST_NAME, IS_ISRAELI
+from consts.data_consts import GENRES, ID, ARTIST_ID, NAME, ARTIST_NAME
 from consts.datetime_consts import DATETIME_FORMAT
 from consts.gender_consts import SOURCE
 from consts.openai_consts import ARTIST_GENDER
-from consts.shazam_consts import PRIMARY_GENRE
 from consts.wikipedia_consts import BIRTH_DATE, DEATH_DATE
 from database.orm_models.base_orm_model import BaseORMModel
 from models.data_source import DataSource
 from models.gender import Gender
-# TODO: Complete relevant fields
 
 
 class SpotifyArtist(BaseORMModel):
@@ -34,8 +31,6 @@ class SpotifyArtist(BaseORMModel):
     twitter_name = Column(String)
     wikipedia_language = Column(String)
     wikipedia_name = Column(String)
-
-    # TODO: Add logic to separate names from url
     # TODO: What to do with other UI fields?
 
     @staticmethod

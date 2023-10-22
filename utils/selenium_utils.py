@@ -30,4 +30,4 @@ def switch_window(driver: Chrome, window_name: str, sleep_time: int = 1) -> None
         sleep(sleep_time)
 
     except:
-        print(f"Failed to switch to window `{window_name}`. Ignoring.")  # TODO: Add window name
+        print(f"Failed to switch to window `{window_name}`. Ignoring.")

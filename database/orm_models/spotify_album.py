@@ -7,7 +7,6 @@ from consts.data_consts import ID, ALBUM_ID, ALBUM_GROUP, NAME, MAIN_ALBUM, RELE
     RELEASE_DATE, ALBUM_TYPE, TYPE
 from consts.shazam_consts import LABEL
 from database.orm_models.base_orm_model import BaseORMModel
-# TODO: Complete relevant fields
 from models.spotify_album_type import SpotifyAlbumType
 
 
