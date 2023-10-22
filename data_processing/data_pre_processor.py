@@ -79,8 +79,8 @@ class DataPreProcessor:
             AgePreProcessor(),
             ShazamPreProcessor(),
             LGBTQPreProcessor(),
+            FormatterPreProcessor(),
             TracksIDSMapperPreProcessor(),
-            FormatterPreProcessor()
         ]
 
     @property
