@@ -32,7 +32,7 @@ class TracksIDSMapperPreProcessor(IPreProcessor):
         data_with_musixmatch_keys = self._merge_musixmatch_ids(data_with_shazam_keys)
         data_with_genius_ids = self._merge_genius_ids(data_with_musixmatch_keys)
 
-        return data_with_genius_ids.drop(SONG, axis=1, inplace=True)
+        return data_with_genius_ids.drop(SONG, axis=1)
 
     def _merge_shazam_ids(self, data: DataFrame) -> DataFrame:
         shazam_data = pd.read_csv(SHAZAM_TRACKS_IDS_PATH)
