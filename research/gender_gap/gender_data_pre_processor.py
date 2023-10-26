@@ -9,7 +9,7 @@ from consts.gender_researcher_consts import AGGREGATION_MAPPING, MAIN_LANGUAGES,
 from consts.language_consts import LANGUAGE
 from consts.openai_consts import ARTIST_GENDER
 from data_processing.pre_processors.genre.main_genre_mapper import OTHER
-from utils.analysis_utils import get_artists_play_count
+from utils.analysis_utils import aggregate_play_count
 from utils.data_utils import read_merged_data
 
 
@@ -49,7 +49,7 @@ class GenderDataPreProcessor:
 
     @staticmethod
     def _add_play_count_to_data(data: DataFrame, groupbyed_data: DataFrame) -> DataFrame:
-        artists_play_count = get_artists_play_count(data)
+        artists_play_count = aggregate_play_count(data, column=ARTIST_NAME)
         merged_data = groupbyed_data.merge(
             right=artists_play_count,
             on=ARTIST_NAME,

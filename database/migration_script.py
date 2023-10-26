@@ -40,7 +40,7 @@ class DatabaseMigrator:
         self._db_engine = ComponentFactory.get_database_engine()
 
     async def migrate(self):
-        data = pd.read_csv(MERGED_DATA_PATH, nrows=1000)  # read_merged_data()
+        data = pd.read_csv(MERGED_DATA_PATH, nrows=10000)  # read_merged_data()
         rows = self._load_rows(data)
         pool = AioPool(5)
 
@@ -61,33 +61,10 @@ class DatabaseMigrator:
 
     @staticmethod
     def _load_rows(data: DataFrame) -> Generator[Series, None, None]:
-        merged_data = data.merge(
-            right=pd.read_csv(SHAZAM_TRACKS_ABOUT_ANALYZER_OUTPUT_PATH),
-            how='left',
-            on=SHAZAM_KEY
-        )
-        merged_data = merged_data.merge(
-            right=pd.read_csv(SPOTIFY_ARTISTS_UI_ANALYZER_OUTPUT_PATH),
-            how="left",
-            on=ARTIST_ID
-        )
-        lgbtq_data = pd.read_csv(SPOTIFY_LGBTQ_PLAYLISTS_OUTPUT_PATH)
-        merged_data = merged_data.merge(
-            right=lgbtq_data[[ARTIST_ID, IS_LGBTQ]],
-            how="left",
-            on=[ARTIST_ID]
-        )
-        merged_data[IS_LGBTQ] = merged_data[IS_LGBTQ].fillna(False)
-        merged_data = merged_data.merge(
-            right=pd.read_csv(TRACK_IDS_MAPPING_ANALYZER_OUTPUT_PATH).drop(SHAZAM_KEY, axis=1),
-            how='left',
-            on=[ID]
-        )
+        data.replace([np.nan], [None], inplace=True)
+        data[STATION] = data[STATION].apply(lambda x: '_'.join(x.split(' ')))
 
-        merged_data.replace([np.nan], [None], inplace=True)
-        merged_data[STATION] = merged_data[STATION].apply(lambda x: '_'.join(x.split(' ')))
-
-        for i, row in merged_data.iterrows():
+        for i, row in data.iterrows():
             yield row
 
     async def _insert_single_row_records(self, progress_bar: tqdm, row: Series) -> None:
