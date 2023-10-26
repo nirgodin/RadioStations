@@ -9,6 +9,7 @@ from analysis.analyzers.gender_analyzer import GenderAnalyzer
 from analysis.analyzers.genre_analyzer import GenreAnalyzer
 from analysis.analyzers.kan_gimel_analyzer import KanGimelAnalyzer
 from analysis.analyzers.lyrics_language.shazam_lyrics_language_analyzer import ShazamLyricsLanguageAnalyzer
+from analysis.analyzers.musixmatch_lyrics_analyzer import MusixmatchLyricsAnalyzer
 from analysis.analyzers.shazam_analyzer import ShazamAnalyzer
 from analysis.analyzers.shazam_tracks_about_analyzer import ShazamTracksAboutAnalyzer
 from consts.miscellaneous_consts import UTF_8_ENCODING
@@ -93,5 +94,6 @@ class DataPreProcessor:
             AlbumsDetailsAnalyzer(),
             ShazamAnalyzer(),
             SpotifyArtistsUIAnalyzer(),
-            ShazamTracksAboutAnalyzer()
+            ShazamTracksAboutAnalyzer(),
+            MusixmatchLyricsAnalyzer(),
         ]

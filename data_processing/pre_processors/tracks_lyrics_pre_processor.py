@@ -1,23 +1,50 @@
 import pandas as pd
 from pandas import DataFrame
 
-from consts.path_consts import SHAZAM_TRACKS_LYRICS_PATH, MERGED_DATA_PATH
+from consts.data_consts import GENIUS_ID, ID
+from consts.musixmatch_consts import MUSIXMATCH_ID
+from consts.path_consts import SHAZAM_TRACKS_LYRICS_PATH, MERGED_DATA_PATH, GENIUS_LYRICS_OUTPUT_PATH, \
+    MUSIXMATCH_FORMATTED_TRACKS_LYRICS_PATH
 from data_processing.pre_processors.language.language_pre_processor import SHAZAM_KEY
 from data_processing.pre_processors.pre_processor_interface import IPreProcessor
 from utils.file_utils import read_json
+from utils.general_utils import stringify_float
 
 SHAZAM_LYRICS = 'shazam_lyrics'
+GENIUS_LYRICS = "genius_lyrics"
+MUSIXMATCH_LYRICS = "musixmatch_lyrics"
 
 
 class TracksLyricsPreProcessor(IPreProcessor):
     def pre_process(self, data: DataFrame) -> DataFrame:
-        data_with_shazam_lyrics = self._merge_shazam_tracks_lyrics(data)
-
-    def _merge_shazam_tracks_lyrics(self, data: DataFrame) -> DataFrame:
-        shazam_lyrics = read_json(SHAZAM_TRACKS_LYRICS_PATH)
-        filtered_lyrics = {k: v for k, v in shazam_lyrics.items() if v != []}
-        data[SHAZAM_LYRICS] = data[SHAZAM_KEY].map(filtered_lyrics)
+        data_with_shazam_lyrics = self._merge_json_tracks_lyrics(
+            data=data,
+            path=SHAZAM_TRACKS_LYRICS_PATH,
+            key_column=SHAZAM_KEY,
+            lyrics_column=SHAZAM_LYRICS
+        )
+        data_with_genius_lyrics = self._merge_json_tracks_lyrics(
+            data=data_with_shazam_lyrics,
+            path=GENIUS_LYRICS_OUTPUT_PATH,
+            key_column=GENIUS_ID,
+            lyrics_column=GENIUS_LYRICS
+        )
+        data_with_musixmatch_lyrics = self._merge_json_tracks_lyrics(
+            data=data_with_genius_lyrics,
+            path=MUSIXMATCH_FORMATTED_TRACKS_LYRICS_PATH,
+            key_column=MUSIXMATCH_ID,
+            lyrics_column=MUSIXMATCH_LYRICS
+        )
         print('b')
+
+    @staticmethod
+    def _merge_json_tracks_lyrics(data: DataFrame, path: str, key_column: str, lyrics_column: str) -> DataFrame:
+        lyrics = read_json(path)
+        filtered_lyrics = {k: v for k, v in lyrics.items() if v != []}
+        data[key_column] = data[key_column].apply(stringify_float)
+        data[lyrics_column] = data[key_column].map(filtered_lyrics)
+
+        return data
 
     @property
     def name(self) -> str:
