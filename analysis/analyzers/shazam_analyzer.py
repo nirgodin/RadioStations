@@ -14,6 +14,7 @@ from consts.shazam_consts import SHAZAM_RANK, TITLE, SUBTITLE, ISRAEL, WORLD, CI
 from data_processing.data_merger import DataMerger
 from data_processing.pre_processors.language.language_pre_processor import SHAZAM_KEY
 from utils.file_utils import to_csv
+from utils.general_utils import stringify_float
 
 SHAZAM_COLUMNS_MAPPING = {
     KEY: SHAZAM_KEY,
@@ -60,7 +61,7 @@ class ShazamAnalyzer(IAnalyzer):
         data = pd.concat(non_duplicated_data)
         data.rename(columns=SHAZAM_COLUMNS_MAPPING, inplace=True)
         ids_mapping = data[[SHAZAM_KEY, APPLE_MUSIC_TRACK_ID]]
-        ids_mapping[APPLE_MUSIC_TRACK_ID] = ids_mapping[APPLE_MUSIC_TRACK_ID].apply(lambda x: np.nan if pd.isna(x) else str(int(x)))
+        ids_mapping[APPLE_MUSIC_TRACK_ID] = ids_mapping[APPLE_MUSIC_TRACK_ID].apply(stringify_float)
 
         to_csv(data=ids_mapping, output_path=SHAZAM_APPLE_TRACKS_IDS_MAPPING_OUTPUT_PATH)
 

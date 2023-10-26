@@ -13,6 +13,7 @@ from consts.shazam_consts import APPLE_MUSIC_ADAM_ID, APPLE_MUSIC_TRACK_ID, APPL
 from data_processing.pre_processors.language.language_pre_processor import SHAZAM_KEY
 from data_processing.pre_processors.pre_processor_interface import IPreProcessor
 from utils.file_utils import read_json
+from utils.general_utils import stringify_float
 
 SHAZAM_ID_COLUMNS = [KEY, APPLE_MUSIC_ADAM_ID]
 
@@ -37,7 +38,7 @@ class TracksIDSMapperPreProcessor(IPreProcessor):
     def _merge_shazam_ids(self, data: DataFrame) -> DataFrame:
         shazam_data = pd.read_csv(SHAZAM_TRACKS_IDS_PATH)
         shazam_data.drop_duplicates(subset=[SPOTIFY_ID], inplace=True)
-        shazam_data[SHAZAM_ID_COLUMNS] = shazam_data[SHAZAM_ID_COLUMNS].applymap(self._stringify_float)
+        shazam_data[SHAZAM_ID_COLUMNS] = shazam_data[SHAZAM_ID_COLUMNS].applymap(stringify_float)
         shazam_data.rename(columns={KEY: SHAZAM_KEY, SPOTIFY_ID: ID}, inplace=True)
         shazam_data_with_apple_ids = self._merge_apple_ids(shazam_data)
 
@@ -67,10 +68,11 @@ class TracksIDSMapperPreProcessor(IPreProcessor):
 
         return data
 
-    def _merge_genius_ids(self, data: DataFrame) -> DataFrame:
+    @staticmethod
+    def _merge_genius_ids(data: DataFrame) -> DataFrame:
         genius_data = pd.read_csv(GENIUS_TRACKS_IDS_OUTPUT_PATH)
         genius_data.dropna(subset=[ID], inplace=True)
-        genius_data[GENIUS_ID] = genius_data[ID].apply(self._stringify_float)
+        genius_data[GENIUS_ID] = genius_data[ID].apply(stringify_float)
 
         return data.merge(
             right=genius_data[[SONG, GENIUS_ID]],
@@ -78,13 +80,10 @@ class TracksIDSMapperPreProcessor(IPreProcessor):
             on=SONG
         )
 
-    def _extract_musixmatch_id(self, spotify_id: str, musixmatch_data: Dict[str, dict]) -> Union[float, str]:
-        raw_id = musixmatch_data.get(spotify_id, {}).get(MUSIXMATCH_TRACK_ID, np.nan)
-        return self._stringify_float(raw_id)
-
     @staticmethod
-    def _stringify_float(x: float):
-        return np.nan if pd.isna(x) else str(int(x))
+    def _extract_musixmatch_id(spotify_id: str, musixmatch_data: Dict[str, dict]) -> Union[float, str]:
+        raw_id = musixmatch_data.get(spotify_id, {}).get(MUSIXMATCH_TRACK_ID, np.nan)
+        return stringify_float(raw_id)
 
     @property
     def name(self) -> str:

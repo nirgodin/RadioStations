@@ -5,6 +5,9 @@ from functools import reduce
 from itertools import chain
 from typing import List, Optional, Tuple, Any, Union, Iterator
 
+import numpy as np
+import pandas as pd
+
 from component_factory import ComponentFactory
 from consts.env_consts import IS_REMOTE_RUN
 from consts.language_consts import LANGUAGE, HEBREW_LANGUAGE_ABBREVIATION
@@ -63,3 +66,7 @@ def binary_search(lst: list, value: Any) -> Tuple[bool, int]:
         is_in_list = False
 
     return is_in_list, index
+
+
+def stringify_float(flt: float) -> str:
+    return np.nan if pd.isna(flt) else str(int(flt))

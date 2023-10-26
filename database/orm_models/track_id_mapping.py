@@ -7,6 +7,7 @@ from consts.musixmatch_consts import MUSIXMATCH_ID
 from consts.shazam_consts import APPLE_MUSIC_ADAM_ID, APPLE_MUSIC_ID
 from data_processing.pre_processors.language.language_pre_processor import SHAZAM_KEY
 from database.orm_models.base_orm_model import BaseORMModel
+from utils.general_utils import stringify_float
 
 
 class TrackIDMapping(BaseORMModel):
@@ -35,7 +36,7 @@ class TrackIDMapping(BaseORMModel):
             return None
 
         if isinstance(track_id, float) or isinstance(track_id, int):
-            return str(int(track_id))
+            return stringify_float(track_id)
 
         if track_id.endswith('.0'):
             return track_id.rstrip('.0')
