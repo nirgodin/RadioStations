@@ -2660,6 +2660,27 @@ dev = ["pre-commit", "tox"]
 testing = ["pytest", "pytest-benchmark"]
 
 [[package]]
+name = "postgres-client"
+version = "0.1.0"
+description = ""
+optional = false
+python-versions = "^3.8"
+files = []
+develop = false
+
+[package.dependencies]
+asyncmy = "0.2.8"
+asyncpg = "0.28.0"
+greenlet = "2.0.1"
+sqlalchemy = "2.0.21"
+
+[package.source]
+type = "git"
+url = "https://github.com/nirgodin/radio-stations-postgres-client.git"
+reference = "HEAD"
+resolved_reference = "64a480224612489e8c91981ce21c75d01f8690b3"
+
+[[package]]
 name = "preshed"
 version = "3.0.9"
 description = "Cython hash table that trusts the keys are pre-hashed"
@@ -4375,4 +4396,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "e4c94657284543b8b4659287d1d000615ac7dc3cef1c65d8ee60d12b60d20ad8"
+content-hash = "cbecf1eb0cd261576d70b570276b2bc685d41f4424c1c875ca05107d42cc8ddf"
