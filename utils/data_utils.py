@@ -39,3 +39,8 @@ def extract_column_existing_values(path: str, column_name: Union[str, List[str]]
 
 def read_merged_data() -> DataFrame:
     return pd.read_csv(MERGED_DATA_PATH, dtype=MERGED_DATA_DTYPES)
+
+
+def is_list_na(value: Union[float, List[str]]) -> bool:
+    is_na = pd.isna(value)
+    return isinstance(is_na, bool)
