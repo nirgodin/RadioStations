@@ -23,6 +23,7 @@ from database.orm_models.spotify_album import SpotifyAlbum
 from database.orm_models.spotify_artist import SpotifyArtist
 from database.orm_models.spotify_track import SpotifyTrack
 from database.orm_models.track_id_mapping import TrackIDMapping
+from database.orm_models.track_lyrics import TrackLyrics
 from database.postgres_operations import insert_records
 from database.postgres_utils import does_record_exist
 from tools.environment_manager import EnvironmentManager
@@ -105,7 +106,8 @@ class DatabaseMigrator:
             SpotifyTrack,
             RadioTrack,
             AudioFeatures,
-            TrackIDMapping
+            TrackIDMapping,
+            TrackLyrics
         ]
 
 
