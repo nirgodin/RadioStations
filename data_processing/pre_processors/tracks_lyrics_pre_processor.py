@@ -1,13 +1,12 @@
 from typing import Tuple, Union, List, Dict
 
 import numpy as np
-import pandas as pd
 from pandas import DataFrame, Series
 
 from consts.data_consts import GENIUS_ID
 from consts.lyrics_consts import SHAZAM_LYRICS, GENIUS_LYRICS, MUSIXMATCH_LYRICS, LYRICS_SOURCES, LYRICS_COLUMNS
 from consts.musixmatch_consts import MUSIXMATCH_ID
-from consts.path_consts import SHAZAM_TRACKS_LYRICS_PATH, MERGED_DATA_PATH, GENIUS_LYRICS_OUTPUT_PATH, \
+from consts.path_consts import SHAZAM_TRACKS_LYRICS_PATH, GENIUS_LYRICS_OUTPUT_PATH, \
     MUSIXMATCH_FORMATTED_TRACKS_LYRICS_PATH
 from data_processing.pre_processors.language.language_pre_processor import SHAZAM_KEY
 from data_processing.pre_processors.pre_processor_interface import IPreProcessor
@@ -75,8 +74,3 @@ class TracksLyricsPreProcessor(IPreProcessor):
     @property
     def name(self) -> str:
         return "tracks lyrics pre processor"
-
-
-if __name__ == '__main__':
-    data = pd.read_csv(MERGED_DATA_PATH, nrows=1000)
-    TracksLyricsPreProcessor().pre_process(data)

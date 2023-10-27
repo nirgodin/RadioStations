@@ -14,3 +14,4 @@ LYRICS_COLUMNS = [
     LYRICS_SOURCE
 ]
 NUMBER_OF_WORDS = "number_of_words"
+WORDS_COUNT = "words_count"
