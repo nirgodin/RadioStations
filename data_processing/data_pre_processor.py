@@ -31,6 +31,8 @@ from data_processing.pre_processors.remastered_pre_processor import RemasteredPr
 from data_processing.pre_processors.shazam_pre_processor import ShazamPreProcessor
 from data_processing.pre_processors.tracks_ids_mapper_pre_processor import TracksIDSMapperPreProcessor
 from data_processing.pre_processors.tracks_ids_pre_processor import TracksIDSPreProcessor
+from data_processing.pre_processors.tracks_lyrics_pre_processor import TracksLyricsPreProcessor
+from data_processing.pre_processors.tracks_lyrics_words_pre_processor import TracksLyricsWordsPreProcessor
 from data_processing.pre_processors.year_pre_processor import YearPreProcessor
 
 
@@ -82,6 +84,8 @@ class DataPreProcessor:
             LGBTQPreProcessor(),
             FormatterPreProcessor(),
             TracksIDSMapperPreProcessor(),
+            TracksLyricsPreProcessor(),
+            TracksLyricsWordsPreProcessor()
         ]
 
     @property
