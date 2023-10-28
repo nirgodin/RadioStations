@@ -14,7 +14,7 @@ def to_json(d: Union[dict, list], path: str) -> None:
         json.dump(d, f, ensure_ascii=False, indent=4)
 
 
-def read_json(path: str) -> dict:
+def read_json(path: str) -> Union[dict, list]:
     with open(path, 'r', encoding=JSON_ENCODING) as f:
         return json.load(f)
 

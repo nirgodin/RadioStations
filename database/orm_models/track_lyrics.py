@@ -1,4 +1,5 @@
 import json
+from typing import Union, List, Dict, Optional
 
 from sqlalchemy import Column, String, ForeignKey, ARRAY, SmallInteger, JSON, Enum, Float
 
@@ -27,7 +28,21 @@ class TrackLyrics(BaseORMModel):
         record_items["language_confidence"] = None if language_score is None else round(language_score * 100)
         number_of_words = record_items[NUMBER_OF_WORDS]
         record_items[NUMBER_OF_WORDS] = None if number_of_words is None else int(number_of_words)
-        record_items[LYRICS] = None if record_items[LYRICS] is None else eval(record_items[LYRICS])
-        record_items[WORDS_COUNT] = None if record_items[WORDS_COUNT] is None else json.loads(record_items[WORDS_COUNT])
+        record_items[LYRICS] = TrackLyrics._pre_process_lyrics(record_items[LYRICS])
+        record_items[WORDS_COUNT] = TrackLyrics._pre_process_words_count(record_items[WORDS_COUNT])
 
         return record_items
+
+    @staticmethod
+    def _pre_process_lyrics(raw_lyrics: Union[None, str, List[str]]) -> Optional[List[str]]:
+        if isinstance(raw_lyrics, str):
+            return eval(raw_lyrics)
+
+        return raw_lyrics
+
+    @staticmethod
+    def _pre_process_words_count(raw_words_count: Union[None, str, Dict[str, int]]) -> Optional[Dict[str, int]]:
+        if isinstance(raw_words_count, str):
+            return json.loads(raw_words_count)
+
+        return raw_words_count

@@ -1,21 +1,18 @@
 import asyncio
 from functools import partial
-from typing import List, Callable, Awaitable, Type, Generator
+from typing import List, Type, Generator
 
 import numpy as np
 import pandas as pd
 from asyncio_pool import AioPool
-from asyncpg import UniqueViolationError
 from pandas import Series, DataFrame
 from sqlalchemy.exc import IntegrityError
 from tqdm import tqdm
 
 from component_factory import ComponentFactory
-from consts.data_consts import RELEASE_DATE, ALBUM_ID, ID, RELEASE_DATE_PRECISION, ALBUM_RELEASE_DATE, STATION, \
-    ADDED_AT, NAME, ARTIST_ID, IS_LGBTQ
-from consts.path_consts import MERGED_DATA_PATH, ALBUMS_DETAILS_OUTPUT_PATH, SHAZAM_TRACKS_ABOUT_ANALYZER_OUTPUT_PATH, \
-    SPOTIFY_ARTISTS_UI_ANALYZER_OUTPUT_PATH, SPOTIFY_LGBTQ_PLAYLISTS_OUTPUT_PATH, TRACK_IDS_MAPPING_ANALYZER_OUTPUT_PATH
-from data_processing.pre_processors.language.language_pre_processor import SHAZAM_KEY
+from consts.data_consts import STATION, \
+    ADDED_AT, NAME
+from consts.path_consts import MERGED_DATA_PATH
 from database.orm_models.audio_features import AudioFeatures
 from database.orm_models.base_orm_model import BaseORMModel
 from database.orm_models.radio_track import RadioTrack
@@ -27,12 +24,12 @@ from database.orm_models.track_lyrics import TrackLyrics
 from database.postgres_operations import insert_records
 from database.postgres_utils import does_record_exist
 from tools.environment_manager import EnvironmentManager
-from utils.data_utils import read_merged_data
+from utils.file_utils import read_json, to_json
 
+ERRORS_PATH = r"database/errors.json"
 # TODO:
 #  3. Add genius pre processor
 #  5. Fill all possible primary keys
-#  6. Add error logging
 
 
 class DatabaseMigrator:
@@ -41,7 +38,7 @@ class DatabaseMigrator:
         self._db_engine = ComponentFactory.get_database_engine()
 
     async def migrate(self):
-        data = pd.read_csv(MERGED_DATA_PATH, nrows=10000)  # read_merged_data()
+        data = pd.read_csv(MERGED_DATA_PATH, nrows=10)  # read_merged_data()
         rows = self._load_rows(data)
         pool = AioPool(5)
 
@@ -62,6 +59,9 @@ class DatabaseMigrator:
 
     @staticmethod
     def _load_rows(data: DataFrame) -> Generator[Series, None, None]:
+        # for pre_processor in [TracksLyricsPreProcessor(), TracksLyricsWordsPreProcessor()]:
+        #     data = pre_processor.pre_process(data)
+
         data.replace([np.nan], [None], inplace=True)
         data[STATION] = data[STATION].apply(lambda x: '_'.join(x.split(' ')))
 
@@ -74,7 +74,7 @@ class DatabaseMigrator:
 
         progress_bar.update(1)
 
-    async def _insert_single_orm_record_wrapper(self, orm: Type[BaseORMModel], row: Series, retries_left: int = 2) -> None:
+    async def _insert_single_orm_record_wrapper(self, orm: Type[BaseORMModel], row: Series, retries_left: int = 1) -> None:
         if retries_left == 0:
             print(f"Could not insert record for orm `{orm.__name__}`. Skipping")
             return
@@ -88,6 +88,7 @@ class DatabaseMigrator:
 
         except Exception as e:
             print(f"Received exception!\n{e}")
+            self._record_exception(e, row, orm)
             await asyncio.sleep(5)
             await self._insert_single_orm_record_wrapper(orm, row, retries_left - 1)
 
@@ -97,6 +98,19 @@ class DatabaseMigrator:
 
         if not exists:
             await insert_records(self._db_engine, [record])
+
+    @staticmethod
+    def _record_exception(e: Exception, row: Series, orm: Type[BaseORMModel]) -> None:
+        exception_record = {
+            "error": str(e),
+            "name": row[NAME],
+            "added_at": row[ADDED_AT],
+            "station": row[STATION],
+            "table": orm.__tablename__
+        }
+        existing_errors: List[dict] = read_json(ERRORS_PATH)
+        existing_errors.append(exception_record)
+        to_json(d=existing_errors, path=ERRORS_PATH)
 
     @property
     def _ordered_orms(self) -> List[Type[BaseORMModel]]:
