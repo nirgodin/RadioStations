@@ -36,6 +36,7 @@ class TracksIDSMapperPreProcessor(IPreProcessor):
         return data_with_genius_ids.drop(SONG, axis=1)
 
     def _merge_shazam_ids(self, data: DataFrame) -> DataFrame:
+        data.drop(SHAZAM_KEY, axis=1, inplace=True)
         shazam_data = pd.read_csv(SHAZAM_TRACKS_IDS_PATH)
         shazam_data.drop_duplicates(subset=[SPOTIFY_ID], inplace=True)
         shazam_data[SHAZAM_ID_COLUMNS] = shazam_data[SHAZAM_ID_COLUMNS].applymap(stringify_float)
