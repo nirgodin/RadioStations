@@ -1,3 +1,4 @@
+import ast
 import json
 from typing import Union, List, Dict, Optional
 
@@ -43,6 +44,6 @@ class TrackLyrics(BaseORMModel):
     @staticmethod
     def _pre_process_words_count(raw_words_count: Union[None, str, Dict[str, int]]) -> Optional[Dict[str, int]]:
         if isinstance(raw_words_count, str):
-            return json.loads(raw_words_count)
+            return ast.literal_eval(raw_words_count)
 
         return raw_words_count
