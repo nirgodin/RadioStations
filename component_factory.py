@@ -30,6 +30,4 @@ class ComponentFactory:
     @lru_cache
     def get_database_engine() -> AsyncEngine:
         url = os.environ[DATABASE_URL]
-        connect_args = {}  # {"ssl": "require"}  # TODO: Add back ssl when real database is utilized
-
-        return create_async_engine(url=url, connect_args=connect_args)
+        return create_async_engine(url=url, connect_args={})
