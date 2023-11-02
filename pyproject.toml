@@ -6,7 +6,7 @@ authors = ["nirgodin <70273595+nirgodin@users.noreply.github.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.10"
 aiohttp = "3.8.3"
 asyncio-pool = "0.6.0"
 beautifulsoup4 = "4.12.2"
