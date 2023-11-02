@@ -24,6 +24,7 @@ from database.orm_models.track_lyrics import TrackLyrics
 from database.postgres_operations import insert_records
 from database.postgres_utils import does_record_exist
 from tools.environment_manager import EnvironmentManager
+from utils.data_utils import read_merged_data
 from utils.file_utils import read_json, to_json
 
 ERRORS_PATH = r"database/errors.json"
@@ -38,7 +39,7 @@ class DatabaseMigrator:
         self._db_engine = ComponentFactory.get_database_engine()
 
     async def migrate(self):
-        data = pd.read_csv(MERGED_DATA_PATH, nrows=10)  # read_merged_data()
+        data = read_merged_data()
         rows = self._load_rows(data)
         pool = AioPool(5)
 
@@ -59,9 +60,6 @@ class DatabaseMigrator:
 
     @staticmethod
     def _load_rows(data: DataFrame) -> Generator[Series, None, None]:
-        # for pre_processor in [TracksLyricsPreProcessor(), TracksLyricsWordsPreProcessor()]:
-        #     data = pre_processor.pre_process(data)
-
         data.replace([np.nan], [None], inplace=True)
         data[STATION] = data[STATION].apply(lambda x: '_'.join(x.split(' ')))
 
