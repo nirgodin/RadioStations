@@ -2,6 +2,9 @@ from inspect import iscoroutinefunction
 from math import ceil
 from typing import Generator, Optional, Union
 
+from asyncio_pool import AioPool
+
+from consts.api_consts import AIO_POOL_SIZE
 from consts.typing_consts import AF, F
 
 
@@ -9,6 +12,12 @@ class DataChunksGenerator:
     def __init__(self, chunk_size: int = 50, max_chunks_number: Optional[int] = 5):
         self._chunk_size = chunk_size
         self._max_chunks_number = max_chunks_number
+
+    async def execute_by_chunk_in_parallel(self, lst: list, filtering_list: Optional[list], func: Union[F, AF]):
+        chunks = self.generate_data_chunks(lst=lst, filtering_list=filtering_list)
+        pool = AioPool(AIO_POOL_SIZE)
+
+        return await pool.map(func, chunks)
 
     async def execute_by_chunk(self, lst: list, filtering_list: Optional[list], func: Union[F, AF]) -> None:
         chunks = self.generate_data_chunks(lst, filtering_list)
