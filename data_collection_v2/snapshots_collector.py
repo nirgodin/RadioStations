@@ -85,14 +85,14 @@ class RadioStationsSnapshotsCollector:
             drive_folder_id=os.environ[RADIO_STATIONS_SNAPSHOTS_DRIVE_ID]
         )
         upload_files_to_drive(file_metadata)
-
-
-if __name__ == '__main__':
-    EnvironmentManager().set_env_variables()
-    session = ClientSession(headers=build_spotify_headers())
-    playlists_collector = PlaylistsCollector(session)
-    db_engine = get_database_engine()
-    spotify_client = "mock"
-    artists_collector = ArtistsCollector(db_engine, spotify_client)
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(RadioStationsSnapshotsCollector(playlists_collector, artists_collector).collect())
+#
+#
+# if __name__ == '__main__':
+#     EnvironmentManager().set_env_variables()
+#     session = ClientSession(headers=build_spotify_headers())
+#     playlists_collector = PlaylistsCollector(session)
+#     db_engine = get_database_engine()
+#     spotify_client = "mock"
+#     artists_collector = ArtistsCollector(db_engine, spotify_client)
+#     loop = asyncio.get_event_loop()
+#     loop.run_until_complete(RadioStationsSnapshotsCollector(playlists_collector, artists_collector).collect())
