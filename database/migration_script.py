@@ -1,4 +1,5 @@
 import asyncio
+from datetime import datetime
 from functools import partial
 from typing import List, Type, Generator
 
@@ -6,12 +7,15 @@ import numpy as np
 import pandas as pd
 from asyncio_pool import AioPool
 from pandas import Series, DataFrame
+from postgres_client.postgres_operations import insert_records, execute_query
+from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
 from tqdm import tqdm
 
 from component_factory import ComponentFactory
 from consts.data_consts import STATION, \
     ADDED_AT, NAME
+from consts.datetime_consts import SPOTIFY_DATETIME_FORMAT
 from consts.path_consts import MERGED_DATA_PATH
 from database.orm_models.audio_features import AudioFeatures
 from database.orm_models.base_orm_model import BaseORMModel
@@ -21,7 +25,6 @@ from database.orm_models.spotify_artist import SpotifyArtist
 from database.orm_models.spotify_track import SpotifyTrack
 from database.orm_models.track_id_mapping import TrackIDMapping
 from database.orm_models.track_lyrics import TrackLyrics
-from database.postgres_operations import insert_records
 from database.postgres_utils import does_record_exist
 from tools.environment_manager import EnvironmentManager
 from utils.data_utils import read_merged_data
@@ -39,8 +42,18 @@ class DatabaseMigrator:
         self._db_engine = ComponentFactory.get_database_engine()
 
     async def migrate(self):
+        print("Starting to insert records to database")
         data = read_merged_data()
-        rows = self._load_rows(data)
+        filtered_data = await self._filter_non_existing_records(data)
+
+        if filtered_data.empty:
+            print("Did not find any non existing record. Aborting")
+            return
+
+        rows = self._load_rows(filtered_data)
+        await self._insert_non_existing_records(data, rows)
+
+    async def _insert_non_existing_records(self, data: DataFrame, rows: Generator[Series, None, None]) -> None:
         pool = AioPool(5)
 
         with tqdm(total=len(data)) as progress_bar:
@@ -65,6 +78,17 @@ class DatabaseMigrator:
 
         for i, row in data.iterrows():
             yield row
+
+    async def _filter_non_existing_records(self, data: DataFrame) -> DataFrame:
+        query = (
+            select(RadioTrack.added_at)
+            .order_by(RadioTrack.added_at.desc())
+            .limit(1)
+        )
+        query_result = await execute_query(engine=self._db_engine, query=query)
+        last_added_at: datetime = query_result.first().added_at
+
+        return data[data[ADDED_AT] > last_added_at.strftime(SPOTIFY_DATETIME_FORMAT)]
 
     async def _insert_single_row_records(self, progress_bar: tqdm, row: Series) -> None:
         for orm in self._ordered_orms:

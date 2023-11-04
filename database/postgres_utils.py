@@ -1,10 +1,10 @@
-from typing import Type, Any
+from typing import Type
 
+from postgres_client.postgres_operations import execute_query
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncEngine
 
 from database.orm_models.base_orm_model import BaseORMModel
-from database.postgres_operations import execute_query
 
 
 async def does_record_exist(engine: AsyncEngine, orm: Type[BaseORMModel], record: BaseORMModel) -> bool:
