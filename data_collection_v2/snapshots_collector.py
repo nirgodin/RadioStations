@@ -6,8 +6,9 @@ import pandas as pd
 from aiohttp import ClientSession
 from pandas import DataFrame
 from postgres_client.postgres_operations import get_database_engine
+from spotipyio.logic.spotify_client import SpotifyClient
 
-from consts.data_consts import TRACK
+from consts.data_consts import TRACK, ID, TRACKS, ITEMS
 from consts.env_consts import RADIO_STATIONS_SNAPSHOTS_DRIVE_ID
 from consts.path_consts import RADIO_STATIONS_PLAYLIST_SNAPSHOT_PATH_FORMAT
 from consts.playlists_consts import GLGLZ
@@ -29,16 +30,16 @@ from utils.spotify_utils import build_spotify_headers
 
 class RadioStationsSnapshotsCollector:
     def __init__(self,
-                 playlists_collector: PlaylistsCollector,
+                 spotify_client: SpotifyClient,
                  artists_database_inserter: ArtistsDatabaseInserter,
                  albums_database_inserter: AlbumsDatabaseInserter):
-        self._playlists_collector = playlists_collector
+        self._spotify_client = spotify_client
         self._artists_database_inserter = artists_database_inserter
         self._albums_database_inserter = albums_database_inserter
 
     async def collect(self) -> None:
         logger.info('Starting to run `RadioStationsSnapshotsCollector`')
-        playlists = await self._playlists_collector.collect({GLGLZ: '18cUFeM5Q75ViwevsMQM1j'})  # TODO: Remove
+        playlists = await self._spotify_client.playlists.collect(['18cUFeM5Q75ViwevsMQM1j'])
         stations = await self._collect_stations(playlists)
         dfs = [station.to_dataframe() for station in stations]
         data = pd.concat(dfs)
@@ -56,11 +57,12 @@ class RadioStationsSnapshotsCollector:
         return stations
 
     async def _get_playlist_tracks(self, playlist: Playlist) -> List[Track]:
-        print(f'Starting to collect `{playlist.station}` station artists')
-        artists = []
-        # artists = await self._artists_collector.collect(playlist.tracks)
+        print(f'Starting to collect `{playlist[ID]}` station artists')
+        tracks = playlist[TRACKS][ITEMS]
+        artists = await self._artists_database_inserter.insert(tracks)
+        albums = await self._albums_database_inserter.insert(tracks)
 
-        return self._serialize_tracks(playlist.tracks, artists)
+        return self._serialize_tracks(tracks, artists)
 
     @staticmethod
     def _serialize_tracks(raw_tracks: List[dict], artists: List[Artist]) -> List[Track]:
@@ -85,14 +87,17 @@ class RadioStationsSnapshotsCollector:
             drive_folder_id=os.environ[RADIO_STATIONS_SNAPSHOTS_DRIVE_ID]
         )
         upload_files_to_drive(file_metadata)
-#
-#
-# if __name__ == '__main__':
-#     EnvironmentManager().set_env_variables()
-#     session = ClientSession(headers=build_spotify_headers())
-#     playlists_collector = PlaylistsCollector(session)
-#     db_engine = get_database_engine()
-#     spotify_client = "mock"
-#     artists_collector = ArtistsCollector(db_engine, spotify_client)
-#     loop = asyncio.get_event_loop()
-#     loop.run_until_complete(RadioStationsSnapshotsCollector(playlists_collector, artists_collector).collect())
+
+
+if __name__ == '__main__':
+    EnvironmentManager().set_env_variables()
+    session = ClientSession(headers=build_spotify_headers())
+    db_engine = get_database_engine()
+    spotify_client = SpotifyClient.create(session)
+    snapshots_collector = RadioStationsSnapshotsCollector(
+        spotify_client=spotify_client,
+        artists_database_inserter=ArtistsDatabaseInserter(db_engine, spotify_client),
+        albums_database_inserter=AlbumsDatabaseInserter(db_engine)
+    )
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(snapshots_collector.collect())
