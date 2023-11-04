@@ -23,7 +23,7 @@ class ArtistsDatabaseInserter(BaseDatabaseInserter):
             if artist_id is not None:
                 artists_ids.append(artist_id)
 
-        return await self._spotify_client.artists.collect(artists_ids)
+        return await self._spotify_client.artists.info.collect(artists_ids)
 
     @staticmethod
     def _get_single_artist_id(track: dict) -> Optional[str]:

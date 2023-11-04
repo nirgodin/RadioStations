@@ -14,11 +14,13 @@ class BaseDatabaseInserter(ABC):
     def __init__(self, db_engine: AsyncEngine):
         self._db_engine = db_engine
 
-    async def insert(self, tracks: List[dict]):
+    async def insert(self, tracks: List[dict]) -> List[BaseSpotifyORMModel]:
         raw_records = await self._get_raw_records(tracks)
         records = [self._orm.from_spotify_response(record) for record in raw_records]
         existing_ids = await self._query_existing_ids(records)
         await self._insert_non_existing_records(records, existing_ids)
+
+        return records
 
     @abstractmethod
     async def _get_raw_records(self, tracks: List[dict]) -> List[dict]:
