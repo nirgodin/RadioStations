@@ -1,3 +1,5 @@
+import asyncio
+
 from consts.path_consts import MERGED_DATA_PATH
 from data_processing.data_pre_processor import DataPreProcessor
 from database.migration_script import DatabaseMigrator
@@ -10,4 +12,4 @@ if __name__ == '__main__':
     pre_processor = DataPreProcessor(max_year=2023)
     pre_processor.pre_process(output_path=MERGED_DATA_PATH)
     PlaylistsCreatorDatabaseGenerator().generate_database()
-    DatabaseMigrator().migrate()
+    asyncio.get_event_loop().run_until_complete(DatabaseMigrator().migrate())
