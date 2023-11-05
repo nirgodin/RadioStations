@@ -18,6 +18,8 @@ from utils.general_utils import stringify_float
 
 class TracksLyricsPreProcessor(IPreProcessor):
     def pre_process(self, data: DataFrame) -> DataFrame:
+        data.rename(columns={f"{SHAZAM_KEY}_x": SHAZAM_KEY}, inplace=True)  # TODO: Find root problem
+        data.drop(f"{SHAZAM_KEY}_y", axis=1, inplace=True)
         data_with_shazam_lyrics = self._merge_json_tracks_lyrics(
             data=data,
             path=SHAZAM_TRACKS_LYRICS_PATH,
