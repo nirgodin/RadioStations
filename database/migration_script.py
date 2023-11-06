@@ -51,7 +51,7 @@ class DatabaseMigrator:
             return
 
         rows = self._load_rows(filtered_data)
-        await self._insert_non_existing_records(data, rows)
+        await self._insert_non_existing_records(filtered_data, rows)
 
     async def _insert_non_existing_records(self, data: DataFrame, rows: Generator[Series, None, None]) -> None:
         pool = AioPool(5)
