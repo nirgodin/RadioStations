@@ -54,6 +54,7 @@ class RadioStationsSnapshotsCollector:
                 tracks=tracks,
                 artists=spotify_records[ARTISTS]
             )
+            # TODO: Add insertion to tracks ids mapping db
 
     async def _insert_spotify_records(self, tracks: List[dict]) -> Dict[str, List[BaseSpotifyORMModel]]:
         spotify_records = {}
