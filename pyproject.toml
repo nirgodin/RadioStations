@@ -39,7 +39,7 @@ sqlalchemy = "2.0.21"
 asyncmy = "0.2.8"
 asyncpg = "0.28.0"
 greenlet = "2.0.1"
-postgres-client = {git = "https://github.com/nirgodin/radio-stations-postgres-client.git", rev = "0ba22727"}
+postgres-client = {git = "https://github.com/nirgodin/radio-stations-postgres-client.git", rev = "c96c89c0"}
 webdriver-manager = "4.0.1"
 spotipyio = {git = "https://github.com/nirgodin/spotipyio.git", rev = "d54ba8af"}
 
