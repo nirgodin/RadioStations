@@ -7,13 +7,11 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncEngine
 
 from consts.data_consts import ID
+from data_collection_v2.database_insertion.base_database_inserter import BaseDatabaseInserter
 from tools.logging import logger
 
 
-class BaseSpotifyDatabaseInserter(ABC):
-    def __init__(self, db_engine: AsyncEngine):
-        self._db_engine = db_engine
-
+class BaseSpotifyDatabaseInserter(BaseDatabaseInserter, ABC):
     async def insert(self, tracks: List[dict]) -> List[BaseSpotifyORMModel]:
         logger.info(f"Starting to run {self.__class__.__name__}")
         raw_records = await self._get_raw_records(tracks)

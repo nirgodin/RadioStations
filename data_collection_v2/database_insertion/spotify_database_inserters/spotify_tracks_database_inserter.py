@@ -9,9 +9,6 @@ from data_collection_v2.database_insertion.spotify_database_inserters.base_spoti
 
 
 class SpotifyTracksDatabaseInserter(BaseSpotifyDatabaseInserter):
-    def __init__(self, db_engine: AsyncEngine):
-        super().__init__(db_engine)
-
     async def _get_raw_records(self, tracks: List[dict]) -> List[dict]:
         return tracks
 
