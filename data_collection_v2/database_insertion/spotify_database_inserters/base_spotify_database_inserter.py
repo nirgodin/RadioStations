@@ -10,7 +10,7 @@ from consts.data_consts import ID
 from tools.logging import logger
 
 
-class BaseDatabaseInserter(ABC):
+class BaseSpotifyDatabaseInserter(ABC):
     def __init__(self, db_engine: AsyncEngine):
         self._db_engine = db_engine
 
