@@ -2613,8 +2613,8 @@ sqlalchemy = "2.0.21"
 [package.source]
 type = "git"
 url = "https://github.com/nirgodin/radio-stations-postgres-client.git"
-reference = "e78019cb"
-resolved_reference = "e78019cbd2479c74a216d93ec7efd1af78e6398c"
+reference = "efcf28f7"
+resolved_reference = "efcf28f7e909178209b02f4aa9ee5f2d9fbbebf5"
 
 [[package]]
 name = "preshed"
@@ -3734,8 +3734,8 @@ tqdm = "4.65.0"
 [package.source]
 type = "git"
 url = "https://github.com/nirgodin/spotipyio.git"
-reference = "fbe129a7"
-resolved_reference = "fbe129a7d3b47d1ba958b70df36c93ecb1462612"
+reference = "d54ba8af"
+resolved_reference = "d54ba8afeea9ccdfb79e337ce5ff812cf458b8a1"
 
 [[package]]
 name = "sqlalchemy"
@@ -4363,4 +4363,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "dbc5e631ea34a016d4917ad9bb1695efb045f1b3f39a1d0868f9c4235b9b4f2a"
+content-hash = "feffee400b3e747a0407f4f5e132bd0cc5ac8e94b98dd92426e0537bf1080fb7"
