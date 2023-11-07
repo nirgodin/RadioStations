@@ -33,6 +33,11 @@ class BaseSpotifyDatabaseInserter(ABC):
     def _orm(self) -> Type[BaseSpotifyORMModel]:
         raise NotImplementedError
 
+    @property
+    @abstractmethod
+    def name(self) -> str:
+        raise NotImplementedError
+
     @staticmethod
     def _filter_duplicate_ids(records: List[BaseSpotifyORMModel]):
         seen_ids = set()

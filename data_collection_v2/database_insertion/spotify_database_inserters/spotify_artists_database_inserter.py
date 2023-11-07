@@ -40,3 +40,7 @@ class SpotifyArtistsDatabaseInserter(BaseSpotifyDatabaseInserter):
     @property
     def _orm(self) -> Type[BaseSpotifyORMModel]:
         return SpotifyArtist
+
+    @property
+    def name(self) -> str:
+        return ARTISTS

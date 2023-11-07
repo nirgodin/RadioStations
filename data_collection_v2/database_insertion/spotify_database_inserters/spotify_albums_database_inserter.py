@@ -5,7 +5,7 @@ from postgres_client.models.orm.spotify.spotify_album import SpotifyAlbum
 from postgres_client.utils.spotify_utils import extract_artist_id
 from sqlalchemy.ext.asyncio import AsyncEngine
 
-from consts.data_consts import TRACK, ALBUM, ARTISTS, ID
+from consts.data_consts import TRACK, ALBUM, ARTISTS, ID, ALBUMS
 from data_collection_v2.database_insertion.spotify_database_inserters.base_spotify_database_inserter import BaseSpotifyDatabaseInserter
 
 
@@ -37,3 +37,7 @@ class SpotifyAlbumsDatabaseInserter(BaseSpotifyDatabaseInserter):
     @property
     def _orm(self) -> Type[BaseSpotifyORMModel]:
         return SpotifyAlbum
+
+    @property
+    def name(self) -> str:
+        return ALBUMS

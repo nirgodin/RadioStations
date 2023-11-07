@@ -4,6 +4,7 @@ from postgres_client.models.orm.spotify.base_spotify_orm_model import BaseSpotif
 from postgres_client.models.orm.spotify.spotify_track import SpotifyTrack
 from sqlalchemy.ext.asyncio import AsyncEngine
 
+from consts.data_consts import TRACKS
 from data_collection_v2.database_insertion.spotify_database_inserters.base_spotify_database_inserter import BaseSpotifyDatabaseInserter
 
 
@@ -17,3 +18,7 @@ class SpotifyTracksDatabaseInserter(BaseSpotifyDatabaseInserter):
     @property
     def _orm(self) -> Type[BaseSpotifyORMModel]:
         return SpotifyTrack
+
+    @property
+    def name(self) -> str:
+        return TRACKS

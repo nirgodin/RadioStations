@@ -22,3 +22,7 @@ class SpotifyAudioFeaturesDatabaseInserter(BaseSpotifyDatabaseInserter):
     @property
     def _orm(self) -> Type[BaseSpotifyORMModel]:
         return AudioFeatures
+
+    @property
+    def name(self) -> str:
+        return "audio_features"
