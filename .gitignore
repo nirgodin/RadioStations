@@ -154,3 +154,7 @@ vcs.xml
 /data
 /service_account_secrets.json
 /env_variables.json
+
+# Local development
+# Airflow
+/docker-compose.yaml
