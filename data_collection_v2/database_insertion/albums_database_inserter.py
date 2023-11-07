@@ -2,11 +2,11 @@ from typing import List, Optional, Type
 
 from postgres_client.models.orm.spotify.base_spotify_orm_model import BaseSpotifyORMModel
 from postgres_client.models.orm.spotify.spotify_album import SpotifyAlbum
+from postgres_client.utils.spotify_utils import extract_artist_id
 from sqlalchemy.ext.asyncio import AsyncEngine
 
-from consts.data_consts import TRACK, ALBUM
-from data_collection_v2.base_database_inserter import BaseDatabaseInserter
-from tools.logging import logger
+from consts.data_consts import TRACK, ALBUM, ARTISTS, ID
+from data_collection_v2.database_insertion.base_database_inserter import BaseDatabaseInserter
 
 
 class AlbumsDatabaseInserter(BaseDatabaseInserter):
@@ -18,8 +18,10 @@ class AlbumsDatabaseInserter(BaseDatabaseInserter):
 
         for track in tracks:
             album = self._extract_single_album(track)
+            artist_id = extract_artist_id(track.get(TRACK, {}))
 
-            if album is not None:
+            if album is not None and artist_id is not None:
+                album[ARTISTS][0][ID] = artist_id  # TODO: Robust
                 albums.append(album)
 
         return albums

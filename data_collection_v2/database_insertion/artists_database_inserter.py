@@ -6,7 +6,7 @@ from spotipyio.logic.spotify_client import SpotifyClient
 from sqlalchemy.ext.asyncio import AsyncEngine
 
 from consts.data_consts import TRACK, ARTISTS, ID
-from data_collection_v2.base_database_inserter import BaseDatabaseInserter
+from data_collection_v2.database_insertion.base_database_inserter import BaseDatabaseInserter
 
 
 class ArtistsDatabaseInserter(BaseDatabaseInserter):

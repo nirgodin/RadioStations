@@ -15,12 +15,14 @@ class BaseDatabaseInserter(ABC):
         self._db_engine = db_engine
 
     async def insert(self, tracks: List[dict]) -> List[BaseSpotifyORMModel]:
+        logger.info(f"Starting to run {self.__class__.__name__}")
         raw_records = await self._get_raw_records(tracks)
         records = [self._orm.from_spotify_response(record) for record in raw_records]
-        existing_ids = await self._query_existing_ids(records)
-        await self._insert_non_existing_records(records, existing_ids)
+        unique_records = self._filter_duplicate_ids(records)
+        existing_ids = await self._query_existing_ids(unique_records)
+        await self._insert_non_existing_records(unique_records, existing_ids)
 
-        return records
+        return unique_records
 
     @abstractmethod
     async def _get_raw_records(self, tracks: List[dict]) -> List[dict]:
@@ -31,13 +33,25 @@ class BaseDatabaseInserter(ABC):
     def _orm(self) -> Type[BaseSpotifyORMModel]:
         raise NotImplementedError
 
+    @staticmethod
+    def _filter_duplicate_ids(records: List[BaseSpotifyORMModel]):
+        seen_ids = set()
+        filtered_records = []
+
+        for record in records:
+            if record.id not in seen_ids:
+                seen_ids.add(record.id)
+                filtered_records.append(record)
+
+        return filtered_records
+
     async def _query_existing_ids(self, records: List[BaseSpotifyORMModel]) -> List[str]:
         logger.info(f"Querying database to find existing ids for table `{self._orm.__tablename__}`")
         records_ids = [record.id for record in records]
         id_column = getattr(self._orm, ID)
         query = (
             select(id_column)
-            .where(id_column.notin_(records_ids))
+            .where(id_column.in_(records_ids))
         )
         query_result = await execute_query(engine=self._db_engine, query=query)
 
