@@ -16,8 +16,8 @@ class SpotifyAudioFeaturesDatabaseInserter(BaseSpotifyDatabaseInserter):
         self._spotify_client = spotify_client
 
     async def _get_raw_records(self, tracks: List[dict]) -> List[dict]:
-        ids = [safe_nested_get(track, [TRACK, ID]) for track in tracks]
-        return await self._spotify_client.audio_features.collect(ids)
+        ids = {safe_nested_get(track, [TRACK, ID]) for track in tracks}
+        return await self._spotify_client.audio_features.collect(list(ids))
 
     @property
     def _orm(self) -> Type[BaseSpotifyORMModel]:

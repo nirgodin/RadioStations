@@ -15,15 +15,15 @@ class SpotifyArtistsDatabaseInserter(BaseSpotifyDatabaseInserter):
         self._spotify_client = spotify_client
 
     async def _get_raw_records(self, tracks: List[dict]) -> List[dict]:
-        artists_ids = []
+        artists_ids = set()
 
         for track in tracks:
             artist_id = self._get_single_artist_id(track)
 
             if artist_id is not None:
-                artists_ids.append(artist_id)
+                artists_ids.add(artist_id)
 
-        return await self._spotify_client.artists.info.collect(artists_ids)
+        return await self._spotify_client.artists.info.collect(list(artists_ids))
 
     @staticmethod
     def _get_single_artist_id(track: dict) -> Optional[str]:
