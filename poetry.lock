@@ -416,6 +416,20 @@ html5lib = ["html5lib"]
 lxml = ["lxml"]
 
 [[package]]
+name = "billboard-py"
+version = "7.0.0"
+description = "Python API for downloading Billboard charts"
+optional = false
+python-versions = "*"
+files = [
+    {file = "billboard.py-7.0.0-py2.py3-none-any.whl", hash = "sha256:f9d88b2193dae410d292a44cab8a154f58207533824f4c85f6707aaad8a28f76"},
+]
+
+[package.dependencies]
+beautifulsoup4 = ">=4.4.1"
+requests = ">=2.2.1"
+
+[[package]]
 name = "billiard"
 version = "4.1.0"
 description = "Python multiprocessing fork with improvements and bugfixes"
@@ -4363,4 +4377,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "e778aec07198a2090561cf3d6c8e7a9046f305e1f8e98a61fca24c45f8360741"
+content-hash = "a3ffdc26a600b6d4adf9dc8bcf73824ffa0b780440218d3ecb97d7545ff43791"

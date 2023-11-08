@@ -42,6 +42,7 @@ greenlet = "2.0.1"
 postgres-client = {git = "https://github.com/nirgodin/radio-stations-postgres-client.git", rev = "181b846b"}
 webdriver-manager = "4.0.1"
 spotipyio = {git = "https://github.com/nirgodin/spotipyio.git", rev = "d54ba8af"}
+billboard-py = "^7.0.0"
 
 
 [build-system]
