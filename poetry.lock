@@ -2613,8 +2613,8 @@ sqlalchemy = "2.0.21"
 [package.source]
 type = "git"
 url = "https://github.com/nirgodin/radio-stations-postgres-client.git"
-reference = "ad21a952"
-resolved_reference = "ad21a952ac316c5443477bdc317058c71763202d"
+reference = "afde6aa9"
+resolved_reference = "afde6aa9702178819d7c2594abc93906d6d0721d"
 
 [[package]]
 name = "preshed"
@@ -4363,4 +4363,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "98e7cd27daea306676eb464a651b125df0789f4a46730295c5750f4bafec8008"
+content-hash = "9c8857d101d41532c98973e3f6b50b554a01af8a5536253ab7b33697a788c8d6"

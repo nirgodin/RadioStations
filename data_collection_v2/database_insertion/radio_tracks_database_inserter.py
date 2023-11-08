@@ -1,12 +1,10 @@
 from typing import List
 
-from postgres_client import insert_records
+from postgres_client import insert_records, RadioTrack
 from postgres_client.utils.spotify_utils import extract_artist_id
-from sqlalchemy.ext.asyncio import AsyncEngine
 
-from consts.data_consts import ID
+from consts.data_consts import ID, TRACK
 from data_collection_v2.database_insertion.base_database_inserter import BaseDatabaseInserter
-from database.orm_models.radio_track import RadioTrack
 
 
 class RadioTracksDatabaseInserter(BaseDatabaseInserter):
@@ -26,7 +24,7 @@ class RadioTracksDatabaseInserter(BaseDatabaseInserter):
 
     @staticmethod
     def _extract_artist_details(track: dict, artists: List[dict]) -> dict:
-        artist_id = extract_artist_id(track)
+        artist_id = extract_artist_id(track[TRACK])
 
         for artist in artists:
             if artist[ID] == artist_id:

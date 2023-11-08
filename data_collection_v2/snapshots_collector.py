@@ -2,7 +2,7 @@ import asyncio
 from typing import List, Dict
 
 from aiohttp import ClientSession
-from postgres_client import BaseSpotifyORMModel
+from postgres_client import BaseSpotifyORMModel, SpotifyArtist
 from postgres_client.postgres_operations import get_database_engine
 from spotipyio.logic.spotify_client import SpotifyClient
 
@@ -50,10 +50,10 @@ class RadioStationsSnapshotsCollector:
 
     async def _insert_records_to_db(self, playlists: List[dict]) -> None:
         for playlist in playlists:
-            print(f'Starting to insert playlist `{playlist[ID]}` spotify records')
+            logger.info(f'Starting to insert playlist `{playlist[ID]}` spotify records')
             tracks = playlist[TRACKS][ITEMS]
             spotify_records = await self._insert_spotify_records(tracks)
-            await self._radio_tracks_database_inserter.insert(
+            await self._insert_radio_tracks(
                 playlist=playlist,
                 tracks=tracks,
                 artists=spotify_records[ARTISTS]
@@ -67,6 +67,16 @@ class RadioStationsSnapshotsCollector:
             spotify_records[inserter.name] = records
 
         return spotify_records
+
+    async def _insert_radio_tracks(self, playlist: dict, tracks: List[dict], artists: List[SpotifyArtist]) -> None:
+        artists_ids = [artist.id for artist in artists]
+        artists_responses = await self._spotify_client.artists.info.collect(artists_ids)
+
+        await self._radio_tracks_database_inserter.insert(
+            playlist=playlist,
+            tracks=tracks,
+            artists=artists_responses
+        )
 
     @property
     def _ordered_database_inserters(self) -> List[BaseSpotifyDatabaseInserter]:
