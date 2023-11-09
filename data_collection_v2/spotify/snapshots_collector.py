@@ -20,6 +20,7 @@ from data_collection_v2.database_insertion.spotify_database_inserters.spotify_tr
     SpotifyTracksDatabaseInserter
 from data_collection_v2.database_insertion.spotify_database_inserters.track_id_mapping_inserter import \
     TrackIDMappingDatabaseInserter
+from data_collection_v2.spotify.spotify_insertions_manager import SpotifyInsertionsManager
 from tools.environment_manager import EnvironmentManager
 from tools.logging import logger
 from utils.spotify_utils import build_spotify_headers
@@ -28,19 +29,11 @@ from utils.spotify_utils import build_spotify_headers
 class RadioStationsSnapshotsCollector:
     def __init__(self,
                  spotify_client: SpotifyClient,
-                 artists_database_inserter: SpotifyArtistsDatabaseInserter,
-                 albums_database_inserter: SpotifyAlbumsDatabaseInserter,
-                 tracks_database_inserter: SpotifyTracksDatabaseInserter,
-                 audio_features_database_inserter: SpotifyAudioFeaturesDatabaseInserter,
-                 radio_tracks_database_inserter: RadioTracksDatabaseInserter,
-                 track_id_mapping_database_inserter: TrackIDMappingDatabaseInserter):
+                 spotify_insertions_manager: SpotifyInsertionsManager,
+                 radio_tracks_database_inserter: RadioTracksDatabaseInserter):
         self._spotify_client = spotify_client
-        self._artists_database_inserter = artists_database_inserter
-        self._albums_database_inserter = albums_database_inserter
-        self._tracks_database_inserter = tracks_database_inserter
-        self._audio_features_database_inserter = audio_features_database_inserter
+        self._spotify_insertions_manager = spotify_insertions_manager
         self._radio_tracks_database_inserter = radio_tracks_database_inserter
-        self._track_id_mapping_database_inserter = track_id_mapping_database_inserter
 
     async def collect(self, playlists_ids: List[str]) -> None:
         logger.info('Starting to run `RadioStationsSnapshotsCollector`')
@@ -52,21 +45,12 @@ class RadioStationsSnapshotsCollector:
         for playlist in playlists:
             logger.info(f'Starting to insert playlist `{playlist[ID]}` spotify records')
             tracks = playlist[TRACKS][ITEMS]
-            spotify_records = await self._insert_spotify_records(tracks)
+            spotify_records = await self._spotify_insertions_manager.insert(tracks)
             await self._insert_radio_tracks(
                 playlist=playlist,
                 tracks=tracks,
                 artists=spotify_records[ARTISTS]
             )
-
-    async def _insert_spotify_records(self, tracks: List[dict]) -> Dict[str, List[BaseSpotifyORMModel]]:
-        spotify_records = {}
-
-        for inserter in self._ordered_database_inserters:
-            records = await inserter.insert(tracks)
-            spotify_records[inserter.name] = records
-
-        return spotify_records
 
     async def _insert_radio_tracks(self, playlist: dict, tracks: List[dict], artists: List[SpotifyArtist]) -> None:
         artists_ids = [artist.id for artist in artists]
@@ -78,16 +62,6 @@ class RadioStationsSnapshotsCollector:
             artists=artists_responses
         )
 
-    @property
-    def _ordered_database_inserters(self) -> List[BaseSpotifyDatabaseInserter]:
-        return [
-            self._artists_database_inserter,
-            self._albums_database_inserter,
-            self._tracks_database_inserter,
-            self._audio_features_database_inserter,
-            self._track_id_mapping_database_inserter
-        ]
-
 
 if __name__ == '__main__':
     EnvironmentManager().set_env_variables()
@@ -96,12 +70,14 @@ if __name__ == '__main__':
     spotify_client = SpotifyClient.create(session)
     snapshots_collector = RadioStationsSnapshotsCollector(
         spotify_client=spotify_client,
-        artists_database_inserter=SpotifyArtistsDatabaseInserter(db_engine, spotify_client),
-        albums_database_inserter=SpotifyAlbumsDatabaseInserter(db_engine),
-        tracks_database_inserter=SpotifyTracksDatabaseInserter(db_engine),
-        audio_features_database_inserter=SpotifyAudioFeaturesDatabaseInserter(db_engine, spotify_client),
+        spotify_insertions_manager=SpotifyInsertionsManager(
+            artists_database_inserter=SpotifyArtistsDatabaseInserter(db_engine, spotify_client),
+            albums_database_inserter=SpotifyAlbumsDatabaseInserter(db_engine),
+            tracks_database_inserter=SpotifyTracksDatabaseInserter(db_engine),
+            audio_features_database_inserter=SpotifyAudioFeaturesDatabaseInserter(db_engine, spotify_client),
+            track_id_mapping_database_inserter=TrackIDMappingDatabaseInserter(db_engine)
+        ),
         radio_tracks_database_inserter=RadioTracksDatabaseInserter(db_engine),
-        track_id_mapping_database_inserter=TrackIDMappingDatabaseInserter(db_engine)
     )
     loop = asyncio.get_event_loop()
     loop.run_until_complete(snapshots_collector.collect(['18cUFeM5Q75ViwevsMQM1j']))
