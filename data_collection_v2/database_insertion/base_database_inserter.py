@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from typing import List
 
 from sqlalchemy.ext.asyncio import AsyncEngine
 
@@ -10,5 +11,5 @@ class BaseDatabaseInserter(ABC):
         self._db_engine = db_engine
 
     @abstractmethod
-    async def insert(self, *args, **kwargs) -> BaseORMModel:
+    async def insert(self, *args, **kwargs) -> List[BaseORMModel]:
         raise NotImplementedError
