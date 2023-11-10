@@ -13,6 +13,8 @@ from data_collection_v2.database_insertion.billboard_database_inserters.billboar
     BillboardChartsDatabaseInserter
 from data_collection_v2.database_insertion.billboard_database_inserters.billboard_tracks_database_inserter import \
     BillboardTracksDatabaseInserter
+from data_collection_v2.database_insertion.billboard_database_inserters.billboard_tracks_updater import \
+    BillboardTracksUpdater
 from data_collection_v2.spotify.spotify_insertions_manager import SpotifyInsertionsManager
 from tools.environment_manager import EnvironmentManager
 
@@ -23,12 +25,14 @@ class BillboardManager:
                  tracks_collector: BillboardTracksCollector,
                  spotify_insertions_manager: SpotifyInsertionsManager,
                  tracks_inserter: BillboardTracksDatabaseInserter,
-                 charts_inserter: BillboardChartsDatabaseInserter):
+                 charts_inserter: BillboardChartsDatabaseInserter,
+                 tracks_updater: BillboardTracksUpdater):
         self._charts_collector = charts_collector
         self._tracks_collector = tracks_collector
         self._spotify_insertions_manager = spotify_insertions_manager
         self._tracks_inserter = tracks_inserter
         self._charts_inserter = charts_inserter
+        self._tracks_updater = tracks_updater
 
     async def collect(self, dates: List[datetime]):
         charts = await self._charts_collector.collect(dates)
@@ -37,6 +41,7 @@ class BillboardManager:
         await self._spotify_insertions_manager.insert(tracks)
         await self._tracks_inserter.insert(entries)
         await self._charts_inserter.insert(entries)
+        await self._tracks_updater.update(entries)
 
 
 async def main(dates: List[datetime]):
@@ -52,13 +57,3 @@ async def main(dates: List[datetime]):
         tracks_inserter=get_billboard_tracks_inserter(db_engine)
     )
     await manager.collect(dates)
-
-
-if __name__ == '__main__':
-    DATES = [
-        datetime(1958, 8, 4),
-        # datetime(1983, 4, 15),
-        # datetime(2017, 12, 19)
-    ]
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(main(DATES))

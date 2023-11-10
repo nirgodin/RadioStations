@@ -9,11 +9,14 @@ from spotipyio.logic.spotify_client import SpotifyClient
 from sqlalchemy.ext.asyncio import AsyncEngine
 
 from data_collection_v2.billboard.billboard_charts_collector import BillboardChartsCollector
+from data_collection_v2.billboard.billboard_manager import BillboardManager
 from data_collection_v2.billboard.billboard_tracks_collector import BillboardTracksCollector
 from data_collection_v2.database_insertion.billboard_database_inserters.billboard_charts_database_inserter import \
     BillboardChartsDatabaseInserter
 from data_collection_v2.database_insertion.billboard_database_inserters.billboard_tracks_database_inserter import \
     BillboardTracksDatabaseInserter
+from data_collection_v2.database_insertion.billboard_database_inserters.billboard_tracks_updater import \
+    BillboardTracksUpdater
 from data_collection_v2.database_insertion.radio_tracks_database_inserter import RadioTracksDatabaseInserter
 from data_collection_v2.database_insertion.spotify_database_inserters.spotify_albums_database_inserter import \
     SpotifyAlbumsDatabaseInserter
@@ -94,3 +97,25 @@ def get_billboard_tracks_inserter(db_engine: Optional[AsyncEngine] = None) -> Bi
 def get_billboard_charts_inserter(db_engine: Optional[AsyncEngine] = None) -> BillboardChartsDatabaseInserter:
     engine = db_engine or get_database_engine()
     return BillboardChartsDatabaseInserter(engine)
+
+
+def get_billboard_tracks_updater(db_engine: Optional[AsyncEngine] = None) -> BillboardTracksUpdater:
+    engine = db_engine or get_database_engine()
+    return BillboardTracksUpdater(engine)
+
+
+def get_billboard_manager(session: Optional[ClientSession] = None,
+                          spotify_client: Optional[SpotifyClient] = None,
+                          db_engine: Optional[AsyncEngine] = None) -> BillboardManager:
+    client_session = session or get_session()
+    client = spotify_client or get_spotify_client(client_session)
+    engine = db_engine or get_database_engine()
+
+    return BillboardManager(
+        charts_collector=get_billboard_charts_collector(client_session),
+        tracks_collector=get_billboard_tracks_collector(client_session, client),
+        spotify_insertions_manager=get_spotify_insertions_manager(client, engine),
+        charts_inserter=get_billboard_charts_inserter(engine),
+        tracks_inserter=get_billboard_tracks_inserter(engine),
+        tracks_updater=get_billboard_tracks_updater(engine)
+    )

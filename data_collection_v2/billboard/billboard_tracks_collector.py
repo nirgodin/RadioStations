@@ -23,7 +23,7 @@ class BillboardTracksCollector:
         self._spotify_client = spotify_client
 
     async def collect(self, charts: List[ChartData]):
-        chart_entries = self._get_flattened_chart_entries(charts)[:10]
+        chart_entries = self._get_flattened_chart_entries(charts)
         pool = AioPool(3)
 
         with tqdm(total=len(chart_entries)) as progress_bar:
