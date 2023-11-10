@@ -9,28 +9,42 @@ from asyncio_pool import AioPool
 from billboard import ChartData
 from bs4 import BeautifulSoup
 from certifi import where
+from spotipyio.logic.spotify_client import SpotifyClient
+from spotipyio.utils.general_utils import chain_iterable
 from tqdm import tqdm
 
 from consts.api_consts import AIO_POOL_SIZE
 from consts.billboard_consts import BILLBOARD_DAILY_CHARTS_URL_FORMAT, BILLBOARD_HOT_100
 from consts.datetime_consts import BILLBOARD_DATETIME_FORMAT
+from data_collection_v2.spotify.spotify_insertions_manager import SpotifyInsertionsManager
 
 
 class BillboardCollector:
-    async def collect(self, dates: List[datetime]):
-        pool = AioPool(AIO_POOL_SIZE)
-        ssl_context = create_default_context(cafile=where())
+    def __init__(self,
+                 session: ClientSession,
+                 spotify_client: SpotifyClient,
+                 spotify_insertions_manager: SpotifyInsertionsManager):
+        self._session = session
+        self._spotify_client = spotify_client
+        self._spotify_insertions_manager = spotify_insertions_manager
 
-        async with ClientSession(connector=TCPConnector(ssl=ssl_context)) as session:
+        # TODO:
+        #  1. Search tracks on Spotify to match them with track id
+        #  2. Insert non existing tracks ids to SpotifyTrack table (incl. inserting to foreign keys)
+        #  3. Insert non existing billboard tracks to BillboardTrack table
+        #  4. Insert chart entries to BillboardChartEntry
+
+    async def collect(self, dates: List[datetime]):
+        charts_data = await self._collect_charts_data(dates)
+        tracks = await self._spotify_client
+
+    async def _collect_charts_data(self, dates: List[datetime]) -> List[ChartData]:
+        pool = AioPool(AIO_POOL_SIZE)
+
+        async with self._session as session:
             with tqdm(total=len(dates)) as progress_bar:
                 func = partial(self._collect_single_date_charts, progress_bar, session)
-                results = await pool.map(func, dates)
-                # TODO:
-                #  1. Search tracks on Spotify to match them with track id
-                #  2. Insert non existing tracks ids to SpotifyTrack table (incl. inserting to foreign keys)
-                #  3. Insert non existing billboard tracks to BillboardTrack table
-                #  4. Insert chart entries to BillboardChartEntry
-                print('b')
+                return await pool.map(func, dates)
 
     async def _collect_single_date_charts(self, progress_bar: tqdm, session: ClientSession,
                                           date: datetime) -> ChartData:
