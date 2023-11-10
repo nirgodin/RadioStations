@@ -53,7 +53,8 @@ class BillboardTracksCollector:
             for entry in chart.entries:
                 entry_data = ChartEntryData(
                     entry=entry,
-                    date=datetime.strptime(chart.date, BILLBOARD_DATETIME_FORMAT)
+                    date=datetime.strptime(chart.date, BILLBOARD_DATETIME_FORMAT),
+                    chart=chart.name
                 )
                 entries.append(entry_data)
 
