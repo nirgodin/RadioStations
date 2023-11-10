@@ -32,7 +32,7 @@ class BillboardTracksCollector:
     async def _collect_single(self, progress_bar: tqdm, entry_data: ChartEntryData) -> ChartEntryData:
         progress_bar.update(1)
         search_item = SearchItem(
-            search_types=[SpotifySearchType.ARTIST],
+            search_types=[SpotifySearchType.TRACK],
             artist=entry_data.entry.artist,
             track=entry_data.entry.title
         )
