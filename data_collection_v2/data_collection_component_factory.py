@@ -1,11 +1,15 @@
 from functools import lru_cache
+from ssl import create_default_context
 from typing import Optional
 
-from aiohttp import ClientSession
+from aiohttp import ClientSession, TCPConnector, CookieJar
+from certifi import where
 from postgres_client import get_database_engine
 from spotipyio.logic.spotify_client import SpotifyClient
 from sqlalchemy.ext.asyncio import AsyncEngine
 
+from data_collection_v2.billboard.billboard_charts_collector import BillboardChartsCollector
+from data_collection_v2.billboard.billboard_tracks_collector import BillboardTracksCollector
 from data_collection_v2.database_insertion.radio_tracks_database_inserter import RadioTracksDatabaseInserter
 from data_collection_v2.database_insertion.spotify_database_inserters.spotify_albums_database_inserter import \
     SpotifyAlbumsDatabaseInserter
@@ -23,7 +27,13 @@ from utils.spotify_utils import build_spotify_headers
 
 
 def get_session() -> ClientSession:
-    return ClientSession(headers=build_spotify_headers())
+    ssl_context = create_default_context(cafile=where())
+
+    return ClientSession(
+        headers=build_spotify_headers(),
+        connector=TCPConnector(ssl=ssl_context),
+        cookie_jar=CookieJar(quote_cookie=False)
+    )
 
 
 def get_spotify_client(session: Optional[ClientSession] = None) -> SpotifyClient:
@@ -55,3 +65,18 @@ def get_snapshots_collector() -> RadioStationsSnapshotsCollector:
         radio_tracks_database_inserter=RadioTracksDatabaseInserter(db_engine)
     )
 
+
+def get_billboard_charts_collector(session: Optional[ClientSession] = None) -> BillboardChartsCollector:
+    client_session = session or get_session()
+    return BillboardChartsCollector(client_session)
+
+
+def get_billboard_tracks_collector(session: Optional[ClientSession] = None,
+                                   spotify_client: Optional[SpotifyClient] = None) -> BillboardTracksCollector:
+    client_session = session or get_session()
+    client = spotify_client or get_spotify_client(client_session)
+
+    return BillboardTracksCollector(
+        session=client_session,
+        spotify_client=client
+    )

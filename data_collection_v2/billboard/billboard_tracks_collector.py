@@ -12,6 +12,7 @@ from spotipyio.logic.spotify_client import SpotifyClient
 from spotipyio.utils.spotify_utils import extract_first_search_result
 from tqdm import tqdm
 
+from consts.data_consts import TRACK
 from consts.datetime_consts import BILLBOARD_DATETIME_FORMAT
 from data_collection_v2.billboard.chart_entry_data import ChartEntryData
 
@@ -22,12 +23,14 @@ class BillboardTracksCollector:
         self._spotify_client = spotify_client
 
     async def collect(self, charts: List[ChartData]):
-        chart_entries = self._get_flattened_chart_entries(charts)
-        pool = AioPool(5)
+        chart_entries = self._get_flattened_chart_entries(charts)[:10]
+        pool = AioPool(3)
 
         with tqdm(total=len(chart_entries)) as progress_bar:
             func = partial(self._collect_single, progress_bar)
-            return await pool.map(func, chart_entries)
+            results = await pool.map(func, chart_entries)
+
+        return [result for result in results if isinstance(result, ChartEntryData)]
 
     async def _collect_single(self, progress_bar: tqdm, entry_data: ChartEntryData) -> ChartEntryData:
         progress_bar.update(1)
@@ -37,7 +40,8 @@ class BillboardTracksCollector:
             track=entry_data.entry.title
         )
         search_result = await self._spotify_client.search.collect_single(search_item)
-        entry_data.track = extract_first_search_result(search_result)
+        raw_track = extract_first_search_result(search_result)
+        entry_data.track = {TRACK: raw_track} if raw_track else None
 
         return entry_data
 
