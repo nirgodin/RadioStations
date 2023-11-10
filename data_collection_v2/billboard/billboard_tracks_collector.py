@@ -6,6 +6,7 @@ import pandas
 from aiohttp import ClientSession
 from asyncio_pool import AioPool
 from billboard import ChartData, ChartEntry
+from postgres_client import ChartEntryData
 from spotipyio.logic.collectors.search_collectors.search_item import SearchItem
 from spotipyio.logic.collectors.search_collectors.spotify_search_type import SpotifySearchType
 from spotipyio.logic.spotify_client import SpotifyClient
@@ -14,7 +15,6 @@ from tqdm import tqdm
 
 from consts.data_consts import TRACK
 from consts.datetime_consts import BILLBOARD_DATETIME_FORMAT
-from data_collection_v2.billboard.chart_entry_data import ChartEntryData
 
 
 class BillboardTracksCollector:

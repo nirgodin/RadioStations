@@ -2621,14 +2621,15 @@ develop = false
 [package.dependencies]
 asyncmy = "0.2.8"
 asyncpg = "0.28.0"
+billboard-py = "^7.0.0"
 greenlet = "2.0.1"
 sqlalchemy = "2.0.21"
 
 [package.source]
 type = "git"
 url = "https://github.com/nirgodin/radio-stations-postgres-client.git"
-reference = "d2afd9d8"
-resolved_reference = "d2afd9d843f8357b667098223765b02d8ccd140c"
+reference = "1e9b1de5"
+resolved_reference = "1e9b1de56d405b1eb38e0db284e2a66349698403"
 
 [[package]]
 name = "preshed"
@@ -4377,4 +4378,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "2a14ecec0b565f47263c822b47db499cb9f781da2fb946f46ea810ac129e71f1"
+content-hash = "1e7e42150f8ac8b9fde5184c0bb04a873fa8f0fce05c4bb358ee6e553721907f"
