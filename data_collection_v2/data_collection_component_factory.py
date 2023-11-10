@@ -10,6 +10,10 @@ from sqlalchemy.ext.asyncio import AsyncEngine
 
 from data_collection_v2.billboard.billboard_charts_collector import BillboardChartsCollector
 from data_collection_v2.billboard.billboard_tracks_collector import BillboardTracksCollector
+from data_collection_v2.database_insertion.billboard_database_inserters.billboard_charts_database_inserter import \
+    BillboardChartsDatabaseInserter
+from data_collection_v2.database_insertion.billboard_database_inserters.billboard_tracks_database_inserter import \
+    BillboardTracksDatabaseInserter
 from data_collection_v2.database_insertion.radio_tracks_database_inserter import RadioTracksDatabaseInserter
 from data_collection_v2.database_insertion.spotify_database_inserters.spotify_albums_database_inserter import \
     SpotifyAlbumsDatabaseInserter
@@ -80,3 +84,13 @@ def get_billboard_tracks_collector(session: Optional[ClientSession] = None,
         session=client_session,
         spotify_client=client
     )
+
+
+def get_billboard_tracks_inserter(db_engine: Optional[AsyncEngine] = None) -> BillboardTracksDatabaseInserter:
+    engine = db_engine or get_database_engine()
+    return BillboardTracksDatabaseInserter(engine)
+
+
+def get_billboard_charts_inserter(db_engine: Optional[AsyncEngine] = None) -> BillboardChartsDatabaseInserter:
+    engine = db_engine or get_database_engine()
+    return BillboardChartsDatabaseInserter(engine)

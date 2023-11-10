@@ -9,6 +9,7 @@ class BillboardTracksDatabaseInserter(BaseIDsDatabaseInserter):
     async def _get_raw_records(self, iterable: Iterable[ChartEntryData]) -> Iterable[ChartEntryData]:
         return iterable
 
+    @property
     def _serialization_method(self) -> str:
         return "from_chart_entry"
 
