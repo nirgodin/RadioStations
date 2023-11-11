@@ -26,7 +26,8 @@ class PlayCountDifferenceAnalyzer(IAnalyzer):
         alternative_play_count = self._aggregate_play_count(data, ">=")
         comparison = self._create_comparison_data(baseline_play_count, alternative_play_count)
 
-        to_csv(comparison, YEAR_PLAY_COUNT_DIFFERENCE_PATH)
+        if self._config.output_path is not None:
+            to_csv(comparison, self._config.output_path)  # YEAR_PLAY_COUNT_DIFFERENCE_PATH
 
     def _load_data(self) -> DataFrame:
         print("Starting to load data")
@@ -102,7 +103,8 @@ if __name__ == '__main__':
     config = PlayCountDifferenceAnalyzerConfig(
         separation_date=datetime(2023, 10, 7, 6, 30, 0),
         start_date=datetime(2022, 1, 1, 0, 0, 0),
-        count_column=SONG
+        count_column=SONG,
+        output_path=r"C:\Users\nirgo\Documents\GitHub\RadioStations\data\war\songs_count_difference.csv"
     )
     analyzer = PlayCountDifferenceAnalyzer(config)
     analyzer.analyze()

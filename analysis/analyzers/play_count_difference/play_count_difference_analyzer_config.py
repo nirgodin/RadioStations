@@ -10,3 +10,4 @@ class PlayCountDifferenceAnalyzerConfig:
     start_date: Optional[datetime] = None
     end_date: Optional[datetime] = None
     use_percentage: bool = True
+    output_path: Optional[str] = None
