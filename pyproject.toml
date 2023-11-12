@@ -35,14 +35,11 @@ spacy-langdetect = "0.1.2"
 spotipy = "2.19.0"
 tqdm = "4.65.0"
 wikipedia-api = "0.5.8"
-sqlalchemy = "2.0.21"
-asyncmy = "0.2.8"
-asyncpg = "0.28.0"
-greenlet = "2.0.1"
-postgres-client = {git = "https://github.com/nirgodin/radio-stations-postgres-client.git", rev = "c6b9cb76"}
+postgres-client = {git = "https://github.com/nirgodin/radio-stations-postgres-client.git", rev = "09db423a"}
 webdriver-manager = "4.0.1"
 spotipyio = {git = "https://github.com/nirgodin/spotipyio.git", rev = "4d9daa36"}
 billboard-py = "^7.0.0"
+apache-airflow = "^2.7.3"
 
 
 [build-system]
