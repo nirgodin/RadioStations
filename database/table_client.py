@@ -3,9 +3,11 @@ from typing import Dict, Optional, List, Union, Tuple, Sequence, Type
 import pandas as pd
 from pandas import DataFrame
 from postgres_client.postgres_operations import execute_query, insert_records
-from sqlalchemy import select, Select, update, Update, text, Row
+from sqlalchemy import select, update, text
+from sqlalchemy.engine import Row
 from sqlalchemy.ext.asyncio import AsyncEngine
 from sqlalchemy.orm import InstrumentedAttribute
+from sqlalchemy.sql import Select, Update
 
 from database.orm_models.base_orm_model import Base
 
