@@ -30,6 +30,7 @@ SHAZAM_TRACKS_LYRICS_PATH = rf'{SHAZAM_DIR_PATH}/tracks_lyrics.json'
 SHAZAM_TRACKS_LANGUAGES_PATH = rf'{SHAZAM_DIR_PATH}/tracks_languages.csv'
 SHAZAM_LYRICS_EMBEDDINGS_PATH = rf'{SHAZAM_DIR_PATH}/lyrics_embeddings.csv'
 SHAZAM_ISRAEL_MERGED_DATA = rf'{SHAZAM_DIR_PATH}/israel_merged_data.csv'
+SHAZAM_ARTISTS_IDS_PATH = rf'{SHAZAM_DIR_PATH}/artists_ids.csv'
 
 # Spotify
 ARTISTS_IDS_OUTPUT_PATH = rf'{SPOTIFY_DIR_PATH}/spotify_artists_ids.csv'
