@@ -55,8 +55,8 @@ class RadioStationsSnapshotsCollector:
     async def _get_playlist_tracks(self, playlist: Playlist) -> List[Track]:
         print(f'Starting to collect `{playlist.station}` station artists')
         artists_ids = self._get_artists_ids(playlist.tracks)
-        chunks_generator = DataChunksGenerator(chunk_size=MAX_ARTISTS_PER_REQUEST)
-        chunks = chunks_generator.generate_data_chunks(lst=artists_ids, filtering_list=[])
+        chunks_generator = DataChunksGenerator(chunk_size=MAX_ARTISTS_PER_REQUEST, max_chunks_number=None)
+        chunks = chunks_generator.generate_data_chunks(lst=artists_ids, filtering_list=None)
         pool = AioPool(AIO_POOL_SIZE)
         artists = await pool.map(self._get_single_chunk_artists, chunks)
         flattened_artists = chain_lists(artists)
