@@ -43,7 +43,7 @@ class DataChunksGenerator:
 
         total_chunks = ceil(len(lst) / self._chunk_size)
         n_chunks = total_chunks if self._max_chunks_number is None else min(total_chunks, self._max_chunks_number)
-        current_chunk = 1
+        current_chunk = 0
 
         for i in range(0, len(lst), self._chunk_size):
             if current_chunk == n_chunks:
