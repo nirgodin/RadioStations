@@ -7250,5 +7250,54 @@
         "added_at": "2023-11-09T11:34:58Z",
         "station": "Kan_88",
         "table": "tracks_lyrics"
+    },
+    {
+        "error": "(sqlalchemy.dialects.postgresql.asyncpg.Error) <class 'asyncpg.exceptions.NumericValueOutOfRangeError'>: smallint out of range\n[SQL: INSERT INTO tracks_lyrics (creation_date, update_date, id, lyrics, lyrics_source, language, language_confidence, number_of_words, words_count) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)]\n[parameters: (datetime.datetime(2023, 11, 19, 13, 52, 40, 276205), datetime.datetime(2023, 11, 19, 13, 52, 40, 276205), '1qzjKIVlABtBZ1gs1dcA5L', ['The Mabbot street entrance of nighttown,', ' before which stretches an uncobbled ', 'transiding', ' set with skeleton tracks, ', \"red and green will ... (233882 characters truncated) ... nd ruby buttons. In his free left hand he holds a slim ivory cane with a violet \", 'howknot', '. A white lambkin peeps out of his waistcoat pocket.)'], 'GENIUS', None, None, 37975, '{\"the\": 2015, \"a\": 1049, \"and\": 972, \"of\": 936, \"in\": 685, \"to\": 569, \"his\": 523, \"with\": 514, \"he\": 468, \"i\": 429, \"you\": 428, \"bloom\": 415, \"on\": 3 ... (136244 characters truncated) ...  1, \"changeling\": 1, \"kidnapped\": 1, \"eton\": 1, \"helmet\": 1, \"page\": 1, \"wonderstruck\": 1, \"unseeing\": 1, \"mauveface\": 1, \"howknot\": 1, \"lambkin\": 1}')]\n(Background on this error at: https://sqlalche.me/e/14/dbapi)",
+        "name": "Germanium",
+        "added_at": "2023-11-13T16:57:02Z",
+        "station": "Glglz",
+        "table": "tracks_lyrics"
+    },
+    {
+        "error": "(sqlalchemy.dialects.postgresql.asyncpg.Error) <class 'asyncpg.exceptions.NumericValueOutOfRangeError'>: smallint out of range\n[SQL: INSERT INTO tracks_lyrics (creation_date, update_date, id, lyrics, lyrics_source, language, language_confidence, number_of_words, words_count) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)]\n[parameters: (datetime.datetime(2023, 11, 19, 14, 5, 24, 199495), datetime.datetime(2023, 11, 19, 14, 5, 24, 199495), '4XvOVo7Sxsz2eNIy8y1AG7', ['FORMULA DENUNCIA', 'Ministerio Público de la Nación', '\\\\ *•', 'Sr. Juez Federal Dr. Ariel O. Lijo:', 'ALBERTO NISMAN, Fiscal General, titular de la ... (590376 characters truncated) ... o Nacional en lo Criminal y Correccional Federal N° 6, Secretaría N° 11 -Anexo AMIA-.', 'Unidad Fiscal de Investigación, 13 de enero de 2015.-', '\\\\'], 'GENIUS', 'Hebrew', 100, 90619, '{\"de\": 5878, \"la\": 3779, \"que\": 2720, \"el\": 2459, \"en\": 2330, \"a\": 2161, \"y\": 2061, \"del\": 1488, \"se\": 1145, \"los\": 1124, \"con\": 1108, \"las\": 989, \"p ... (165128 characters truncated) ... : 1, \"audio\": 1, \"video\": 1, \"reverenciados\": 1, \"identificados\": 1, \"ae\": 1, \"agreg\\\\u00faese\": 1, \"certificada\": 1, \"\\\\u201cpastear\": 1, \"2015\": 1}')]\n(Background on this error at: https://sqlalche.me/e/14/dbapi)",
+        "name": "Sivan",
+        "added_at": "2023-11-16T01:10:05Z",
+        "station": "Glglz",
+        "table": "tracks_lyrics"
+    },
+    {
+        "error": "(sqlalchemy.dialects.postgresql.asyncpg.Error) <class 'asyncpg.exceptions.NumericValueOutOfRangeError'>: smallint out of range\n[SQL: INSERT INTO tracks_lyrics (creation_date, update_date, id, lyrics, lyrics_source, language, language_confidence, number_of_words, words_count) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)]\n[parameters: (datetime.datetime(2023, 11, 19, 14, 6, 37, 501836), datetime.datetime(2023, 11, 19, 14, 6, 37, 501836), '4XvOVo7Sxsz2eNIy8y1AG7', ['FORMULA DENUNCIA', 'Ministerio Público de la Nación', '\\\\ *•', 'Sr. Juez Federal Dr. Ariel O. Lijo:', 'ALBERTO NISMAN, Fiscal General, titular de la ... (590376 characters truncated) ... o Nacional en lo Criminal y Correccional Federal N° 6, Secretaría N° 11 -Anexo AMIA-.', 'Unidad Fiscal de Investigación, 13 de enero de 2015.-', '\\\\'], 'GENIUS', 'Hebrew', 100, 90619, '{\"de\": 5878, \"la\": 3779, \"que\": 2720, \"el\": 2459, \"en\": 2330, \"a\": 2161, \"y\": 2061, \"del\": 1488, \"se\": 1145, \"los\": 1124, \"con\": 1108, \"las\": 989, \"p ... (165128 characters truncated) ... : 1, \"audio\": 1, \"video\": 1, \"reverenciados\": 1, \"identificados\": 1, \"ae\": 1, \"agreg\\\\u00faese\": 1, \"certificada\": 1, \"\\\\u201cpastear\": 1, \"2015\": 1}')]\n(Background on this error at: https://sqlalche.me/e/14/dbapi)",
+        "name": "Sivan",
+        "added_at": "2023-11-16T13:37:08Z",
+        "station": "Glglz",
+        "table": "tracks_lyrics"
+    },
+    {
+        "error": "(sqlalchemy.dialects.postgresql.asyncpg.Error) <class 'asyncpg.exceptions.NumericValueOutOfRangeError'>: smallint out of range\n[SQL: INSERT INTO tracks_lyrics (creation_date, update_date, id, lyrics, lyrics_source, language, language_confidence, number_of_words, words_count) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)]\n[parameters: (datetime.datetime(2023, 11, 19, 14, 7, 21, 729833), datetime.datetime(2023, 11, 19, 14, 7, 21, 729833), '4XvOVo7Sxsz2eNIy8y1AG7', ['FORMULA DENUNCIA', 'Ministerio Público de la Nación', '\\\\ *•', 'Sr. Juez Federal Dr. Ariel O. Lijo:', 'ALBERTO NISMAN, Fiscal General, titular de la ... (590376 characters truncated) ... o Nacional en lo Criminal y Correccional Federal N° 6, Secretaría N° 11 -Anexo AMIA-.', 'Unidad Fiscal de Investigación, 13 de enero de 2015.-', '\\\\'], 'GENIUS', 'Hebrew', 100, 90619, '{\"de\": 5878, \"la\": 3779, \"que\": 2720, \"el\": 2459, \"en\": 2330, \"a\": 2161, \"y\": 2061, \"del\": 1488, \"se\": 1145, \"los\": 1124, \"con\": 1108, \"las\": 989, \"p ... (165128 characters truncated) ... : 1, \"audio\": 1, \"video\": 1, \"reverenciados\": 1, \"identificados\": 1, \"ae\": 1, \"agreg\\\\u00faese\": 1, \"certificada\": 1, \"\\\\u201cpastear\": 1, \"2015\": 1}')]\n(Background on this error at: https://sqlalche.me/e/14/dbapi)",
+        "name": "Sivan",
+        "added_at": "2023-11-16T09:29:30Z",
+        "station": "Eco_99",
+        "table": "tracks_lyrics"
+    },
+    {
+        "error": "(sqlalchemy.dialects.postgresql.asyncpg.Error) <class 'asyncpg.exceptions.NumericValueOutOfRangeError'>: smallint out of range\n[SQL: INSERT INTO tracks_lyrics (creation_date, update_date, id, lyrics, lyrics_source, language, language_confidence, number_of_words, words_count) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)]\n[parameters: (datetime.datetime(2023, 11, 19, 14, 11, 12, 74591), datetime.datetime(2023, 11, 19, 14, 11, 12, 74591), '4XvOVo7Sxsz2eNIy8y1AG7', ['FORMULA DENUNCIA', 'Ministerio Público de la Nación', '\\\\ *•', 'Sr. Juez Federal Dr. Ariel O. Lijo:', 'ALBERTO NISMAN, Fiscal General, titular de la ... (590376 characters truncated) ... o Nacional en lo Criminal y Correccional Federal N° 6, Secretaría N° 11 -Anexo AMIA-.', 'Unidad Fiscal de Investigación, 13 de enero de 2015.-', '\\\\'], 'GENIUS', 'Hebrew', 100, 90619, '{\"de\": 5878, \"la\": 3779, \"que\": 2720, \"el\": 2459, \"en\": 2330, \"a\": 2161, \"y\": 2061, \"del\": 1488, \"se\": 1145, \"los\": 1124, \"con\": 1108, \"las\": 989, \"p ... (165128 characters truncated) ... : 1, \"audio\": 1, \"video\": 1, \"reverenciados\": 1, \"identificados\": 1, \"ae\": 1, \"agreg\\\\u00faese\": 1, \"certificada\": 1, \"\\\\u201cpastear\": 1, \"2015\": 1}')]\n(Background on this error at: https://sqlalche.me/e/14/dbapi)",
+        "name": "Sivan",
+        "added_at": "2023-11-17T04:23:31Z",
+        "station": "Eco_99",
+        "table": "tracks_lyrics"
+    },
+    {
+        "error": "(sqlalchemy.dialects.postgresql.asyncpg.Error) <class 'asyncpg.exceptions.NumericValueOutOfRangeError'>: smallint out of range\n[SQL: INSERT INTO tracks_lyrics (creation_date, update_date, id, lyrics, lyrics_source, language, language_confidence, number_of_words, words_count) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)]\n[parameters: (datetime.datetime(2023, 11, 19, 14, 19, 4, 435337), datetime.datetime(2023, 11, 19, 14, 19, 4, 435337), '4XvOVo7Sxsz2eNIy8y1AG7', ['FORMULA DENUNCIA', 'Ministerio Público de la Nación', '\\\\ *•', 'Sr. Juez Federal Dr. Ariel O. Lijo:', 'ALBERTO NISMAN, Fiscal General, titular de la ... (590376 characters truncated) ... o Nacional en lo Criminal y Correccional Federal N° 6, Secretaría N° 11 -Anexo AMIA-.', 'Unidad Fiscal de Investigación, 13 de enero de 2015.-', '\\\\'], 'GENIUS', 'Hebrew', 100, 90619, '{\"de\": 5878, \"la\": 3779, \"que\": 2720, \"el\": 2459, \"en\": 2330, \"a\": 2161, \"y\": 2061, \"del\": 1488, \"se\": 1145, \"los\": 1124, \"con\": 1108, \"las\": 989, \"p ... (165128 characters truncated) ... : 1, \"audio\": 1, \"video\": 1, \"reverenciados\": 1, \"identificados\": 1, \"ae\": 1, \"agreg\\\\u00faese\": 1, \"certificada\": 1, \"\\\\u201cpastear\": 1, \"2015\": 1}')]\n(Background on this error at: https://sqlalche.me/e/14/dbapi)",
+        "name": "Sivan",
+        "added_at": "2023-11-18T09:50:10Z",
+        "station": "Kan_Gimel",
+        "table": "tracks_lyrics"
+    },
+    {
+        "error": "(sqlalchemy.dialects.postgresql.asyncpg.Error) <class 'asyncpg.exceptions.NumericValueOutOfRangeError'>: smallint out of range\n[SQL: INSERT INTO tracks_lyrics (creation_date, update_date, id, lyrics, lyrics_source, language, language_confidence, number_of_words, words_count) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)]\n[parameters: (datetime.datetime(2023, 11, 19, 14, 27, 17, 95003), datetime.datetime(2023, 11, 19, 14, 27, 17, 95003), '4emKlsaEOMdh6MjhXtuD63', [\"IT MAY NOT BE UNNECESSARY to inform the reader that the following Reflections had their origin in a correspondence between the Author and a very you ... (574755 characters truncated) ... ent les pauvres; vous allez etre imposes pour subvenir a leur entretien!\" — De l\\'Etat de la France, p. 81. See also p. 92, and the following pages.'], 'GENIUS', None, None, 98421, '{\"the\": 6849, \"of\": 5472, \"to\": 3297, \"and\": 3080, \"in\": 2305, \"a\": 1936, \"that\": 1268, \"their\": 1221, \"they\": 1209, \"is\": 1129, \"it\": 1083, \"as\": 93 ... (138551 characters truncated) ...  \"deformais\": 1, \"seront\": 1, \"charites\": 1, \"soulageoient\": 1, \"pauvres\": 1, \"allez\": 1, \"imposes\": 1, \"entretien\": 1, \"81\": 1, \"92\": 1, \"pages\": 1}')]\n(Background on this error at: https://sqlalche.me/e/14/dbapi)",
+        "name": "Motion Crisiis - Feat. Mr. Perkins",
+        "added_at": "2023-11-15T16:14:06Z",
+        "station": "Glglz",
+        "table": "tracks_lyrics"
     }
 ]
