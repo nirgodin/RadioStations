@@ -145,6 +145,8 @@ vcs.xml
 /spotify_ui_scraping.bat
 /wikipedia_age_scraping.bat
 /run_spotify_tracks_albums.bat
+/run_shazam_artists_fetcher.bat
+/run_shazam_artists_ids_fetcher.bat
 
 # Data
 /shazam_creds.json
@@ -154,7 +156,3 @@ vcs.xml
 /data
 /service_account_secrets.json
 /env_variables.json
-
-# Local development
-# Airflow
-/docker-compose.yaml
