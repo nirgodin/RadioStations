@@ -38,7 +38,6 @@ wikipedia-api = "0.5.8"
 webdriver-manager = "4.0.1"
 spotipyio = {git = "https://github.com/nirgodin/spotipyio.git"}
 billboard-py = "^7.0.0"
-apache-airflow = "^2.7.3"
 data-collectors = {git = "https://github.com/nirgodin/radio-stations-data-collection.git", rev = "4c8a7dff"}
 
 
