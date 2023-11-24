@@ -29,17 +29,17 @@ pytz = "2023.3"
 requests = "2.26.0"
 scikit-learn = "1.2.2"
 selenium = "4.8.2"
-shazamio = "0.3.1.1"
+shazamio = "^0.4.0.1"
 spacy = "3.5.0"
 spacy-langdetect = "0.1.2"
 spotipy = "2.19.0"
 tqdm = "4.65.0"
 wikipedia-api = "0.5.8"
-postgres-client = {git = "https://github.com/nirgodin/radio-stations-postgres-client.git", rev = "09db423a"}
 webdriver-manager = "4.0.1"
-spotipyio = {git = "https://github.com/nirgodin/spotipyio.git", rev = "4d9daa36"}
+spotipyio = {git = "https://github.com/nirgodin/spotipyio.git"}
 billboard-py = "^7.0.0"
 apache-airflow = "^2.7.3"
+data-collectors = {git = "https://github.com/nirgodin/radio-stations-data-collection.git", rev = "4c8a7dff"}
 
 
 [build-system]

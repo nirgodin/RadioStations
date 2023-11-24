@@ -1397,6 +1397,28 @@ files = [
 dev = ["black", "coveralls", "mypy", "pylint", "pytest (>=5)", "pytest-cov"]
 
 [[package]]
+name = "data-collectors"
+version = "0.1.0"
+description = ""
+optional = false
+python-versions = ">=3.8,<3.12"
+files = []
+develop = false
+
+[package.dependencies]
+asyncio-pool = "^0.6.0"
+postgres-client = {git = "https://github.com/nirgodin/radio-stations-postgres-client.git", rev = "50e37a2f"}
+shazamio = "^0.4.0.1"
+spotipyio = {git = "https://github.com/nirgodin/spotipyio.git", rev = "fbd9611d"}
+tqdm = "4.65.0"
+
+[package.source]
+type = "git"
+url = "https://github.com/nirgodin/radio-stations-data-collection.git"
+reference = "4c8a7dff"
+resolved_reference = "4c8a7dff8cf1afbf14877fff5810bb5043ae4a4c"
+
+[[package]]
 name = "dataclass-factory"
 version = "2.16"
 description = "An utility class for creating instances of dataclasses"
@@ -4228,8 +4250,8 @@ sqlalchemy = "<2.0.0"
 [package.source]
 type = "git"
 url = "https://github.com/nirgodin/radio-stations-postgres-client.git"
-reference = "09db423a"
-resolved_reference = "09db423a9d2f902c09e2e452315a095653ea1ec6"
+reference = "50e37a2f"
+resolved_reference = "50e37a2f\n"
 
 [[package]]
 name = "preshed"
@@ -5435,13 +5457,13 @@ testing-integration = ["build[virtualenv] (>=1.0.3)", "filelock (>=3.4.0)", "jar
 
 [[package]]
 name = "shazamio"
-version = "0.3.1.1"
+version = "0.4.0.1"
 description = "Is a asynchronous framework from reverse engineered Shazam API written in Python 3.8+ with asyncio and aiohttp."
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "shazamio-0.3.1.1-py3-none-any.whl", hash = "sha256:a664add55d9569a1f6137010212ccfc20eca64474fbb9f1efbc7514fe4bcaa76"},
-    {file = "shazamio-0.3.1.1.tar.gz", hash = "sha256:de0d417e0587956b9ccbc9b504416225a3028a5063d67ef40f100590bdfd3612"},
+    {file = "shazamio-0.4.0.1-py3-none-any.whl", hash = "sha256:c4bd6227cbb708a9822a75a876f6f52997936bbcc01c86db0a751736fe39c212"},
+    {file = "shazamio-0.4.0.1.tar.gz", hash = "sha256:bc8d99312a4cd6ca3ad07d78c624da5dc866ade70b8bc9c43fe113c3fdab0429"},
 ]
 
 [package.dependencies]
@@ -5704,20 +5726,20 @@ name = "spotipyio"
 version = "0.1.0"
 description = ""
 optional = false
-python-versions = "^3.10"
+python-versions = ">=3.8,<3.12"
 files = []
 develop = false
 
 [package.dependencies]
-aiohttp = "3.8.3"
+aiohttp = ">=3.6.3,<3.9.0"
 asyncio-pool = "0.6.0"
 tqdm = "4.65.0"
 
 [package.source]
 type = "git"
 url = "https://github.com/nirgodin/spotipyio.git"
-reference = "4d9daa36"
-resolved_reference = "4d9daa363dce34f6f1c02d3f34fd430bcdb480f3"
+reference = "HEAD"
+resolved_reference = "fbd9611d08f9a5902ed7160984e4d616d3d3b3b3"
 
 [[package]]
 name = "sqlalchemy"
@@ -6566,4 +6588,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "3.10"
-content-hash = "9fc22d30e7549e43af325fb06aba7adb85a9df22e03bbd57d47d94c66f4b8d44"
+content-hash = "7c171be0820e9a1897a3ebe317f3f4a097126c34da2aa9bc65d0345f3cb4311c"
