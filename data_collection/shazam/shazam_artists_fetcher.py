@@ -1,5 +1,6 @@
 from typing import List
 
+import pandas as pd
 from data_collectors import ShazamArtistsCollector, ShazamArtistsDatabaseInserter
 from data_collectors.tools import AioPoolExecutor
 from postgres_client import execute_query, get_database_engine, ShazamArtist
@@ -25,10 +26,17 @@ class ShazamArtistsFetcher:
     async def fetch(self):
         existing_ids = await self._get_existing_artists_ids()
         await self._data_chunks_generator.execute_by_chunk(
-            lst=extract_column_existing_values(path=SHAZAM_ARTISTS_IDS_PATH, column_name=ARTIST_ID),
+            lst=self._get_artists_ids(),
             filtering_list=existing_ids,
             func=self._insert_single_chunk_records
         )
+
+    @staticmethod
+    def _get_artists_ids():
+        artists_ids = extract_column_existing_values(path=SHAZAM_ARTISTS_IDS_PATH, column_name=ARTIST_ID)
+        unique_artists_ids = {id_ for id_ in artists_ids if not pd.isna(id_)}
+
+        return list(unique_artists_ids)
 
     async def _get_existing_artists_ids(self) -> List[str]:
         query_results = await execute_query(engine=self._db_engine, query=select(ShazamArtist.id))
