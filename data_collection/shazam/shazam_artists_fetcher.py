@@ -11,6 +11,7 @@ from consts.data_consts import ARTIST_ID
 from consts.path_consts import SHAZAM_ARTISTS_IDS_PATH
 from tools.data_chunks_generator import DataChunksGenerator
 from utils.data_utils import extract_column_existing_values
+from utils.general_utils import stringify_float
 
 
 class ShazamArtistsFetcher:
@@ -34,7 +35,7 @@ class ShazamArtistsFetcher:
     @staticmethod
     def _get_artists_ids():
         artists_ids = extract_column_existing_values(path=SHAZAM_ARTISTS_IDS_PATH, column_name=ARTIST_ID)
-        unique_artists_ids = {id_ for id_ in artists_ids if not pd.isna(id_)}
+        unique_artists_ids = {stringify_float(id_) for id_ in artists_ids if not pd.isna(id_)}
 
         return list(unique_artists_ids)
 
