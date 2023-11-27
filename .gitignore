@@ -147,6 +147,7 @@ vcs.xml
 /run_spotify_tracks_albums.bat
 /run_shazam_artists_fetcher.bat
 /run_shazam_artists_ids_fetcher.bat
+/run_billboard_top_100.bat
 
 # Data
 /shazam_creds.json
