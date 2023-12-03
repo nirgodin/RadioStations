@@ -3,7 +3,8 @@ from typing import List
 import pandas as pd
 from data_collectors import ShazamArtistsCollector, ShazamArtistsDatabaseInserter
 from data_collectors.tools import AioPoolExecutor
-from postgres_client import execute_query, get_database_engine, ShazamArtist
+from genie_datastores.postgres.operations import execute_query, get_database_engine
+from genie_datastores.postgres.models import ShazamArtist
 from shazamio import Shazam
 from sqlalchemy import select
 

@@ -1,7 +1,7 @@
 from typing import List, Optional, Type
 
-from postgres_client.models.orm.spotify.base_spotify_orm_model import BaseSpotifyORMModel
-from postgres_client.models.orm.spotify.spotify_artist import SpotifyArtist
+from genie_datastores.postgres.models.orm.spotify.base_spotify_orm_model import BaseSpotifyORMModel
+from genie_datastores.postgres.models import SpotifyArtist
 from spotipyio.logic.spotify_client import SpotifyClient
 from sqlalchemy.ext.asyncio import AsyncEngine
 

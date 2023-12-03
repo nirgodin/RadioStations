@@ -2,10 +2,10 @@ import asyncio
 from typing import List
 
 import pandas as pd
+from genie_datastores.postgres.models import ShazamTopTrack, ShazamTrack
+from genie_datastores.postgres.operations import get_database_engine, insert_records
 from pandas import Series
-from postgres_client import ShazamTopTrack, insert_records_ignoring_conflicts, get_database_engine, \
-    ShazamTrack
-from postgres_client.tools import ShazamWritersExtractor
+from genie_datastores.postgres.tools import ShazamWritersExtractor
 from sqlalchemy.exc import IntegrityError
 from tqdm import tqdm
 
@@ -61,7 +61,7 @@ class ShazamTracksMigrationScript:
 
     async def _insert_single_orm_record_wrapper(self, record: ShazamTrack) -> None:
         try:
-            await insert_records_ignoring_conflicts(self._db_engine, [record])
+            await insert_records(self._db_engine, [record])
 
         except IntegrityError:
             print(f"Record already exists in table. Skipping")

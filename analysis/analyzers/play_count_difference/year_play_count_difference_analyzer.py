@@ -8,8 +8,9 @@ from tqdm import tqdm
 from analysis.analyzer_interface import IAnalyzer
 from analysis.analyzers.play_count_difference.play_count_difference_analyzer_config import \
     PlayCountDifferenceAnalyzerConfig
-from consts.data_consts import ARTIST_NAME, COUNT, DIFFERENCE, ADDED_AT, STATION, SONG
+from consts.data_consts import ARTIST_NAME, COUNT, DIFFERENCE, ADDED_AT, STATION, SONG, MAIN_GENRE
 from consts.datetime_consts import SPOTIFY_DATETIME_FORMAT
+from consts.openai_consts import ARTIST_GENDER
 from consts.path_consts import YEAR_PLAY_COUNT_DIFFERENCE_PATH
 from utils.analysis_utils import aggregate_play_count
 from utils.data_utils import read_merged_data
@@ -22,12 +23,19 @@ class PlayCountDifferenceAnalyzer(IAnalyzer):
 
     def analyze(self) -> None:
         data = self._load_data()
+        data["decade"] = data["release_year"].apply(self._get_decade)
         baseline_play_count = self._aggregate_play_count(data, "<")
         alternative_play_count = self._aggregate_play_count(data, ">=")
         comparison = self._create_comparison_data(baseline_play_count, alternative_play_count)
 
         if self._config.output_path is not None:
             to_csv(comparison, self._config.output_path)  # YEAR_PLAY_COUNT_DIFFERENCE_PATH
+
+    def _get_decade(self, release_year: int) -> str:
+        if pd.isna(release_year):
+            return release_year
+
+        return f"{str(release_year)[2]}0's"
 
     def _load_data(self) -> DataFrame:
         print("Starting to load data")
@@ -103,8 +111,8 @@ if __name__ == '__main__':
     config = PlayCountDifferenceAnalyzerConfig(
         separation_date=datetime(2023, 10, 7, 6, 30, 0),
         start_date=datetime(2022, 1, 1, 0, 0, 0),
-        count_column=SONG,
-        output_path=r"C:\Users\nirgo\Documents\GitHub\RadioStations\data\war\songs_count_difference.csv"
+        count_column=ARTIST_NAME,
+        output_path=r"C:\Users\nirgo\Documents\GitHub\RadioStations\data\war\artists_count_difference.csv"
     )
     analyzer = PlayCountDifferenceAnalyzer(config)
     analyzer.analyze()

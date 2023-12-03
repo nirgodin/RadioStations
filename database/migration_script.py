@@ -1,5 +1,5 @@
 import asyncio
-from datetime import datetime
+from datetime import datetime, date, timedelta
 from functools import partial
 from typing import List, Type, Generator
 
@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 from asyncio_pool import AioPool
 from pandas import Series, DataFrame
-from postgres_client.postgres_operations import insert_records, execute_query
+from genie_datastores.postgres.operations import insert_records, execute_query
 from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
 from tqdm import tqdm
@@ -80,13 +80,14 @@ class DatabaseMigrator:
             yield row
 
     async def _filter_non_existing_records(self, data: DataFrame) -> DataFrame:
-        query = (
-            select(RadioTrack.added_at)
-            .order_by(RadioTrack.added_at.desc())
-            .limit(1)
-        )
-        query_result = await execute_query(engine=self._db_engine, query=query)
-        last_added_at: datetime = query_result.first().added_at
+        # query = (
+        #     select(RadioTrack.added_at)
+        #     .order_by(RadioTrack.added_at.desc())
+        #     .limit(1)
+        # )
+        # query_result = await execute_query(engine=self._db_engine, query=query)
+        # last_added_at: datetime = query_result.first().added_at
+        last_added_at = date.today() - timedelta(days=7)
 
         return data[data[ADDED_AT] > last_added_at.strftime(SPOTIFY_DATETIME_FORMAT)]
 

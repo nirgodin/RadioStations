@@ -1,6 +1,6 @@
 from typing import Type
 
-from postgres_client.postgres_operations import execute_query
+from genie_datastores.postgres.operations import execute_query
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncEngine
 

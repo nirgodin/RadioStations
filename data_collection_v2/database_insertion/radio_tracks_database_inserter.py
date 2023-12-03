@@ -1,7 +1,8 @@
 from typing import List
 
-from postgres_client import insert_records, RadioTrack
-from postgres_client.utils.spotify_utils import extract_artist_id
+from genie_datastores.postgres.operations import insert_records
+from genie_datastores.postgres.models import RadioTrack
+from genie_datastores.postgres.inner_utils.spotify_utils import extract_artist_id
 
 from consts.data_consts import ID, TRACK
 from data_collection_v2.database_insertion.base_database_inserter import BaseDatabaseInserter

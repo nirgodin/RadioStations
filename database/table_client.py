@@ -2,7 +2,7 @@ from typing import Dict, Optional, List, Union, Tuple, Sequence, Type
 
 import pandas as pd
 from pandas import DataFrame
-from postgres_client.postgres_operations import execute_query, insert_records
+from genie_datastores.postgres.operations import execute_query, insert_records
 from sqlalchemy import select, update, text
 from sqlalchemy.engine import Row
 from sqlalchemy.ext.asyncio import AsyncEngine

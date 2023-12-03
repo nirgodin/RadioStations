@@ -1,8 +1,9 @@
 from typing import List
 
 from analysis.analyzer_interface import IAnalyzer
-from consts.audio_features_consts import ACOUSTICNESS, VALENCE
-from consts.data_consts import ADDED_AT, STATION, MAIN_GENRE, IS_ISRAELI
+from consts.audio_features_consts import ACOUSTICNESS, VALENCE, AUDIO_FEATURES
+from consts.data_consts import ADDED_AT, STATION, MAIN_GENRE, IS_ISRAELI, ARTIST_POPULARITY, POPULARITY, ARTIST_NAME, \
+    SONG
 from consts.language_consts import LANGUAGE
 from utils.data_utils import read_merged_data
 from utils.file_utils import to_csv
@@ -33,7 +34,9 @@ if __name__ == '__main__':
         VALENCE,
         MAIN_GENRE,
         IS_ISRAELI,
-    ]
+        POPULARITY,
+        ARTIST_POPULARITY
+    ] + [feature for feature in AUDIO_FEATURES if feature not in [ACOUSTICNESS, VALENCE]] + [ARTIST_NAME, SONG]
     output_path = r"data/war/war_data.csv"
     analyzer = DataSubsetterAnalyzer(columns=columns, output_path=output_path)
     analyzer.analyze()

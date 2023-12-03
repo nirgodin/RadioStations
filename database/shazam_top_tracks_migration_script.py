@@ -4,7 +4,8 @@ from typing import List
 
 import pandas as pd
 from pandas import Series, DataFrame
-from postgres_client import ShazamTopTrack, ShazamLocation, insert_records_ignoring_conflicts, get_database_engine
+from genie_datastores.postgres.models import ShazamTopTrack, ShazamLocation
+from genie_datastores.postgres.operations import insert_records_ignoring_conflicts, get_database_engine
 from sqlalchemy.exc import IntegrityError
 from tqdm import tqdm
 

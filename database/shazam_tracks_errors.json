@@ -1,1 +1,555 @@
-[]
+[
+    {
+        "error": "(sqlalchemy.dialects.postgresql.asyncpg.Error) <class 'asyncpg.exceptions.DataError'>: invalid input for query argument $4: nan (expected str, got float)\n[SQL: INSERT INTO shazam_tracks (creation_date, update_date, id, artist_id, name, label, writers, primary_genre) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)]\n[parameters: (datetime.datetime(2023, 11, 29, 6, 19, 47, 81073), datetime.datetime(2023, 11, 29, 6, 19, 47, 81073), '227299521', nan, 'ילדות והעיר הגדולה', None, None, None)]\n(Background on this error at: https://sqlalche.me/e/14/dbapi)",
+        "details": {
+            "id": "227299521",
+            "artist_id": NaN,
+            "name": "ילדות והעיר הגדולה",
+            "label": null,
+            "writers": null,
+            "primary_genre": null
+        }
+    },
+    {
+        "error": "(sqlalchemy.dialects.postgresql.asyncpg.Error) <class 'asyncpg.exceptions.DataError'>: invalid input for query argument $4: nan (expected str, got float)\n[SQL: INSERT INTO shazam_tracks (creation_date, update_date, id, artist_id, name, label, writers, primary_genre) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)]\n[parameters: (datetime.datetime(2023, 11, 29, 6, 23, 27, 332855), datetime.datetime(2023, 11, 29, 6, 23, 27, 332855), '527103510', nan, 'רווקה בת 38', None, None, None)]\n(Background on this error at: https://sqlalche.me/e/14/dbapi)",
+        "details": {
+            "id": "527103510",
+            "artist_id": NaN,
+            "name": "רווקה בת 38",
+            "label": null,
+            "writers": null,
+            "primary_genre": null
+        }
+    },
+    {
+        "error": "(sqlalchemy.dialects.postgresql.asyncpg.Error) <class 'asyncpg.exceptions.DataError'>: invalid input for query argument $4: nan (expected str, got float)\n[SQL: INSERT INTO shazam_tracks (creation_date, update_date, id, artist_id, name, label, writers, primary_genre) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)]\n[parameters: (datetime.datetime(2023, 11, 29, 6, 25, 4, 36267), datetime.datetime(2023, 11, 29, 6, 25, 4, 36267), '597971213', nan, '2woo8fiVe', None, ['Andru Williamson'], None)]\n(Background on this error at: https://sqlalche.me/e/14/dbapi)",
+        "details": {
+            "id": "597971213",
+            "artist_id": NaN,
+            "name": "2woo8fiVe",
+            "label": null,
+            "writers": [
+                "Andru Williamson"
+            ],
+            "primary_genre": null
+        }
+    },
+    {
+        "error": "(sqlalchemy.dialects.postgresql.asyncpg.Error) <class 'asyncpg.exceptions.DataError'>: invalid input for query argument $4: nan (expected str, got float)\n[SQL: INSERT INTO shazam_tracks (creation_date, update_date, id, artist_id, name, label, writers, primary_genre) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)]\n[parameters: (datetime.datetime(2023, 11, 29, 6, 29, 21, 292151), datetime.datetime(2023, 11, 29, 6, 29, 21, 292151), '602132085', nan, 'CRITIQUA', None, ['Shayna Mchayle'], None)]\n(Background on this error at: https://sqlalche.me/e/14/dbapi)",
+        "details": {
+            "id": "602132085",
+            "artist_id": NaN,
+            "name": "CRITIQUA",
+            "label": null,
+            "writers": [
+                "Shayna Mchayle"
+            ],
+            "primary_genre": null
+        }
+    },
+    {
+        "error": "(sqlalchemy.dialects.postgresql.asyncpg.Error) <class 'asyncpg.exceptions.DataError'>: invalid input for query argument $4: nan (expected str, got float)\n[SQL: INSERT INTO shazam_tracks (creation_date, update_date, id, artist_id, name, label, writers, primary_genre) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)]\n[parameters: (datetime.datetime(2023, 11, 29, 6, 33, 6, 562619), datetime.datetime(2023, 11, 29, 6, 33, 6, 562619), '5885305', nan, 'Love Is In the Air', 'Milk & Sugar Recordings', None, 'Dance')]\n(Background on this error at: https://sqlalche.me/e/14/dbapi)",
+        "details": {
+            "id": "5885305",
+            "artist_id": NaN,
+            "name": "Love Is In the Air",
+            "label": "Milk & Sugar Recordings",
+            "writers": null,
+            "primary_genre": "Dance"
+        }
+    },
+    {
+        "error": "(sqlalchemy.dialects.postgresql.asyncpg.Error) <class 'asyncpg.exceptions.DataError'>: invalid input for query argument $4: nan (expected str, got float)\n[SQL: INSERT INTO shazam_tracks (creation_date, update_date, id, artist_id, name, label, writers, primary_genre) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)]\n[parameters: (datetime.datetime(2023, 11, 29, 6, 43, 26, 58532), datetime.datetime(2023, 11, 29, 6, 43, 26, 58532), '416338372', nan, 'Trump Is Night King (Got Skit)', None, None, None)]\n(Background on this error at: https://sqlalche.me/e/14/dbapi)",
+        "details": {
+            "id": "416338372",
+            "artist_id": NaN,
+            "name": "Trump Is Night King (Got Skit)",
+            "label": null,
+            "writers": null,
+            "primary_genre": null
+        }
+    },
+    {
+        "error": "(sqlalchemy.dialects.postgresql.asyncpg.Error) <class 'asyncpg.exceptions.DataError'>: invalid input for query argument $4: nan (expected str, got float)\n[SQL: INSERT INTO shazam_tracks (creation_date, update_date, id, artist_id, name, label, writers, primary_genre) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)]\n[parameters: (datetime.datetime(2023, 11, 29, 6, 48, 49, 913976), datetime.datetime(2023, 11, 29, 6, 48, 49, 913976), '412940219', nan, 'Understand What Black Is', None, ['Abiodun Oyowele', 'Benedic Lamdin', 'Dub Judah', 'Mike Pelanconi', 'Riaan Vosloo', 'Umar Bin Hassan', 'Winston Williams'], None)]\n(Background on this error at: https://sqlalche.me/e/14/dbapi)",
+        "details": {
+            "id": "412940219",
+            "artist_id": NaN,
+            "name": "Understand What Black Is",
+            "label": null,
+            "writers": [
+                "Abiodun Oyowele",
+                "Benedic Lamdin",
+                "Dub Judah",
+                "Mike Pelanconi",
+                "Riaan Vosloo",
+                "Umar Bin Hassan",
+                "Winston Williams"
+            ],
+            "primary_genre": null
+        }
+    },
+    {
+        "error": "(sqlalchemy.dialects.postgresql.asyncpg.Error) <class 'asyncpg.exceptions.DataError'>: invalid input for query argument $4: nan (expected str, got float)\n[SQL: INSERT INTO shazam_tracks (creation_date, update_date, id, artist_id, name, label, writers, primary_genre) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)]\n[parameters: (datetime.datetime(2023, 11, 29, 6, 54, 40, 532422), datetime.datetime(2023, 11, 29, 6, 54, 40, 532422), '58104676', nan, 'Father Of Day, Father Of N', None, None, None)]\n(Background on this error at: https://sqlalche.me/e/14/dbapi)",
+        "details": {
+            "id": "58104676",
+            "artist_id": NaN,
+            "name": "Father Of Day, Father Of N",
+            "label": null,
+            "writers": null,
+            "primary_genre": null
+        }
+    },
+    {
+        "error": "(sqlalchemy.dialects.postgresql.asyncpg.Error) <class 'asyncpg.exceptions.DataError'>: invalid input for query argument $4: nan (expected str, got float)\n[SQL: INSERT INTO shazam_tracks (creation_date, update_date, id, artist_id, name, label, writers, primary_genre) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)]\n[parameters: (datetime.datetime(2023, 11, 29, 7, 0, 1, 726267), datetime.datetime(2023, 11, 29, 7, 0, 1, 726267), '405083258', nan, 'What You Speak Is What You Will Become (I Am Extended)', None, None, None)]\n(Background on this error at: https://sqlalche.me/e/14/dbapi)",
+        "details": {
+            "id": "405083258",
+            "artist_id": NaN,
+            "name": "What You Speak Is What You Will Become (I Am Extended)",
+            "label": null,
+            "writers": null,
+            "primary_genre": null
+        }
+    },
+    {
+        "error": "(sqlalchemy.dialects.postgresql.asyncpg.Error) <class 'asyncpg.exceptions.DataError'>: invalid input for query argument $4: nan (expected str, got float)\n[SQL: INSERT INTO shazam_tracks (creation_date, update_date, id, artist_id, name, label, writers, primary_genre) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)]\n[parameters: (datetime.datetime(2023, 11, 29, 7, 1, 55, 412587), datetime.datetime(2023, 11, 29, 7, 1, 55, 412587), '58519153', nan, 'Hands Up', '2011 Counter Music', None, 'Dance')]\n(Background on this error at: https://sqlalche.me/e/14/dbapi)",
+        "details": {
+            "id": "58519153",
+            "artist_id": NaN,
+            "name": "Hands Up",
+            "label": "2011 Counter Music",
+            "writers": null,
+            "primary_genre": "Dance"
+        }
+    },
+    {
+        "error": "(sqlalchemy.dialects.postgresql.asyncpg.Error) <class 'asyncpg.exceptions.DataError'>: invalid input for query argument $4: nan (expected str, got float)\n[SQL: INSERT INTO shazam_tracks (creation_date, update_date, id, artist_id, name, label, writers, primary_genre) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)]\n[parameters: (datetime.datetime(2023, 11, 29, 7, 2, 0, 575224), datetime.datetime(2023, 11, 29, 7, 2, 0, 575224), '503395635', nan, 'I Have A Dream (Darren Studholme&bkr Radio Mix)', None, None, None)]\n(Background on this error at: https://sqlalche.me/e/14/dbapi)",
+        "details": {
+            "id": "503395635",
+            "artist_id": NaN,
+            "name": "I Have A Dream (Darren Studholme&bkr Radio Mix)",
+            "label": null,
+            "writers": null,
+            "primary_genre": null
+        }
+    },
+    {
+        "error": "(sqlalchemy.dialects.postgresql.asyncpg.Error) <class 'asyncpg.exceptions.DataError'>: invalid input for query argument $4: nan (expected str, got float)\n[SQL: INSERT INTO shazam_tracks (creation_date, update_date, id, artist_id, name, label, writers, primary_genre) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)]\n[parameters: (datetime.datetime(2023, 11, 29, 7, 3, 38, 832926), datetime.datetime(2023, 11, 29, 7, 3, 38, 832926), '10424164', nan, 'If We Come As Soft Rain', None, None, None)]\n(Background on this error at: https://sqlalche.me/e/14/dbapi)",
+        "details": {
+            "id": "10424164",
+            "artist_id": NaN,
+            "name": "If We Come As Soft Rain",
+            "label": null,
+            "writers": null,
+            "primary_genre": null
+        }
+    },
+    {
+        "error": "(sqlalchemy.dialects.postgresql.asyncpg.Error) <class 'asyncpg.exceptions.DataError'>: invalid input for query argument $4: nan (expected str, got float)\n[SQL: INSERT INTO shazam_tracks (creation_date, update_date, id, artist_id, name, label, writers, primary_genre) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)]\n[parameters: (datetime.datetime(2023, 11, 29, 7, 5, 58, 56311), datetime.datetime(2023, 11, 29, 7, 5, 58, 56311), '463832394', nan, 'Future Sense', None, None, None)]\n(Background on this error at: https://sqlalche.me/e/14/dbapi)",
+        "details": {
+            "id": "463832394",
+            "artist_id": NaN,
+            "name": "Future Sense",
+            "label": null,
+            "writers": null,
+            "primary_genre": null
+        }
+    },
+    {
+        "error": "(sqlalchemy.dialects.postgresql.asyncpg.Error) <class 'asyncpg.exceptions.DataError'>: invalid input for query argument $4: nan (expected str, got float)\n[SQL: INSERT INTO shazam_tracks (creation_date, update_date, id, artist_id, name, label, writers, primary_genre) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)]\n[parameters: (datetime.datetime(2023, 11, 29, 7, 10, 50, 676934), datetime.datetime(2023, 11, 29, 7, 10, 50, 676934), '270787179', nan, 'Laisse Tomber Les Filles', None, ['Serge Gainsbourg'], None)]\n(Background on this error at: https://sqlalche.me/e/14/dbapi)",
+        "details": {
+            "id": "270787179",
+            "artist_id": NaN,
+            "name": "Laisse Tomber Les Filles",
+            "label": null,
+            "writers": [
+                "Serge Gainsbourg"
+            ],
+            "primary_genre": null
+        }
+    },
+    {
+        "error": "(sqlalchemy.dialects.postgresql.asyncpg.Error) <class 'asyncpg.exceptions.DataError'>: invalid input for query argument $4: nan (expected str, got float)\n[SQL: INSERT INTO shazam_tracks (creation_date, update_date, id, artist_id, name, label, writers, primary_genre) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)]\n[parameters: (datetime.datetime(2023, 11, 29, 7, 18, 1, 667794), datetime.datetime(2023, 11, 29, 7, 18, 1, 667794), '54163464', nan, 'Checkers', None, None, None)]\n(Background on this error at: https://sqlalche.me/e/14/dbapi)",
+        "details": {
+            "id": "54163464",
+            "artist_id": NaN,
+            "name": "Checkers",
+            "label": null,
+            "writers": null,
+            "primary_genre": null
+        }
+    },
+    {
+        "error": "(sqlalchemy.dialects.postgresql.asyncpg.Error) <class 'asyncpg.exceptions.DataError'>: invalid input for query argument $4: nan (expected str, got float)\n[SQL: INSERT INTO shazam_tracks (creation_date, update_date, id, artist_id, name, label, writers, primary_genre) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)]\n[parameters: (datetime.datetime(2023, 11, 29, 7, 18, 32, 538680), datetime.datetime(2023, 11, 29, 7, 18, 32, 538680), '10650795', nan, 'Someday My Prince Will Come (feat. John Coltrane, Hank Mobley, Wynton Kelly, Paul Chambers & Jimmy Cobb)', 'Columbia/Legacy', None, 'Jazz')]\n(Background on this error at: https://sqlalche.me/e/14/dbapi)",
+        "details": {
+            "id": "10650795",
+            "artist_id": NaN,
+            "name": "Someday My Prince Will Come (feat. John Coltrane, Hank Mobley, Wynton Kelly, Paul Chambers & Jimmy Cobb)",
+            "label": "Columbia/Legacy",
+            "writers": null,
+            "primary_genre": "Jazz"
+        }
+    },
+    {
+        "error": "(sqlalchemy.dialects.postgresql.asyncpg.Error) <class 'asyncpg.exceptions.DataError'>: invalid input for query argument $4: nan (expected str, got float)\n[SQL: INSERT INTO shazam_tracks (creation_date, update_date, id, artist_id, name, label, writers, primary_genre) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)]\n[parameters: (datetime.datetime(2023, 11, 29, 7, 29, 23, 910463), datetime.datetime(2023, 11, 29, 7, 29, 23, 910463), '227299523', nan, 'הכול בוער', None, None, None)]\n(Background on this error at: https://sqlalche.me/e/14/dbapi)",
+        "details": {
+            "id": "227299523",
+            "artist_id": NaN,
+            "name": "הכול בוער",
+            "label": null,
+            "writers": null,
+            "primary_genre": null
+        }
+    },
+    {
+        "error": "(sqlalchemy.dialects.postgresql.asyncpg.Error) <class 'asyncpg.exceptions.DataError'>: invalid input for query argument $4: nan (expected str, got float)\n[SQL: INSERT INTO shazam_tracks (creation_date, update_date, id, artist_id, name, label, writers, primary_genre) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)]\n[parameters: (datetime.datetime(2023, 11, 29, 7, 43, 57, 250332), datetime.datetime(2023, 11, 29, 7, 43, 57, 250332), '601060612', nan, 'Gefunden', None, None, None)]\n(Background on this error at: https://sqlalche.me/e/14/dbapi)",
+        "details": {
+            "id": "601060612",
+            "artist_id": NaN,
+            "name": "Gefunden",
+            "label": null,
+            "writers": null,
+            "primary_genre": null
+        }
+    },
+    {
+        "error": "(sqlalchemy.dialects.postgresql.asyncpg.Error) <class 'asyncpg.exceptions.DataError'>: invalid input for query argument $4: nan (expected str, got float)\n[SQL: INSERT INTO shazam_tracks (creation_date, update_date, id, artist_id, name, label, writers, primary_genre) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)]\n[parameters: (datetime.datetime(2023, 11, 29, 7, 46, 36, 784053), datetime.datetime(2023, 11, 29, 7, 46, 36, 784053), '351869014', nan, 'Das Volksauto', None, None, None)]\n(Background on this error at: https://sqlalche.me/e/14/dbapi)",
+        "details": {
+            "id": "351869014",
+            "artist_id": NaN,
+            "name": "Das Volksauto",
+            "label": null,
+            "writers": null,
+            "primary_genre": null
+        }
+    },
+    {
+        "error": "(sqlalchemy.dialects.postgresql.asyncpg.Error) <class 'asyncpg.exceptions.DataError'>: invalid input for query argument $4: nan (expected str, got float)\n[SQL: INSERT INTO shazam_tracks (creation_date, update_date, id, artist_id, name, label, writers, primary_genre) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)]\n[parameters: (datetime.datetime(2023, 11, 29, 7, 50, 6, 450493), datetime.datetime(2023, 11, 29, 7, 50, 6, 450493), '10430687', nan, 'Besame Mucho', 'Columbia', None, 'Lounge')]\n(Background on this error at: https://sqlalche.me/e/14/dbapi)",
+        "details": {
+            "id": "10430687",
+            "artist_id": NaN,
+            "name": "Besame Mucho",
+            "label": "Columbia",
+            "writers": null,
+            "primary_genre": "Lounge"
+        }
+    },
+    {
+        "error": "(sqlalchemy.dialects.postgresql.asyncpg.Error) <class 'asyncpg.exceptions.DataError'>: invalid input for query argument $4: nan (expected str, got float)\n[SQL: INSERT INTO shazam_tracks (creation_date, update_date, id, artist_id, name, label, writers, primary_genre) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)]\n[parameters: (datetime.datetime(2023, 11, 29, 7, 51, 21, 357979), datetime.datetime(2023, 11, 29, 7, 51, 21, 357979), '55643393', nan, 'Cultural Excursion Into The Void: Segment II (No One Here Gets Out Alive)', None, None, None)]\n(Background on this error at: https://sqlalche.me/e/14/dbapi)",
+        "details": {
+            "id": "55643393",
+            "artist_id": NaN,
+            "name": "Cultural Excursion Into The Void: Segment II (No One Here Gets Out Alive)",
+            "label": null,
+            "writers": null,
+            "primary_genre": null
+        }
+    },
+    {
+        "error": "(sqlalchemy.dialects.postgresql.asyncpg.Error) <class 'asyncpg.exceptions.DataError'>: invalid input for query argument $4: nan (expected str, got float)\n[SQL: INSERT INTO shazam_tracks (creation_date, update_date, id, artist_id, name, label, writers, primary_genre) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)]\n[parameters: (datetime.datetime(2023, 11, 29, 7, 55, 2, 524671), datetime.datetime(2023, 11, 29, 7, 55, 2, 524671), '54372135', nan, 'Message To The Messengers', None, None, None)]\n(Background on this error at: https://sqlalche.me/e/14/dbapi)",
+        "details": {
+            "id": "54372135",
+            "artist_id": NaN,
+            "name": "Message To The Messengers",
+            "label": null,
+            "writers": null,
+            "primary_genre": null
+        }
+    },
+    {
+        "error": "(sqlalchemy.dialects.postgresql.asyncpg.Error) <class 'asyncpg.exceptions.DataError'>: invalid input for query argument $4: nan (expected str, got float)\n[SQL: INSERT INTO shazam_tracks (creation_date, update_date, id, artist_id, name, label, writers, primary_genre) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)]\n[parameters: (datetime.datetime(2023, 11, 29, 7, 56, 16, 820433), datetime.datetime(2023, 11, 29, 7, 56, 16, 820433), '283150396', nan, '11-Das Verlorene Geistertal (Teil 01)', None, None, None)]\n(Background on this error at: https://sqlalche.me/e/14/dbapi)",
+        "details": {
+            "id": "283150396",
+            "artist_id": NaN,
+            "name": "11-Das Verlorene Geistertal (Teil 01)",
+            "label": null,
+            "writers": null,
+            "primary_genre": null
+        }
+    },
+    {
+        "error": "(sqlalchemy.dialects.postgresql.asyncpg.Error) <class 'asyncpg.exceptions.DataError'>: invalid input for query argument $4: nan (expected str, got float)\n[SQL: INSERT INTO shazam_tracks (creation_date, update_date, id, artist_id, name, label, writers, primary_genre) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)]\n[parameters: (datetime.datetime(2023, 11, 29, 7, 57, 13, 315988), datetime.datetime(2023, 11, 29, 7, 57, 13, 315988), '283150416', nan, '11-Das Verlorene Geistertal (Teil 02)', None, None, None)]\n(Background on this error at: https://sqlalche.me/e/14/dbapi)",
+        "details": {
+            "id": "283150416",
+            "artist_id": NaN,
+            "name": "11-Das Verlorene Geistertal (Teil 02)",
+            "label": null,
+            "writers": null,
+            "primary_genre": null
+        }
+    },
+    {
+        "error": "(sqlalchemy.dialects.postgresql.asyncpg.Error) <class 'asyncpg.exceptions.DataError'>: invalid input for query argument $4: nan (expected str, got float)\n[SQL: INSERT INTO shazam_tracks (creation_date, update_date, id, artist_id, name, label, writers, primary_genre) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)]\n[parameters: (datetime.datetime(2023, 11, 29, 7, 58, 43, 991587), datetime.datetime(2023, 11, 29, 7, 58, 43, 991587), '283150393', nan, '11-Das Verlorene Geistertal (Teil 10)', None, None, None)]\n(Background on this error at: https://sqlalche.me/e/14/dbapi)",
+        "details": {
+            "id": "283150393",
+            "artist_id": NaN,
+            "name": "11-Das Verlorene Geistertal (Teil 10)",
+            "label": null,
+            "writers": null,
+            "primary_genre": null
+        }
+    },
+    {
+        "error": "(sqlalchemy.dialects.postgresql.asyncpg.Error) <class 'asyncpg.exceptions.DataError'>: invalid input for query argument $4: nan (expected str, got float)\n[SQL: INSERT INTO shazam_tracks (creation_date, update_date, id, artist_id, name, label, writers, primary_genre) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)]\n[parameters: (datetime.datetime(2023, 11, 29, 8, 3, 1, 7333), datetime.datetime(2023, 11, 29, 8, 3, 1, 7333), '283150410', nan, '11-Das Verlorene Geistertal (Teil 30)', None, None, None)]\n(Background on this error at: https://sqlalche.me/e/14/dbapi)",
+        "details": {
+            "id": "283150410",
+            "artist_id": NaN,
+            "name": "11-Das Verlorene Geistertal (Teil 30)",
+            "label": null,
+            "writers": null,
+            "primary_genre": null
+        }
+    },
+    {
+        "error": "(sqlalchemy.dialects.postgresql.asyncpg.Error) <class 'asyncpg.exceptions.DataError'>: invalid input for query argument $4: nan (expected str, got float)\n[SQL: INSERT INTO shazam_tracks (creation_date, update_date, id, artist_id, name, label, writers, primary_genre) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)]\n[parameters: (datetime.datetime(2023, 11, 29, 8, 4, 46, 640522), datetime.datetime(2023, 11, 29, 8, 4, 46, 640522), '420467495', nan, 'An Interview With Philip Glass With Selections From Glassworks: Part V', None, None, None)]\n(Background on this error at: https://sqlalche.me/e/14/dbapi)",
+        "details": {
+            "id": "420467495",
+            "artist_id": NaN,
+            "name": "An Interview With Philip Glass With Selections From Glassworks: Part V",
+            "label": null,
+            "writers": null,
+            "primary_genre": null
+        }
+    },
+    {
+        "error": "(sqlalchemy.dialects.postgresql.asyncpg.Error) <class 'asyncpg.exceptions.DataError'>: invalid input for query argument $4: nan (expected str, got float)\n[SQL: INSERT INTO shazam_tracks (creation_date, update_date, id, artist_id, name, label, writers, primary_genre) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)]\n[parameters: (datetime.datetime(2023, 11, 29, 8, 16, 31, 503509), datetime.datetime(2023, 11, 29, 8, 16, 31, 503509), '437874940', nan, 'Oye Como Va (K&f Remix)', None, None, None)]\n(Background on this error at: https://sqlalche.me/e/14/dbapi)",
+        "details": {
+            "id": "437874940",
+            "artist_id": NaN,
+            "name": "Oye Como Va (K&f Remix)",
+            "label": null,
+            "writers": null,
+            "primary_genre": null
+        }
+    },
+    {
+        "error": "(sqlalchemy.dialects.postgresql.asyncpg.Error) <class 'asyncpg.exceptions.DataError'>: invalid input for query argument $4: nan (expected str, got float)\n[SQL: INSERT INTO shazam_tracks (creation_date, update_date, id, artist_id, name, label, writers, primary_genre) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)]\n[parameters: (datetime.datetime(2023, 11, 29, 8, 18, 34, 155341), datetime.datetime(2023, 11, 29, 8, 18, 34, 155341), '457721221', nan, 'Süp Intro', None, None, None)]\n(Background on this error at: https://sqlalche.me/e/14/dbapi)",
+        "details": {
+            "id": "457721221",
+            "artist_id": NaN,
+            "name": "Süp Intro",
+            "label": null,
+            "writers": null,
+            "primary_genre": null
+        }
+    },
+    {
+        "error": "(sqlalchemy.dialects.postgresql.asyncpg.Error) <class 'asyncpg.exceptions.DataError'>: invalid input for query argument $4: nan (expected str, got float)\n[SQL: INSERT INTO shazam_tracks (creation_date, update_date, id, artist_id, name, label, writers, primary_genre) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)]\n[parameters: (datetime.datetime(2023, 11, 29, 8, 28, 12, 456837), datetime.datetime(2023, 11, 29, 8, 28, 12, 456837), '73927477', nan, 'Starry Night -Ascent (Theta Brainwave Entrainment)', None, None, None)]\n(Background on this error at: https://sqlalche.me/e/14/dbapi)",
+        "details": {
+            "id": "73927477",
+            "artist_id": NaN,
+            "name": "Starry Night -Ascent (Theta Brainwave Entrainment)",
+            "label": null,
+            "writers": null,
+            "primary_genre": null
+        }
+    },
+    {
+        "error": "(sqlalchemy.dialects.postgresql.asyncpg.Error) <class 'asyncpg.exceptions.DataError'>: invalid input for query argument $4: nan (expected str, got float)\n[SQL: INSERT INTO shazam_tracks (creation_date, update_date, id, artist_id, name, label, writers, primary_genre) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)]\n[parameters: (datetime.datetime(2023, 11, 29, 8, 34, 3, 756356), datetime.datetime(2023, 11, 29, 8, 34, 3, 756356), '317976060', nan, \"Hand To Hold On To (Remastered;Live At The Rainbow Music Hall, Denver, Colorado 16 Aug '82)\", None, None, None)]\n(Background on this error at: https://sqlalche.me/e/14/dbapi)",
+        "details": {
+            "id": "317976060",
+            "artist_id": NaN,
+            "name": "Hand To Hold On To (Remastered;Live At The Rainbow Music Hall, Denver, Colorado 16 Aug '82)",
+            "label": null,
+            "writers": null,
+            "primary_genre": null
+        }
+    },
+    {
+        "error": "(sqlalchemy.dialects.postgresql.asyncpg.Error) <class 'asyncpg.exceptions.DataError'>: invalid input for query argument $4: nan (expected str, got float)\n[SQL: INSERT INTO shazam_tracks (creation_date, update_date, id, artist_id, name, label, writers, primary_genre) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)]\n[parameters: (datetime.datetime(2023, 11, 29, 8, 34, 57, 685950), datetime.datetime(2023, 11, 29, 8, 34, 57, 685950), '65491573', nan, \"If It Were Done When 'Tis Done, Then 'Twere Well It Were Done Quickly (From Macbeth)\", None, None, None)]\n(Background on this error at: https://sqlalche.me/e/14/dbapi)",
+        "details": {
+            "id": "65491573",
+            "artist_id": NaN,
+            "name": "If It Were Done When 'Tis Done, Then 'Twere Well It Were Done Quickly (From Macbeth)",
+            "label": null,
+            "writers": null,
+            "primary_genre": null
+        }
+    },
+    {
+        "error": "(sqlalchemy.dialects.postgresql.asyncpg.Error) <class 'asyncpg.exceptions.DataError'>: invalid input for query argument $4: nan (expected str, got float)\n[SQL: INSERT INTO shazam_tracks (creation_date, update_date, id, artist_id, name, label, writers, primary_genre) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)]\n[parameters: (datetime.datetime(2023, 11, 29, 8, 41, 5, 190171), datetime.datetime(2023, 11, 29, 8, 41, 5, 190171), '465844059', nan, 'Max Ruft An', None, None, None)]\n(Background on this error at: https://sqlalche.me/e/14/dbapi)",
+        "details": {
+            "id": "465844059",
+            "artist_id": NaN,
+            "name": "Max Ruft An",
+            "label": null,
+            "writers": null,
+            "primary_genre": null
+        }
+    },
+    {
+        "error": "(sqlalchemy.dialects.postgresql.asyncpg.Error) <class 'asyncpg.exceptions.DataError'>: invalid input for query argument $4: nan (expected str, got float)\n[SQL: INSERT INTO shazam_tracks (creation_date, update_date, id, artist_id, name, label, writers, primary_genre) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)]\n[parameters: (datetime.datetime(2023, 11, 29, 8, 41, 11, 213400), datetime.datetime(2023, 11, 29, 8, 41, 11, 213400), '414174942', nan, 'Dancing Demons', None, None, None)]\n(Background on this error at: https://sqlalche.me/e/14/dbapi)",
+        "details": {
+            "id": "414174942",
+            "artist_id": NaN,
+            "name": "Dancing Demons",
+            "label": null,
+            "writers": null,
+            "primary_genre": null
+        }
+    },
+    {
+        "error": "(sqlalchemy.dialects.postgresql.asyncpg.Error) <class 'asyncpg.exceptions.DataError'>: invalid input for query argument $4: nan (expected str, got float)\n[SQL: INSERT INTO shazam_tracks (creation_date, update_date, id, artist_id, name, label, writers, primary_genre) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)]\n[parameters: (datetime.datetime(2023, 11, 29, 8, 41, 24, 769004), datetime.datetime(2023, 11, 29, 8, 41, 24, 769004), '128581188', nan, 'Master Zacharius-Chapter 2-The Pride Of Science', None, None, None)]\n(Background on this error at: https://sqlalche.me/e/14/dbapi)",
+        "details": {
+            "id": "128581188",
+            "artist_id": NaN,
+            "name": "Master Zacharius-Chapter 2-The Pride Of Science",
+            "label": null,
+            "writers": null,
+            "primary_genre": null
+        }
+    },
+    {
+        "error": "(sqlalchemy.dialects.postgresql.asyncpg.Error) <class 'asyncpg.exceptions.DataError'>: invalid input for query argument $4: nan (expected str, got float)\n[SQL: INSERT INTO shazam_tracks (creation_date, update_date, id, artist_id, name, label, writers, primary_genre) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)]\n[parameters: (datetime.datetime(2023, 11, 29, 8, 43, 12, 984612), datetime.datetime(2023, 11, 29, 8, 43, 12, 984612), '376443967', nan, 'News From 2083', None, None, None)]\n(Background on this error at: https://sqlalche.me/e/14/dbapi)",
+        "details": {
+            "id": "376443967",
+            "artist_id": NaN,
+            "name": "News From 2083",
+            "label": null,
+            "writers": null,
+            "primary_genre": null
+        }
+    },
+    {
+        "error": "(sqlalchemy.dialects.postgresql.asyncpg.Error) <class 'asyncpg.exceptions.DataError'>: invalid input for query argument $4: nan (expected str, got float)\n[SQL: INSERT INTO shazam_tracks (creation_date, update_date, id, artist_id, name, label, writers, primary_genre) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)]\n[parameters: (datetime.datetime(2023, 11, 29, 8, 59, 13, 204236), datetime.datetime(2023, 11, 29, 8, 59, 13, 204236), '602565461', nan, 'Zeus', None, None, None)]\n(Background on this error at: https://sqlalche.me/e/14/dbapi)",
+        "details": {
+            "id": "602565461",
+            "artist_id": NaN,
+            "name": "Zeus",
+            "label": null,
+            "writers": null,
+            "primary_genre": null
+        }
+    },
+    {
+        "error": "(sqlalchemy.dialects.postgresql.asyncpg.Error) <class 'asyncpg.exceptions.DataError'>: invalid input for query argument $4: nan (expected str, got float)\n[SQL: INSERT INTO shazam_tracks (creation_date, update_date, id, artist_id, name, label, writers, primary_genre) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)]\n[parameters: (datetime.datetime(2023, 11, 29, 9, 1, 18, 240914), datetime.datetime(2023, 11, 29, 9, 1, 18, 240914), '223128673', nan, 'This Way (130bpm Version)', None, None, None)]\n(Background on this error at: https://sqlalche.me/e/14/dbapi)",
+        "details": {
+            "id": "223128673",
+            "artist_id": NaN,
+            "name": "This Way (130bpm Version)",
+            "label": null,
+            "writers": null,
+            "primary_genre": null
+        }
+    },
+    {
+        "error": "(sqlalchemy.dialects.postgresql.asyncpg.Error) <class 'asyncpg.exceptions.DataError'>: invalid input for query argument $4: nan (expected str, got float)\n[SQL: INSERT INTO shazam_tracks (creation_date, update_date, id, artist_id, name, label, writers, primary_genre) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)]\n[parameters: (datetime.datetime(2023, 11, 29, 9, 2, 16, 846880), datetime.datetime(2023, 11, 29, 9, 2, 16, 846880), '65248042', nan, 'Breathe', 'Avatar Productions', None, 'Fitness & Workout')]\n(Background on this error at: https://sqlalche.me/e/14/dbapi)",
+        "details": {
+            "id": "65248042",
+            "artist_id": NaN,
+            "name": "Breathe",
+            "label": "Avatar Productions",
+            "writers": null,
+            "primary_genre": "Fitness & Workout"
+        }
+    },
+    {
+        "error": "(sqlalchemy.dialects.postgresql.asyncpg.Error) <class 'asyncpg.exceptions.DataError'>: invalid input for query argument $4: nan (expected str, got float)\n[SQL: INSERT INTO shazam_tracks (creation_date, update_date, id, artist_id, name, label, writers, primary_genre) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)]\n[parameters: (datetime.datetime(2023, 11, 29, 9, 3, 27, 232248), datetime.datetime(2023, 11, 29, 9, 3, 27, 232248), '498904637', nan, 'Wena', 'Guru Music Records', None, 'Singer/Songwriter')]\n(Background on this error at: https://sqlalche.me/e/14/dbapi)",
+        "details": {
+            "id": "498904637",
+            "artist_id": NaN,
+            "name": "Wena",
+            "label": "Guru Music Records",
+            "writers": null,
+            "primary_genre": "Singer/Songwriter"
+        }
+    },
+    {
+        "error": "(sqlalchemy.dialects.postgresql.asyncpg.Error) <class 'asyncpg.exceptions.DataError'>: invalid input for query argument $4: nan (expected str, got float)\n[SQL: INSERT INTO shazam_tracks (creation_date, update_date, id, artist_id, name, label, writers, primary_genre) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)]\n[parameters: (datetime.datetime(2023, 11, 29, 9, 4, 45, 760335), datetime.datetime(2023, 11, 29, 9, 4, 45, 760335), '5974928', nan, 'H.I.P.H.O.P.', None, None, None)]\n(Background on this error at: https://sqlalche.me/e/14/dbapi)",
+        "details": {
+            "id": "5974928",
+            "artist_id": NaN,
+            "name": "H.I.P.H.O.P.",
+            "label": null,
+            "writers": null,
+            "primary_genre": null
+        }
+    },
+    {
+        "error": "(sqlalchemy.dialects.postgresql.asyncpg.Error) <class 'asyncpg.exceptions.DataError'>: invalid input for query argument $4: nan (expected str, got float)\n[SQL: INSERT INTO shazam_tracks (creation_date, update_date, id, artist_id, name, label, writers, primary_genre) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)]\n[parameters: (datetime.datetime(2023, 11, 29, 9, 7, 57, 843367), datetime.datetime(2023, 11, 29, 9, 7, 57, 843367), '55643401', nan, 'Beginning Of The Doors: Visionary Dream: Segment IV (No One Here Gets Out Alive)', None, None, None)]\n(Background on this error at: https://sqlalche.me/e/14/dbapi)",
+        "details": {
+            "id": "55643401",
+            "artist_id": NaN,
+            "name": "Beginning Of The Doors: Visionary Dream: Segment IV (No One Here Gets Out Alive)",
+            "label": null,
+            "writers": null,
+            "primary_genre": null
+        }
+    },
+    {
+        "error": "(sqlalchemy.dialects.postgresql.asyncpg.Error) <class 'asyncpg.exceptions.DataError'>: invalid input for query argument $4: nan (expected str, got float)\n[SQL: INSERT INTO shazam_tracks (creation_date, update_date, id, artist_id, name, label, writers, primary_genre) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)]\n[parameters: (datetime.datetime(2023, 11, 29, 9, 12, 41, 533298), datetime.datetime(2023, 11, 29, 9, 12, 41, 533298), '54120297', nan, 'Happy Birthday Medley (With Soundeffects)  (Countdown And Instrumental Medley)', None, None, None)]\n(Background on this error at: https://sqlalche.me/e/14/dbapi)",
+        "details": {
+            "id": "54120297",
+            "artist_id": NaN,
+            "name": "Happy Birthday Medley (With Soundeffects)  (Countdown And Instrumental Medley)",
+            "label": null,
+            "writers": null,
+            "primary_genre": null
+        }
+    },
+    {
+        "error": "(sqlalchemy.dialects.postgresql.asyncpg.Error) <class 'asyncpg.exceptions.DataError'>: invalid input for query argument $4: nan (expected str, got float)\n[SQL: INSERT INTO shazam_tracks (creation_date, update_date, id, artist_id, name, label, writers, primary_genre) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)]\n[parameters: (datetime.datetime(2023, 11, 29, 9, 13, 24, 971777), datetime.datetime(2023, 11, 29, 9, 13, 24, 971777), '663659864', nan, 'hyper-stimulus', None, None, None)]\n(Background on this error at: https://sqlalche.me/e/14/dbapi)",
+        "details": {
+            "id": "663659864",
+            "artist_id": NaN,
+            "name": "hyper-stimulus",
+            "label": null,
+            "writers": null,
+            "primary_genre": null
+        }
+    },
+    {
+        "error": "(sqlalchemy.dialects.postgresql.asyncpg.Error) <class 'asyncpg.exceptions.DataError'>: invalid input for query argument $4: nan (expected str, got float)\n[SQL: INSERT INTO shazam_tracks (creation_date, update_date, id, artist_id, name, label, writers, primary_genre) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)]\n[parameters: (datetime.datetime(2023, 11, 29, 9, 18, 31, 691887), datetime.datetime(2023, 11, 29, 9, 18, 31, 691887), '319394684', nan, 'End', None, None, None)]\n(Background on this error at: https://sqlalche.me/e/14/dbapi)",
+        "details": {
+            "id": "319394684",
+            "artist_id": NaN,
+            "name": "End",
+            "label": null,
+            "writers": null,
+            "primary_genre": null
+        }
+    },
+    {
+        "error": "(sqlalchemy.dialects.postgresql.asyncpg.Error) <class 'asyncpg.exceptions.DataError'>: invalid input for query argument $4: nan (expected str, got float)\n[SQL: INSERT INTO shazam_tracks (creation_date, update_date, id, artist_id, name, label, writers, primary_genre) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)]\n[parameters: (datetime.datetime(2023, 11, 29, 9, 19, 58, 369102), datetime.datetime(2023, 11, 29, 9, 19, 58, 369102), '55643392', nan, \"Exploration And Morrison's Sojourn: Segment IV (No One Here Gets Out Alive)\", None, None, None)]\n(Background on this error at: https://sqlalche.me/e/14/dbapi)",
+        "details": {
+            "id": "55643392",
+            "artist_id": NaN,
+            "name": "Exploration And Morrison's Sojourn: Segment IV (No One Here Gets Out Alive)",
+            "label": null,
+            "writers": null,
+            "primary_genre": null
+        }
+    },
+    {
+        "error": "(sqlalchemy.dialects.postgresql.asyncpg.Error) <class 'asyncpg.exceptions.DataError'>: invalid input for query argument $4: nan (expected str, got float)\n[SQL: INSERT INTO shazam_tracks (creation_date, update_date, id, artist_id, name, label, writers, primary_genre) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)]\n[parameters: (datetime.datetime(2023, 11, 29, 9, 21, 8, 334226), datetime.datetime(2023, 11, 29, 9, 21, 8, 334226), '420963069', nan, 'The Israel Declaration Of Independence', None, None, None)]\n(Background on this error at: https://sqlalche.me/e/14/dbapi)",
+        "details": {
+            "id": "420963069",
+            "artist_id": NaN,
+            "name": "The Israel Declaration Of Independence",
+            "label": null,
+            "writers": null,
+            "primary_genre": null
+        }
+    },
+    {
+        "error": "(sqlalchemy.dialects.postgresql.asyncpg.Error) <class 'asyncpg.exceptions.DataError'>: invalid input for query argument $4: nan (expected str, got float)\n[SQL: INSERT INTO shazam_tracks (creation_date, update_date, id, artist_id, name, label, writers, primary_genre) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)]\n[parameters: (datetime.datetime(2023, 11, 29, 9, 24, 0, 397809), datetime.datetime(2023, 11, 29, 9, 24, 0, 397809), '505280279', nan, 'Staffel 1, Folge 9 (Teil 09)', None, None, None)]\n(Background on this error at: https://sqlalche.me/e/14/dbapi)",
+        "details": {
+            "id": "505280279",
+            "artist_id": NaN,
+            "name": "Staffel 1, Folge 9 (Teil 09)",
+            "label": null,
+            "writers": null,
+            "primary_genre": null
+        }
+    },
+    {
+        "error": "(sqlalchemy.dialects.postgresql.asyncpg.Error) <class 'asyncpg.exceptions.DataError'>: invalid input for query argument $4: nan (expected str, got float)\n[SQL: INSERT INTO shazam_tracks (creation_date, update_date, id, artist_id, name, label, writers, primary_genre) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)]\n[parameters: (datetime.datetime(2023, 11, 29, 9, 37, 30, 518896), datetime.datetime(2023, 11, 29, 9, 37, 30, 518896), '332240655', nan, 'Baby Come Back (feat. Pato Banton) [Unplugged]', 'UMC (Universal Music Catalogue)', None, 'Reggae')]\n(Background on this error at: https://sqlalche.me/e/14/dbapi)",
+        "details": {
+            "id": "332240655",
+            "artist_id": NaN,
+            "name": "Baby Come Back (feat. Pato Banton) [Unplugged]",
+            "label": "UMC (Universal Music Catalogue)",
+            "writers": null,
+            "primary_genre": "Reggae"
+        }
+    }
+]

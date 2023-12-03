@@ -2,8 +2,9 @@ import asyncio
 from typing import List, Dict
 
 from aiohttp import ClientSession
-from postgres_client import BaseSpotifyORMModel, SpotifyArtist
-from postgres_client.postgres_operations import get_database_engine
+from genie_datastores.postgres.models import SpotifyArtist
+from genie_datastores.postgres.models.orm.spotify.base_spotify_orm_model import BaseSpotifyORMModel
+from genie_datastores.postgres.operations import get_database_engine
 from spotipyio.logic.spotify_client import SpotifyClient
 
 from consts.data_consts import ID, TRACKS, ITEMS, ARTISTS

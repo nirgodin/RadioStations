@@ -1,5 +1,5 @@
 from statistics import mean
-from typing import Optional, List, Dict, Union
+from typing import List, Dict, Union
 
 from pandas import Series
 

@@ -21,19 +21,13 @@ class GenderImageDetector:
         self._gender_model = self._load_model(GENDER_MODEL_WEIGHTS_PATH, GENDER_MODEL_PATH)
         self._confidence_threshold = confidence_threshold
 
-    def detect_gender(self, input_path: str, frame_width: int = 400) -> List[Dict[str, Union[str, float]]]:
-        img = cv2.imread(input_path, cv2.IMREAD_COLOR)
-
-        if img is None:
-            return []
-
+    def detect_gender(self, img: ndarray, frame_width: int = 400) -> List[Dict[str, Union[str, float]]]:
         frame = img.copy()
 
         if frame.shape[1] > frame_width:
             frame = self._resize_image(frame, width=frame_width)
 
         faces = self._get_faces(frame)
-
         return [self._detect_single_face_gender(frame, face) for face in faces]
 
     @staticmethod

@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 from typing import List, Type, Iterable, Any
 
-from postgres_client import BaseORMModel
-from postgres_client.postgres_operations import execute_query, insert_records
+from genie_datastores.postgres.models import BaseORMModel
+from genie_datastores.postgres.operations import execute_query, insert_records
 from sqlalchemy import select
 
 from consts.data_consts import ID
