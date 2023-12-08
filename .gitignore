@@ -158,3 +158,4 @@ vcs.xml
 /data
 /service_account_secrets.json
 /env_variables.json
+/gender_model_resources
