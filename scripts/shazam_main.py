@@ -1,12 +1,20 @@
 import asyncio
 
-from analysis.analyzers.lyrics_language.shazam_lyrics_language_analyzer import ShazamLyricsLanguageAnalyzer
+from data_collectors.components import ComponentFactory
+
 from data_collection.shazam.shazam_city_fetcher import ShazamCitiesFetcher
 from data_collection.shazam.shazam_country_fetcher import ShazamCountryFetcher
-from data_collection.shazam.shazam_search_fetcher import ShazamSearchFetcher
-from data_collection.shazam.shazam_song_about_fetcher import ShazamTrackAboutFetcher
 from tools.environment_manager import EnvironmentManager
-from utils.data_utils import read_merged_data
+
+
+async def run_shazam_top_tracks_manager(component_factory: ComponentFactory) -> None:
+    top_tracks_manager = component_factory.get_shazam_top_tracks_manager()
+    await top_tracks_manager.run()
+
+
+async def run_shazam_missing_ids_manager(component_factory: ComponentFactory) -> None:
+    missing_ids_manager = component_factory.get_shazam_missing_ids_manager()
+    await missing_ids_manager.run(100)
 
 
 async def run():
@@ -23,17 +31,9 @@ async def run():
     print('Starting to fetch data of world')
     await country_fetcher.fetch_world_top_tracks()
 
-    search_fetcher = ShazamSearchFetcher()
-    print('Starting to fetch tracks ids')
-    data = read_merged_data()
-    await search_fetcher.search_tracks(data=data, max_tracks=300)
-
-    track_about_fetcher = ShazamTrackAboutFetcher()
-    print('Starting to fetch tracks about')
-    await track_about_fetcher.fetch_tracks_about(max_tracks=200)
-
-    language_analyzer = ShazamLyricsLanguageAnalyzer(chunk_size=50, chunks_limit=6)
-    language_analyzer.analyze()
+    component_factory = ComponentFactory()
+    await run_shazam_top_tracks_manager(component_factory)
+    await run_shazam_missing_ids_manager(component_factory)
 
 if __name__ == '__main__':
     loop = asyncio.get_event_loop()
