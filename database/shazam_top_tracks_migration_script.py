@@ -27,15 +27,16 @@ class ShazamTopTracksMigrationScript:
         self._data_merger = DataMerger(drop_duplicates_on=[KEY, SCRAPED_AT])
         self._db_engine = get_database_engine()
 
-    async def run(self):
+    async def run(self, minimal_date: datetime):
         for dir_path in [SHAZAM_CITIES_DIR_PATH, SHAZAM_ISRAEL_DIR_PATH, SHAZAM_WORLD_DIR_PATH]:
             print(f"Starting uploading records from `{dir_path}`")
-            await self._migrate_single_location_top_tracks(dir_path)
+            await self._migrate_single_location_top_tracks(dir_path, minimal_date)
 
-    async def _migrate_single_location_top_tracks(self, dir_path: str):
+    async def _migrate_single_location_top_tracks(self, dir_path: str, minimal_date: datetime):
         print("Starting merging data")
         data = self._data_merger.merge(dir_path)
-        formatted_data = self._add_rank_column(data)
+        data_subset = data[data[SCRAPED_AT] > minimal_date.strftime("%Y_%m_%d")]
+        formatted_data = self._add_rank_column(data_subset)
 
         print("Generating records from data")
         with tqdm(total=len(formatted_data)) as progress_bar:

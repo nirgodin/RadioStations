@@ -3,9 +3,10 @@ from typing import List
 
 import pandas as pd
 from genie_datastores.postgres.models import ShazamTopTrack, ShazamTrack
-from genie_datastores.postgres.operations import get_database_engine, insert_records
-from pandas import Series
+from genie_datastores.postgres.operations import get_database_engine, insert_records, execute_query
+from pandas import Series, DataFrame
 from genie_datastores.postgres.tools import ShazamWritersExtractor
+from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
 from tqdm import tqdm
 
@@ -32,10 +33,11 @@ class ShazamTracksMigrationScript:
             how='left',
             on=[KEY]
         )
+        filtered_data = await self._filter_existing_records(data)
         print("Starting to create ShazamTrack records")
 
-        with tqdm(total=len(data)) as progress_bar:
-            records = [self._to_record(row, progress_bar) for _, row in data.iterrows()]
+        with tqdm(total=len(filtered_data)) as progress_bar:
+            records = [self._to_record(row, progress_bar) for _, row in filtered_data.iterrows()]
 
         await self._insert_records(records)
 
@@ -81,6 +83,15 @@ class ShazamTracksMigrationScript:
         existing_errors: List[dict] = read_json(ERRORS_PATH)
         existing_errors.append(exception_record)
         to_json(d=existing_errors, path=ERRORS_PATH)
+
+    async def _filter_existing_records(self, data: DataFrame) -> DataFrame:
+        data[KEY] = data[KEY].apply(stringify_float)
+        data.dropna(subset=KEY, inplace=True)
+        query_result = await execute_query(engine=self._db_engine, query=select(ShazamTrack.id))
+        ids = query_result.scalars().all()
+        filtered_data = data[~data[KEY].isin(ids)]
+
+        return filtered_data.reset_index(drop=True)
 
 
 if __name__ == '__main__':
