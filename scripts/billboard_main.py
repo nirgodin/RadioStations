@@ -12,7 +12,7 @@ async def run_billboard_manager():
 
     async with raw_spotify_session as spotify_session:
         async with client_session as session:
-            billboard_manager = component_factory.get_billboard_manager(spotify_session, session)
+            billboard_manager = component_factory.billboard.get_billboard_manager(spotify_session, session)
             await billboard_manager.run()
 
 

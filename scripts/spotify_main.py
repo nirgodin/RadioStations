@@ -31,7 +31,7 @@ async def run() -> None:
     spotify_session = component_factory.sessions.get_spotify_session()
 
     async with spotify_session as session:
-        snapshots_manager = component_factory.get_radio_snapshots_manager(session)
+        snapshots_manager = component_factory.misc.get_radio_snapshots_manager(session)
         await snapshots_manager.run(STATIONS)
 
 

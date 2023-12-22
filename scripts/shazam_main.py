@@ -8,12 +8,12 @@ from tools.environment_manager import EnvironmentManager
 
 
 async def run_shazam_top_tracks_manager(component_factory: ComponentFactory) -> None:
-    top_tracks_manager = component_factory.get_shazam_top_tracks_manager()
+    top_tracks_manager = component_factory.shazam.get_top_tracks_manager()
     await top_tracks_manager.run()
 
 
 async def run_shazam_missing_ids_manager(component_factory: ComponentFactory) -> None:
-    missing_ids_manager = component_factory.get_shazam_missing_ids_manager()
+    missing_ids_manager = component_factory.shazam.get_missing_ids_manager()
     await missing_ids_manager.run(100)
 
 

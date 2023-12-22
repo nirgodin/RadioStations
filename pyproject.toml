@@ -38,7 +38,7 @@ wikipedia-api = "0.5.8"
 webdriver-manager = "4.0.1"
 spotipyio = {git = "https://github.com/nirgodin/spotipyio.git"}
 billboard-py = "^7.0.0"
-data-collectors = {git = "https://github.com/nirgodin/radio-stations-data-collection.git", rev = "e43af6c6"}
+data-collectors = {git = "https://github.com/nirgodin/radio-stations-data-collection.git", rev = "57f092ab"}
 
 
 [build-system]

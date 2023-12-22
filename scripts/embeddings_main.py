@@ -14,7 +14,7 @@ async def run(limit: int) -> None:
 
     async with factory.sessions.get_openai_session(openai_api_key) as session:
         async with MilvusClient(uri=milvus_uri) as client:
-            manager = factory.get_track_names_embeddings_manager(
+            manager = factory.misc.get_track_names_embeddings_manager(
                 client_session=session,
                 milvus_client=client
             )
