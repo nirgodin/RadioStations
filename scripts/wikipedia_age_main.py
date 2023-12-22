@@ -7,6 +7,9 @@ from tools.environment_manager import EnvironmentManager
 
 async def run() -> None:
     factory = ComponentFactory()
+    shazam_copier = factory.shazam.get_birth_date_copy_manager()
+    await shazam_copier.run(None)
+
     link_manager = factory.wikipedia.get_artists_age_link_manager()
     await link_manager.run(100)
 
