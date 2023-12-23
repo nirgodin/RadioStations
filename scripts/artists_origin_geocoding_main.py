@@ -2,8 +2,11 @@ import asyncio
 
 from data_collectors.components import ComponentFactory
 
+from tools.environment_manager import EnvironmentManager
+
 
 async def run_google_artists_origin_geocoding_manager() -> None:
+    EnvironmentManager().set_env_variables()
     component_factory = ComponentFactory()
     api_key = component_factory.env.get_google_geocoding_api_key()
     client_session = component_factory.sessions.get_google_geocoding_session(api_key)
