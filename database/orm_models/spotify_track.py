@@ -18,7 +18,7 @@ class SpotifyTrack(BaseORMModel):
     name = Column(String, nullable=False)
     number = Column(SmallInteger, nullable=False)
     release_date = Column(TIMESTAMP)
-    writers = Column(ARRAY(String))
+    has_name_embeddings = Column(Boolean, nullable=False, default=False)
 
     @staticmethod
     def _pre_process_record_items(record_items: dict) -> dict:
