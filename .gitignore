@@ -151,6 +151,7 @@ vcs.xml
 /images_gender_collection.bat
 /run_artists_geocoding.bat
 /run_kol_israel_israeli_charts.bat
+/run_glglz_chart_entries.bat
 
 # Data
 /shazam_creds.json
