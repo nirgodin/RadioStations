@@ -50,7 +50,3 @@ class MakoHitListCrawler:
         output_path = MAKO_HIT_LIST_OUTPUT_PATH_FORMAT.format(now)
 
         to_csv(data=data, output_path=output_path)
-
-
-if __name__ == '__main__':
-    MakoHitListCrawler().crawl()
