@@ -11,7 +11,7 @@ async def run_glglz_charts_manager() -> None:
 
     async with session as spotify_session:
         manager = factory.radio_charts.get_glglz_charts_manager(spotify_session)
-        await manager.run(dates=None, limit=4)
+        await manager.run(dates=None, limit=6)
 
 
 if __name__ == '__main__':
