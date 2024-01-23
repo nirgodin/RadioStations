@@ -33,6 +33,7 @@ class ShazamTracksMigrationScript:
             how='left',
             on=[KEY]
         )
+        data.dropna(subset=[ARTIST_ID], inplace=True)
         filtered_data = await self._filter_existing_records(data)
         print("Starting to create ShazamTrack records")
 
