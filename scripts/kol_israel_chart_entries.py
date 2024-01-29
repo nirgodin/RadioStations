@@ -11,7 +11,7 @@ async def run_radio_charts_manager() -> None:
     session = factory.sessions.get_spotify_session()
 
     async with session as spotify_session:
-        manager = factory.radio_charts.get_radio_charts_manager(spotify_session)
+        manager = factory.charts.get_radio_charts_manager(spotify_session)
         await manager.run(chart=Chart.KOL_ISRAEL_WEEKLY_ISRAELI, limit=1)
 
 
