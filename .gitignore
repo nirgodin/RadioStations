@@ -153,6 +153,7 @@ vcs.xml
 /run_kol_israel_israeli_charts.bat
 /run_glglz_chart_entries.bat
 /run_spotify_chart_entries.bat
+/run_eurovision_charts.bat
 
 # Data
 /shazam_creds.json
