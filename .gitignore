@@ -154,6 +154,7 @@ vcs.xml
 /run_glglz_chart_entries.bat
 /run_spotify_chart_entries.bat
 /run_eurovision_charts.bat
+/run_every_hit_charts.bat
 
 # Data
 /shazam_creds.json
