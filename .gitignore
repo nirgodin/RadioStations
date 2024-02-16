@@ -155,6 +155,7 @@ vcs.xml
 /run_spotify_chart_entries.bat
 /run_eurovision_charts.bat
 /run_every_hit_charts.bat
+/run_primary_genres_manager.bat
 
 # Data
 /shazam_creds.json
