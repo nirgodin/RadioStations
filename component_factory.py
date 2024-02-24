@@ -6,15 +6,9 @@ from wikipediaapi import Wikipedia
 
 from consts.env_consts import DATABASE_URL
 from database.db_client import DBClient
-from tools.language_detector import LanguageDetector
 
 
 class ComponentFactory:
-    @staticmethod
-    @lru_cache
-    def get_language_detector() -> LanguageDetector:
-        return LanguageDetector()
-
     @staticmethod
     @lru_cache
     def get_wikipedia(language_abbreviation: str) -> Wikipedia:
