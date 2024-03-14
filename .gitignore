@@ -156,6 +156,10 @@ vcs.xml
 /run_eurovision_charts.bat
 /run_every_hit_charts.bat
 /run_primary_genres_manager.bat
+/run_genius_missing_ids.bat
+/run_musixmatch_missing_ids.bat
+/run_shazam_missing_ids.bat
+/lyrics_missing_ids.bat
 
 # Data
 /shazam_creds.json
