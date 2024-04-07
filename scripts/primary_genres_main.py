@@ -7,7 +7,7 @@ from tools.environment_manager import EnvironmentManager
 
 async def run_primary_genres_manager() -> None:
     factory = ComponentFactory()
-    manager = await factory.misc.get_primary_genre_manager()
+    manager = await factory.genres.get_primary_genre_manager()
 
     await manager.run(limit=500)
 
