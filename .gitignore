@@ -160,6 +160,8 @@ vcs.xml
 /run_musixmatch_missing_ids.bat
 /run_shazam_missing_ids.bat
 /lyrics_missing_ids.bat
+/run_gemini_artists_about.bat
+/run_missing_origins_imputer.bat
 
 # Data
 /shazam_creds.json
