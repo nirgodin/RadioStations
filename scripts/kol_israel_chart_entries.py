@@ -8,11 +8,11 @@ from tools.environment_manager import EnvironmentManager
 
 async def run_radio_charts_manager() -> None:
     factory = ComponentFactory()
-    session = factory.sessions.get_spotify_session()
+    spotify_session = factory.sessions.get_spotify_session()
 
-    async with session as spotify_session:
-        manager = factory.charts.get_radio_charts_manager(spotify_session)
-        await manager.run(chart=Chart.GALATZ_WEEKLY_ISRAELI, limit=1)
+    async with spotify_session as session:
+        manager = factory.charts.get_translated_artist_radio_charts_manager(session)
+        await manager.run(chart=Chart.KOL_ISRAEL_WEEKLY_INTERNATIONAL, limit=1)
 
 
 if __name__ == '__main__':
