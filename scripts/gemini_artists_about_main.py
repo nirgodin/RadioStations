@@ -8,7 +8,7 @@ from tools.environment_manager import EnvironmentManager
 async def run():
     EnvironmentManager().set_env_variables()
     factory = ComponentFactory()
-    manager = factory.google.get_wikipedia_artists_about_manager()
+    manager = factory.google.get_shazam_artists_about_manager()
 
     await manager.run(limit=100)
 
